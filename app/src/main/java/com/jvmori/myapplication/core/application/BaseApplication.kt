@@ -2,6 +2,7 @@ package com.jvmori.myapplication.core.application
 
 import android.app.Application
 import com.jvmori.myapplication.di.networkModule
+import com.jvmori.myapplication.di.photosModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -12,7 +13,7 @@ class BaseApplication : Application(){
         startKoin {
             androidLogger()
             androidContext(this@BaseApplication)
-            modules(networkModule)
+            modules(listOf(networkModule, photosModule))
         }
     }
 }
