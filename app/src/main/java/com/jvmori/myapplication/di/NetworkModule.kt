@@ -38,7 +38,7 @@ fun provideInterceptor(): Interceptor {
         val url = chain.request()
             .url()
             .newBuilder()
-            .addQueryParameter("clienr_id", "a841c900419eb47b41d983073e9383e4fb14c3468677731913c5e44cab325472")
+            .addQueryParameter("client_id", "a841c900419eb47b41d983073e9383e4fb14c3468677731913c5e44cab325472")
             .build()
         val request = chain.request()
             .newBuilder()
