@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
+import com.jvmori.myapplication.core.util.Resource
+import com.jvmori.myapplication.features.photolist.data.models.PhotoData
 import com.jvmori.myapplication.features.photolist.presentation.PhotosViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -17,7 +19,19 @@ class MainActivity : AppCompatActivity() {
 
         photosViewModel.fetchPhotos()
         photosViewModel.photos.observe(this, Observer {
-            Log.i("PHOTOS", it[0].urls.small)
+            when (it.status){
+                Resource.Status.LOADING -> showLoading()
+                Resource.Status.SUCCESS -> showSuccess(it.data)
+                Resource.Status.ERROR -> showError(it.message)
+            }
         })
+    }
+
+    private fun showLoading(){}
+    private fun showSuccess(data : List<PhotoData>?){
+        Log.i("PHOTOS", data?.toString())
+    }
+    private fun showError(errorMessage : String?){
+        Log.i("PHOTOS", errorMessage ?: "")
     }
 }

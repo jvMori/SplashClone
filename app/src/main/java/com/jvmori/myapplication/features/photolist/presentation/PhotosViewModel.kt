@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jvmori.myapplication.core.util.Resource
 import com.jvmori.myapplication.features.photolist.data.models.PhotoData
 import com.jvmori.myapplication.features.photolist.domain.repositories.PhotosRepository
 import kotlinx.coroutines.launch
@@ -12,8 +13,8 @@ class PhotosViewModel (
     private val repository: PhotosRepository
 )  : ViewModel() {
 
-    private val _photos = MutableLiveData<List<PhotoData>>()
-    val photos : LiveData<List<PhotoData>> = _photos
+    private val _photos = MutableLiveData<Resource<List<PhotoData>>>()
+    val photos : LiveData<Resource<List<PhotoData>>> = _photos
 
    fun fetchPhotos() {
        viewModelScope.launch {
