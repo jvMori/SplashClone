@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.features.photolist.domain.repositories
 
-import com.jvmori.myapplication.features.photolist.data.models.PhotoResponse
+import com.jvmori.myapplication.features.photolist.data.models.PhotoData
 
 interface PhotosRepository {
-    suspend fun getPhotos(page : Int = 1) : PhotoResponse
+    suspend fun getPhotos(page : Int = 1) : List<PhotoData>
 }

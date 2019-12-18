@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         photosViewModel.fetchPhotos()
         photosViewModel.photos.observe(this, Observer {
-            Log.i("PHOTOS", it.photos[0].urls.small)
+            Log.i("PHOTOS", it[0].urls.small)
         })
     }
 }
