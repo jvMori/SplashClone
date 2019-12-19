@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 
 suspend fun <RequestType, ResultType> getData(
     fetchLocalData: suspend () -> Flow<ResultType>,
@@ -42,14 +43,16 @@ suspend fun <RequestType, ResultType> fetchData(
     saveCallResult: suspend (ResultType) -> Unit
 ): Resource<ResultType> {
     var data: Resource<ResultType> = Resource.loading(null)
-    try {
-        val local = fetchLocalData()
-        data = Resource.success(local)
-        if (refreshNeeded(local)) {
-            data = networkRequest(fetchNetworkData, dataMapper, saveCallResult)
+    withContext(Dispatchers.IO){
+        try {
+            val local = fetchLocalData()
+            data = if (refreshNeeded(local))
+                networkRequest(fetchNetworkData, dataMapper, saveCallResult)
+            else
+                Resource.success(local)
+        } catch (e: Exception) {
+            networkRequest(fetchNetworkData, dataMapper, saveCallResult)
         }
-    } catch (e: Exception) {
-        networkRequest(fetchNetworkData, dataMapper, saveCallResult)
     }
     return data
 }
