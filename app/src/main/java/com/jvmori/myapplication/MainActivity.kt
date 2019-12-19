@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import com.jvmori.myapplication.core.util.Resource
 import com.jvmori.myapplication.features.photolist.data.models.PhotoData
+import com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.features.photolist.presentation.PhotosViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoading(){}
-    private fun showSuccess(data : List<PhotoData>?){
+    private fun showSuccess(data : List<PhotoEntity>?){
         Log.i("PHOTOS", data?.toString())
     }
     private fun showError(errorMessage : String?){

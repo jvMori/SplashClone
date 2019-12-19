@@ -12,7 +12,7 @@ suspend fun <RequestType, ResultType> fetchData(
     saveCallResult: suspend (ResultType) -> Unit
 ): Resource<ResultType> {
     var data: Resource<ResultType> = Resource.loading(null)
-    withContext(Dispatchers.IO){
+    withContext(Dispatchers.IO) {
         data = try {
             val local = fetchLocalData()
             if (refreshNeeded(local))
@@ -20,7 +20,7 @@ suspend fun <RequestType, ResultType> fetchData(
             else
                 Resource.success(local)
         } catch (e: Exception) {
-            networkRequest(fetchNetworkData, dataMapper, saveCallResult)
+            Resource.error(e.localizedMessage, null)
         }
     }
     return data

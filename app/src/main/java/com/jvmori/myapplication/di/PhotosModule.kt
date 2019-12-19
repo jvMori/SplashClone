@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.di
 
+import com.jvmori.myapplication.core.data.db.PhotosDatabase
 import com.jvmori.myapplication.features.photolist.data.datasources.remote.PhotosNetworkDataSource
 import com.jvmori.myapplication.features.photolist.data.datasources.remote.PhotosNetworkDataSourceImpl
 import com.jvmori.myapplication.features.photolist.data.repositories.PhotosRepositoryImpl
@@ -14,6 +15,7 @@ val photosModule = module {
             get()
         )
     }
-    single<PhotosRepository> { PhotosRepositoryImpl(get()) }
+    single { (get() as PhotosDatabase).photosDao() }
+    single<PhotosRepository> { PhotosRepositoryImpl(get(), get()) }
     viewModel { PhotosViewModel(get()) }
 }

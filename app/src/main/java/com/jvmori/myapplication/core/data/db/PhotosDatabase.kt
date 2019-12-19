@@ -22,5 +22,4 @@ val databaseModule = module {
             .fallbackToDestructiveMigration()
             .build()
     }
-    single { (get() as PhotosDatabase).photosDao() }
 }
