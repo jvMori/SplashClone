@@ -44,9 +44,9 @@ suspend fun <RequestType, ResultType> fetchData(
 ): Resource<ResultType> {
     var data: Resource<ResultType> = Resource.loading(null)
     withContext(Dispatchers.IO){
-        try {
+        data = try {
             val local = fetchLocalData()
-            data = if (refreshNeeded(local))
+            if (refreshNeeded(local))
                 networkRequest(fetchNetworkData, dataMapper, saveCallResult)
             else
                 Resource.success(local)
