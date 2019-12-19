@@ -1,6 +1,6 @@
 package com.jvmori.myapplication.di
 
-import com.jvmori.myapplication.core.network.Api
+import com.jvmori.myapplication.core.data.network.Api
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.koin.dsl.module

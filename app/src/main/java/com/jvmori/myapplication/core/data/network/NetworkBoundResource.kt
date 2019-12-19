@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.core.network
+package com.jvmori.myapplication.core.data.network
 
 import com.jvmori.myapplication.core.util.Resource
 import kotlinx.coroutines.Dispatchers
