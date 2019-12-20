@@ -26,7 +26,7 @@ suspend fun <RequestType, ResultType> fetchData(
     return data
 }
 
-private suspend fun <RequestType, ResultType> networkRequest(
+suspend fun <RequestType, ResultType> networkRequest(
     fetchNetworkData: suspend () -> RequestType,
     dataMapper: (RequestType) -> ResultType,
     saveCallResult: suspend (ResultType) -> Unit

@@ -1,6 +1,7 @@
 package com.jvmori.myapplication.features.photolist.data.repositories
 
 import com.jvmori.myapplication.core.data.network.fetchData
+import com.jvmori.myapplication.core.data.network.networkRequest
 import com.jvmori.myapplication.core.util.Resource
 import com.jvmori.myapplication.features.photolist.data.datasources.local.PhotosDao
 import com.jvmori.myapplication.features.photolist.data.datasources.remote.PhotosNetworkDataSource
@@ -18,6 +19,14 @@ class PhotosRepositoryImpl(
             { localDataSource.getPhotos(page) },
             { networkDataSource.getPhotos(page) },
             { refreshNeeded(it) },
+            { dataMapper(it, page) },
+            { localDataSource.insert(it) }
+        )
+    }
+
+    override suspend fun refreshPhotos(page: Int): Resource<List<PhotoEntity>> {
+        return networkRequest(
+            { networkDataSource.getPhotos(page) },
             { dataMapper(it, page) },
             { localDataSource.insert(it) }
         )

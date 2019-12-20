@@ -23,4 +23,10 @@ class PhotosViewModel (
            _photos.value = data
        }
    }
+    fun refreshPhotos(){
+        viewModelScope.launch {
+            val data = repository.refreshPhotos()
+            _photos.value = data
+        }
+    }
 }

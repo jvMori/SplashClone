@@ -5,4 +5,5 @@ import com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity
 
 interface PhotosRepository {
     suspend fun getPhotos(page : Int = 1) : Resource<List<PhotoEntity>>
+    suspend fun refreshPhotos(page : Int = 1) : Resource<List<PhotoEntity>>
 }
