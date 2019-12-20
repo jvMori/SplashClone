@@ -8,7 +8,6 @@ import com.jvmori.myapplication.features.photolist.data.datasources.remote.Photo
 import com.jvmori.myapplication.features.photolist.data.models.PhotoData
 import com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.features.photolist.domain.repositories.PhotosRepository
-import kotlinx.coroutines.flow.Flow
 
 class PhotosRepositoryImpl(
     private val networkDataSource: PhotosNetworkDataSource,
@@ -20,7 +19,7 @@ class PhotosRepositoryImpl(
             { networkDataSource.getPhotos(page) },
             { refreshNeeded(it) },
             { dataMapper(it, page) },
-            { localDataSource.insert(it) }
+            { localDataSource.updatePhotos(it) }
         )
     }
 
@@ -28,7 +27,7 @@ class PhotosRepositoryImpl(
         return networkRequest(
             { networkDataSource.getPhotos(page) },
             { dataMapper(it, page) },
-            { localDataSource.insert(it) }
+            { localDataSource.updatePhotos(it) }
         )
     }
 
