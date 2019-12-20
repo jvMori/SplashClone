@@ -72,6 +72,7 @@ class CategoryPageFragment : Fragment() {
     private fun showLoading(){}
     private fun showSuccess(data : List<PhotoEntity>?){
         binding.items = data
+        binding.textView.text = data?.get(0)?.url
     }
     private fun showError(errorMessage : String?){
         Log.i("PHOTOS", errorMessage ?: "")
