@@ -8,35 +8,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.core.util.Resource
 import com.jvmori.myapplication.databinding.Photos
+import com.jvmori.myapplication.features.categories.presentation.CategoryViewModel
+import com.jvmori.myapplication.features.categories.presentation.CategoryViewPagerAdapter
 import com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass.
  */
-class PhotosFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private val photosViewModel: PhotosViewModel by viewModel(PhotosViewModel::class)
+    private val categoryViewModel : CategoryViewModel by viewModel(CategoryViewModel::class)
+    private lateinit var binding : Photos
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<Photos>(
+        binding = DataBindingUtil.inflate<Photos>(
             inflater,
-            R.layout.fragment_photos,
+            R.layout.fragment_home,
             container,
             false
         ).apply {
             viewModel = photosViewModel
-            lifecycleOwner = this@PhotosFragment
+            lifecycleOwner = this@HomeFragment
         }
         return binding.root
     }
@@ -54,7 +57,12 @@ class PhotosFragment : Fragment() {
     }
     private fun showLoading(){}
     private fun showSuccess(data : List<PhotoEntity>?){
-        Log.i("PHOTOS", data?.toString())
+        setupViewPager()
+    }
+    private fun setupViewPager(){
+        val categories =  categoryViewModel.getCategories(listOf(), listOf())
+        val pagerAdapter = CategoryViewPagerAdapter(this, categories)
+        binding.photosViewPager.adapter = pagerAdapter
     }
     private fun showError(errorMessage : String?){
         Log.i("PHOTOS", errorMessage ?: "")

@@ -4,6 +4,7 @@ import android.app.Application
 import com.jvmori.myapplication.core.data.db.databaseModule
 import com.jvmori.myapplication.di.networkModule
 import com.jvmori.myapplication.di.photosModule
+import com.jvmori.myapplication.features.categories.presentation.categoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,7 +19,8 @@ class BaseApplication : Application() {
                 listOf(
                     networkModule,
                     photosModule,
-                    databaseModule
+                    databaseModule,
+                    categoryModule
                 )
             )
         }

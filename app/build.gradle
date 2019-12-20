@@ -80,8 +80,13 @@ dependencies {
     //Material
     implementation 'com.google.android.material:material:1.0.0'
 
-   //Navigation
+    //Navigation
     def nav_version = "2.1.0"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Paging
+    def paging_version = "2.1.0"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    // For Kotlin use paging-runtime-ktx
 }
