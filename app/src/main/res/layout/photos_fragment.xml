@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity" />
+        <variable
+                name="items"
+                type="java.util.List&lt;PhotoEntity>" />
+    </data>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/textView"
+                android:gravity="center"
+                android:text="photos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+    </LinearLayout>
+</layout>

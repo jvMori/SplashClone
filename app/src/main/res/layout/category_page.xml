@@ -2,13 +2,6 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-        <import type="com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity" />
-        <variable
-                name="items"
-                type="java.util.List&lt;PhotoEntity>" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
