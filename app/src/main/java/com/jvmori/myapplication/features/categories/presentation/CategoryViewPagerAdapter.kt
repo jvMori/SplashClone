@@ -2,18 +2,15 @@ package com.jvmori.myapplication.features.categories.presentation
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.jvmori.myapplication.features.categories.data.Category
 
 class CategoryViewPagerAdapter(
     fragment: Fragment,
-    var items : List<Category>
+    private var size: Int
 ) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = size
 
     override fun createFragment(position: Int): Fragment {
-        return CategoryPageFragment.newInstance(position).apply {
-            items = this@CategoryViewPagerAdapter.items
-        }
+        return CategoryPageFragment.newInstance(position)
     }
 }
