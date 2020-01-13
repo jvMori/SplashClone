@@ -3,7 +3,7 @@ package com.jvmori.myapplication.features.categories.presentation
 
 import androidx.fragment.app.Fragment
 import com.jvmori.myapplication.databinding.CategoryPageBinding
-import com.jvmori.myapplication.features.CollectionsFragment
+import com.jvmori.myapplication.features.collectionlist.CollectionsFragment
 import com.jvmori.myapplication.features.photolist.presentation.PhotosFragment
 
 open class CategoryPageFragment : Fragment() {

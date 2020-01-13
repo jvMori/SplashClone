@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.features
+package com.jvmori.myapplication.features.collectionlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
