@@ -5,13 +5,13 @@
     <data class="Photos">
         <variable
                 name="viewModel"
-                type="com.jvmori.myapplication.features.photolist.presentation.PhotosViewModel" />
+                type="com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".features.categories.presentation.HomeFragment">
+            tools:context=".presentation.ui.HomeFragment">
 
         <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/photosViewPager"

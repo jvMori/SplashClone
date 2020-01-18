@@ -2,10 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="com.jvmori.myapplication.features.photolist.domain.entities.PhotoEntity" />
         <variable
-                name="items"
-                type="java.util.List&lt;PhotoEntity>" />
+                name="photoData"
+                type="com.jvmori.myapplication.domain.entities.PhotoEntity"
+        />
     </data>
 
     <LinearLayout
@@ -16,7 +16,7 @@
         <TextView
                 android:id="@+id/textView"
                 android:gravity="center"
-                android:text="photos"
+                android:text="@{photoData.url}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
