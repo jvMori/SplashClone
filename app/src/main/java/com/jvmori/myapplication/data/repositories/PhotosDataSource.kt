@@ -3,13 +3,14 @@ package com.jvmori.myapplication.data.repositories
 import androidx.paging.PageKeyedDataSource
 import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.domain.entities.PhotoEntity
+import com.jvmori.myapplication.domain.usecases.GetPhotosList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class PhotosDataSource(
     private var scope: CoroutineScope,
-    private val fetchPhotos: suspend (Int) -> Resource<List<PhotoEntity>>
+    private val fetchPhotos: GetPhotosList
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
     var networkStatus = Resource.loading(null)
@@ -17,7 +18,7 @@ class PhotosDataSource(
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PhotoEntity>) {
         val currentPage = 1
         scope.launch {
-            val response = fetchPhotos(currentPage)
+            val response = fetchPhotos.getPhotos(currentPage)
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     callback.onResult(response.data!!, null, currentPage + 1)
@@ -32,7 +33,7 @@ class PhotosDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PhotoEntity>) {
         scope.launch {
-            val response = fetchPhotos(params.key)
+            val response = fetchPhotos.getPhotos(params.key)
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     callback.onResult(response.data!!, params.key + 1)

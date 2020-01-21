@@ -4,32 +4,40 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.data.local.PhotoData
+import com.jvmori.myapplication.data.repositories.PhotosDataSource
+import com.jvmori.myapplication.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.repositories.PhotosRepository
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
 import com.jvmori.myapplication.domain.usecases.RefreshPhotos
 import kotlinx.coroutines.launch
 
-class PhotosViewModel (
+class PhotosViewModel(
     private val photosList: GetPhotosList,
     private val refreshPhotos: RefreshPhotos
-)  : ViewModel() {
+) : ViewModel() {
 
-    private val _photos = MutableLiveData<Resource<List<PhotoEntity>>>()
-    val photos : LiveData<Resource<List<PhotoEntity>>> = _photos
+    private val pageSize = 10
+    val photos: LiveData<PagedList<PhotoEntity>> by lazy {
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize)
+            .setEnablePlaceholders(false)
+            .build()
+        LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
+    }
 
-   fun fetchPhotos() {
-       viewModelScope.launch {
-           val data = photosList.getPhotos()
-           _photos.value = data
-       }
-   }
-    fun refreshPhotos(){
-        viewModelScope.launch {
-            val data = refreshPhotos.refresh()
-            _photos.value = data
-        }
+    private var photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList)
+
+    fun fetchPhotos() {
+
+    }
+
+    fun refreshPhotos() {
+
     }
 }
