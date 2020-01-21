@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.databinding.CollectionsFragmentBinding
+import com.jvmori.myapplication.presentation.ui.category.CategoryPageFragment
 
 class CollectionsFragment : CategoryPageFragment() {
 

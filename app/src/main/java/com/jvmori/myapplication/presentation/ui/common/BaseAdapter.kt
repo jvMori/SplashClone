@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.presentation.ui
+package com.jvmori.myapplication.presentation.ui.common
 
 import android.view.View
 import android.view.ViewGroup

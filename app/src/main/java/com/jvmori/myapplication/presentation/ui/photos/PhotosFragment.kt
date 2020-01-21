@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.presentation.ui
+package com.jvmori.myapplication.presentation.ui.photos
 
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,7 @@ import com.jvmori.myapplication.R
 import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.databinding.PhotosFragmentBinding
 import com.jvmori.myapplication.domain.entities.PhotoEntity
+import com.jvmori.myapplication.presentation.ui.category.CategoryPageFragment
 import com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -55,7 +56,7 @@ class PhotosFragment : CategoryPageFragment() {
 
     private fun showLoading() {}
     private fun showSuccess(data: List<PhotoEntity>?) {
-        binding.setVariable(photoData, data?.get(0) ?: PhotoEntity("", 1))
+        binding.setVariable(photoData, data?.get(0) ?: PhotoEntity("","", 1))
     }
 
     private fun showError(errorMessage: String?) {

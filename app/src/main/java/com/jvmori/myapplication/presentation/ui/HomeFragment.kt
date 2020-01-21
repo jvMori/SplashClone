@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.databinding.Photos
+import com.jvmori.myapplication.presentation.ui.category.CategoryViewPagerAdapter
 import com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -45,7 +46,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewPager(){
-        val pagerAdapter = CategoryViewPagerAdapter(this, 2)
+        val pagerAdapter =
+            CategoryViewPagerAdapter(this, 2)
         binding.photosViewPager.adapter = pagerAdapter
     }
 

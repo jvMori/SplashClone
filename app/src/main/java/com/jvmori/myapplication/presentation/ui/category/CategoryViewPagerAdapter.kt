@@ -1,8 +1,8 @@
-package com.jvmori.myapplication.presentation.ui
+package com.jvmori.myapplication.presentation.ui.category
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.jvmori.myapplication.presentation.ui.CategoryPageFragment
+import com.jvmori.myapplication.presentation.ui.category.CategoryPageFragment
 
 class CategoryViewPagerAdapter(
     fragment: Fragment,

@@ -51,6 +51,7 @@ class PhotosRepositoryImpl(
     private fun uiDataMapper(data: List<PhotoData>, page: Int): List<PhotoEntity> {
         return data.map {
             PhotoEntity(
+                it.id,
                 it.urls.small,
                 page
             )

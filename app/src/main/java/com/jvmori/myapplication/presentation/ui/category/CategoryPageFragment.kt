@@ -1,8 +1,10 @@
-package com.jvmori.myapplication.presentation.ui
+package com.jvmori.myapplication.presentation.ui.category
 
 
 import androidx.fragment.app.Fragment
 import com.jvmori.myapplication.databinding.CategoryPageBinding
+import com.jvmori.myapplication.presentation.ui.CollectionsFragment
+import com.jvmori.myapplication.presentation.ui.photos.PhotosFragment
 
 open class CategoryPageFragment : Fragment() {
 
