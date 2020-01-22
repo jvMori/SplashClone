@@ -17,7 +17,7 @@ import com.jvmori.myapplication.domain.usecases.RefreshPhotos
 import kotlinx.coroutines.launch
 
 class PhotosViewModel(
-    private val photosList: GetPhotosList,
+    photosList: GetPhotosList,
     private val refreshPhotos: RefreshPhotos
 ) : ViewModel() {
 
@@ -32,10 +32,6 @@ class PhotosViewModel(
     }
 
     private var photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList)
-
-    fun fetchPhotos() {
-
-    }
 
     fun refreshPhotos() {
 

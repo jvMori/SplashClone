@@ -50,7 +50,6 @@ class PhotosFragment : CategoryPageFragment() {
     }
 
     private fun bindPhotos() {
-        photosViewModel.fetchPhotos()
         photosViewModel.photos.observe(this, Observer {
             showSuccess(it)
         })

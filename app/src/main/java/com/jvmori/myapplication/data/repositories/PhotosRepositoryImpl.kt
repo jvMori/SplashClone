@@ -1,45 +1,41 @@
 package com.jvmori.myapplication.data.repositories
 
 import com.jvmori.myapplication.data.local.PhotoData
+import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.data.remote.fetchData
 import com.jvmori.myapplication.data.remote.networkRequest
-import com.jvmori.myapplication.data.remote.Resource
-import com.jvmori.myapplication.data.local.PhotosDao
-import com.jvmori.myapplication.data.remote.Api
 import com.jvmori.myapplication.data.remote.photodata.PhotoDataResponse
 import com.jvmori.myapplication.domain.entities.PhotoEntity
+import com.jvmori.myapplication.domain.repositories.LocalPhotosDataSource
 import com.jvmori.myapplication.domain.repositories.PhotosRepository
+import com.jvmori.myapplication.domain.repositories.RemotePhotosDataSource
 
 class PhotosRepositoryImpl(
-    private val api: Api,
-    private val localDataSource: PhotosDao
+    private val remotePhotosDataSource: RemotePhotosDataSource<List<PhotoDataResponse>>,
+    private val localPhotosDataSource: LocalPhotosDataSource<List<PhotoData>>
 ) : PhotosRepository {
     override suspend fun getPhotos(page: Int): Resource<List<PhotoEntity>> {
         return fetchData(
-            { localDataSource.getPhotos(page) },
-            { api.getPhotos(page) },
+            { localPhotosDataSource.getPhotos(page) },
+            { remotePhotosDataSource.getPhotos(page) },
             { refreshNeeded(it) },
-            { localDataMapper(it, page) },
-            { localDataSource.updatePhotos(it) },
-            { uiDataMapper(it, page) }
+            { mapRequestToLocalData(it, page) },
+            { localPhotosDataSource.update(it) },
+            { mapLocalToResultData(it) }
         )
     }
 
     override suspend fun refreshPhotos(page: Int): Resource<List<PhotoEntity>> {
         return networkRequest(
-            { api.getPhotos(page) },
-            { localDataMapper(it, page)},
-            { localDataSource.updatePhotos(it) },
-            { uiDataMapper(it, page) }
+            { remotePhotosDataSource.getPhotos(page) },
+            { mapRequestToLocalData(it, page) },
+            { localPhotosDataSource.update(it) },
+            { mapLocalToResultData(it) }
         )
     }
 
-    private fun refreshNeeded(data: List<PhotoData>): Boolean {
-        return data.isEmpty()
-    }
-
-    private fun localDataMapper(data: List<PhotoDataResponse>, page: Int): List<PhotoData> {
-        return data.map {
+    private fun mapRequestToLocalData(response: List<PhotoDataResponse>, page: Int): List<PhotoData> {
+        return response.map {
             PhotoData(
                 page,
                 it.id,
@@ -48,13 +44,18 @@ class PhotosRepositoryImpl(
         }
     }
 
-    private fun uiDataMapper(data: List<PhotoData>, page: Int): List<PhotoEntity> {
-        return data.map {
+    private fun mapLocalToResultData(local: List<PhotoData>): List<PhotoEntity> {
+        return local.map {
             PhotoEntity(
                 it.id,
                 it.urls.small,
-                page
+                it.page
             )
         }
     }
+
+    private fun refreshNeeded(data: List<PhotoData>): Boolean {
+        return data.isEmpty()
+    }
+
 }

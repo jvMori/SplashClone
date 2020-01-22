@@ -41,7 +41,6 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        photosViewModel.fetchPhotos()
         setupViewPager()
     }
 
