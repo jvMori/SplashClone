@@ -6,12 +6,26 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <TextView android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="@{Integer.toString(photoData.page)}"
-                  app:layout_constraintEnd_toEndOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:padding="4dp"
+    >
+        <androidx.cardview.widget.CardView android:layout_width="match_parent"
+                                           android:layout_height="wrap_content"
+                                           app:cardCornerRadius="4dp"
+                                           android:elevation="16dp"
+                                           app:layout_constraintBottom_toBottomOf="parent"
+                                           app:layout_constraintEnd_toEndOf="parent"
+                                           app:layout_constraintStart_toStartOf="parent"
+                                           app:layout_constraintTop_toTopOf="parent"
+        >
+            <ImageView
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:showImage="@{photoData.url}"/>
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

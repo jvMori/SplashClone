@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.databinding.PhotosFragmentBinding
@@ -63,7 +64,8 @@ class PhotosFragment : CategoryPageFragment() {
     private fun initPhotosRecyclerView() {
         photosAdapter = PhotosAdapter()
         binding.photosRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@PhotosFragment.requireContext(), RecyclerView.VERTICAL, false)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            //layoutManager = LinearLayoutManager(this@PhotosFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = photosAdapter
         }
     }
