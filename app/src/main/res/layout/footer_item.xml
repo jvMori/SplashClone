@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="status" type="com.jvmori.myapplication.data.remote.Resource.Status"/>
+    </data>
+    <LinearLayout
+            android:padding="4dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <ProgressBar
+            app:showLoading="@{status}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+                android:id="@+id/retryBtn"
+                app:showError="@{status}"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:src="@drawable/ic_redo"
+                android:tint="@color/colorAccent"/>
+    </LinearLayout>
+</layout>
