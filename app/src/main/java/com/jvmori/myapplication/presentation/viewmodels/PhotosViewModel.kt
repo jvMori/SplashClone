@@ -1,10 +1,10 @@
 package com.jvmori.myapplication.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.jvmori.myapplication.data.remote.Resource
+import com.jvmori.myapplication.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
@@ -26,6 +26,9 @@ class PhotosViewModel(
     }
 
     private var photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList)
+
+    val networkStatus : LiveData<Resource.Status> = Transformations.switchMap(photoDataSourceFactory.photosLiveData,
+        PhotosDataSource::networkStatus)
 
     fun refreshPhotos() {
 

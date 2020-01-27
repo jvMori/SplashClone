@@ -17,7 +17,7 @@ fun loadImage(view: ImageView, url: String) {
 }
 
 @BindingAdapter("showLoading")
-fun showLoading(view: ImageView, status: Resource.Status) {
+fun showLoading(view: View, status: Resource.Status) {
     view.visibility =
         if (status == Resource.Status.LOADING)
             View.VISIBLE
@@ -26,7 +26,7 @@ fun showLoading(view: ImageView, status: Resource.Status) {
 }
 
 @BindingAdapter("showError")
-fun showError(view: ImageView, status: Resource.Status){
+fun showError(view: View, status: Resource.Status){
     view.visibility =
         if (status == Resource.Status.ERROR)
             View.VISIBLE

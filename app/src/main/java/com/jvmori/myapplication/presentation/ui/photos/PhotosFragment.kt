@@ -48,6 +48,7 @@ class PhotosFragment : CategoryPageFragment() {
         super.onStart()
         initPhotosRecyclerView()
         bindPhotos()
+        observeNetworkStatus()
     }
 
     private fun bindPhotos() {
@@ -56,7 +57,12 @@ class PhotosFragment : CategoryPageFragment() {
         })
     }
 
-    private fun showLoading() {}
+    private fun observeNetworkStatus(){
+        photosViewModel.networkStatus.observe(this, Observer {
+            photosAdapter.setState(it)
+        })
+    }
+
     private fun showSuccess(data: PagedList<PhotoEntity>?) {
         photosAdapter.submitList(data)
     }
@@ -65,12 +71,7 @@ class PhotosFragment : CategoryPageFragment() {
         photosAdapter = PhotosAdapter()
         binding.photosRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            //layoutManager = LinearLayoutManager(this@PhotosFragment.requireContext(), RecyclerView.VERTICAL, false)
             adapter = photosAdapter
         }
-    }
-
-    private fun showError(errorMessage: String?) {
-        Log.i("PHOTOS", errorMessage ?: "")
     }
 }
