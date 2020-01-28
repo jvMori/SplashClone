@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.databinding.Photos
 import com.jvmori.myapplication.presentation.ui.category.CategoryViewPagerAdapter
+import com.jvmori.myapplication.presentation.ui.common.ZoomOutPageTransformer
 import com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -49,7 +50,10 @@ class HomeFragment : Fragment() {
     private fun setupViewPager() {
         val pagerAdapter =
             CategoryViewPagerAdapter(this, 2)
-        binding.photosViewPager.adapter = pagerAdapter
+        binding.photosViewPager.apply {
+            adapter = pagerAdapter
+            setPageTransformer(ZoomOutPageTransformer())
+        }
         TabLayoutMediator(binding.tabs, binding.photosViewPager) { tab, position ->
             tab.text =  when (position){
                 0 -> "PHOTOS"
