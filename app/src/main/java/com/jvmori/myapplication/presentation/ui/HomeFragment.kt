@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.databinding.Photos
 import com.jvmori.myapplication.presentation.ui.category.CategoryViewPagerAdapter
@@ -19,8 +20,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class HomeFragment : Fragment() {
 
     private val photosViewModel: PhotosViewModel by viewModel(
-        PhotosViewModel::class)
-    private lateinit var binding : Photos
+        PhotosViewModel::class
+    )
+    private lateinit var binding: Photos
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +46,17 @@ class HomeFragment : Fragment() {
         setupViewPager()
     }
 
-    private fun setupViewPager(){
+    private fun setupViewPager() {
         val pagerAdapter =
             CategoryViewPagerAdapter(this, 2)
         binding.photosViewPager.adapter = pagerAdapter
+        TabLayoutMediator(binding.tabs, binding.photosViewPager) { tab, position ->
+            tab.text =  when (position){
+                0 -> "PHOTOS"
+                1 -> "COLLECTIONS"
+                else -> ""
+            }
+        }.attach()
     }
 
 }

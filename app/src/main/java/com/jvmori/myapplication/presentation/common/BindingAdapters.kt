@@ -17,18 +17,18 @@ fun loadImage(view: ImageView, url: String) {
 }
 
 @BindingAdapter("showLoading")
-fun showLoading(view: View, status: Resource.Status) {
+fun showLoading(view: View, status: Resource.Status?) {
     view.visibility =
-        if (status == Resource.Status.LOADING)
+        if (status != null && status == Resource.Status.LOADING)
             View.VISIBLE
         else
             View.GONE
 }
 
 @BindingAdapter("showError")
-fun showError(view: View, status: Resource.Status){
+fun showError(view: View, status: Resource.Status?){
     view.visibility =
-        if (status == Resource.Status.ERROR)
+        if (status != null && status == Resource.Status.ERROR)
             View.VISIBLE
         else
             View.GONE
