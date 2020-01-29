@@ -13,21 +13,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jvmori.myapplication.R
+import com.jvmori.myapplication.data.remote.Order
 import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.databinding.PhotosFragmentBinding
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.presentation.ui.category.CategoryPageFragment
 import com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PhotosFragment : CategoryPageFragment() {
 
-    private val photosViewModel: PhotosViewModel by viewModel(
-        PhotosViewModel::class
-    )
+    private val photosViewModel: PhotosViewModel by sharedViewModel()
 
     private lateinit var binding: PhotosFragmentBinding
-    private lateinit var  photosAdapter : PhotosAdapter
+    private lateinit var photosAdapter: PhotosAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +58,7 @@ class PhotosFragment : CategoryPageFragment() {
         })
     }
 
-    private fun observeNetworkStatus(){
+    private fun observeNetworkStatus() {
         photosViewModel.networkStatus.observe(this, Observer {
             photosAdapter.setState(it)
         })

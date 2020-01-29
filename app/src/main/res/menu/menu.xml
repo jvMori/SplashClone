@@ -6,16 +6,19 @@
           app:showAsAction="ifRoom"
     >
     </item>
-    <item android:icon="@drawable/baseline_trending_up_24"
+    <item android:id="@+id/latest"
+          android:icon="@drawable/baseline_trending_up_24"
           android:title="@string/latest"
           app:showAsAction="never"
     >
     </item>
-    <item android:icon="@drawable/baseline_whatshot_24"
+    <item android:id="@+id/popular"
+          android:icon="@drawable/baseline_whatshot_24"
           android:title="@string/popular"
           app:showAsAction="never"
     />
-    <item android:icon="@drawable/baseline_timer_24"
+    <item android:id="@+id/oldest"
+          android:icon="@drawable/baseline_timer_24"
           android:title="@string/oldest"
           app:showAsAction="never"
     />

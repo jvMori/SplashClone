@@ -22,8 +22,14 @@ class PhotosViewModel(
 ) : ViewModel() {
 
     private val pageSize = 10
-    val order: Flow<String> = flow {
+    private var order: Flow<String> = flow {
         emit(Order.popular.toString())
+    }
+
+    fun setOrder(order: Order) {
+        flow {
+            emit(order)
+        }
     }
 
     private val config = PagedList.Config.Builder()
@@ -46,9 +52,8 @@ class PhotosViewModel(
         viewModelScope.launch {
             order.map {
                 photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, it)
-            }.collect {
                 photos = LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
-            }
+            }.collect()
         }
     }
 
