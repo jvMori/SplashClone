@@ -14,30 +14,31 @@ class PhotosRepositoryImpl(
     private val remotePhotosDataSource: RemotePhotosDataSource<List<PhotoDataResponse>>,
     private val localPhotosDataSource: LocalPhotosDataSource<List<PhotoData>>
 ) : PhotosRepository {
-    override suspend fun getPhotos(page: Int): Resource<List<PhotoEntity>> {
+    override suspend fun getPhotos(page: Int, order : String): Resource<List<PhotoEntity>> {
         return fetchData(
-            { localPhotosDataSource.getPhotos(page) },
-            { remotePhotosDataSource.getPhotos(page) },
+            { localPhotosDataSource.getPhotos(page, order) },
+            { remotePhotosDataSource.getPhotos(page, order) },
             { refreshNeeded(it) },
-            { mapRequestToLocalData(it, page) },
+            { mapRequestToLocalData(it, page, order) },
             { localPhotosDataSource.update(it) },
             { mapLocalToResultData(it) }
         )
     }
 
-    override suspend fun refreshPhotos(page: Int): Resource<List<PhotoEntity>> {
+    override suspend fun refreshPhotos(page: Int, order : String): Resource<List<PhotoEntity>> {
         return networkRequest(
-            { remotePhotosDataSource.getPhotos(page) },
-            { mapRequestToLocalData(it, page) },
+            { remotePhotosDataSource.getPhotos(page, order) },
+            { mapRequestToLocalData(it, page, order) },
             { localPhotosDataSource.update(it) },
             { mapLocalToResultData(it) }
         )
     }
 
-    private fun mapRequestToLocalData(response: List<PhotoDataResponse>, page: Int): List<PhotoData> {
+    private fun mapRequestToLocalData(response: List<PhotoDataResponse>, page: Int, order : String): List<PhotoData> {
         return response.map {
             PhotoData(
                 page,
+                order,
                 it.id,
                 it.urls
             )

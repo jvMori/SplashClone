@@ -46,6 +46,7 @@ class PhotosFragment : CategoryPageFragment() {
 
     override fun onStart() {
         super.onStart()
+        photosViewModel.fetchPhotos()
         initPhotosRecyclerView()
         bindPhotos()
         observeNetworkStatus()

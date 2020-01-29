@@ -2,6 +2,7 @@ package com.jvmori.myapplication.data.repositories
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.jvmori.myapplication.data.remote.Order
 import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
@@ -11,7 +12,8 @@ import kotlinx.coroutines.launch
 
 class PhotosDataSource(
     private var scope: CoroutineScope,
-    private val fetchPhotos: GetPhotosList
+    private val fetchPhotos: GetPhotosList,
+    private val order: String = Order.latest.toString()
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
     var networkStatus : MutableLiveData<Resource.Status> = MutableLiveData()
@@ -20,7 +22,7 @@ class PhotosDataSource(
         val currentPage = 1
         updateState(Resource.Status.LOADING)
         scope.launch {
-            val response = fetchPhotos.getPhotos(currentPage)
+            val response = fetchPhotos.getPhotos(currentPage, order)
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     callback.onResult(response.data!!, null, currentPage + 1)
@@ -33,7 +35,7 @@ class PhotosDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PhotoEntity>) {
         updateState(Resource.Status.LOADING)
         scope.launch {
-            val response = fetchPhotos.getPhotos(params.key)
+            val response = fetchPhotos.getPhotos(params.key, order)
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     callback.onResult(response.data!!, params.key + 1)
