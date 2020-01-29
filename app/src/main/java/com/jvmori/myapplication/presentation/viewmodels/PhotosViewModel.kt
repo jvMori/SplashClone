@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -10,10 +11,7 @@ import com.jvmori.myapplication.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
 import com.jvmori.myapplication.domain.usecases.RefreshPhotos
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PhotosViewModel(
@@ -27,9 +25,9 @@ class PhotosViewModel(
     }
 
     fun setOrder(order: Order) {
-        flow {
-            emit(order)
-        }
+        Log.i("Photos", "is here")
+        photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, order.toString())
+        photos = LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
     }
 
     private val config = PagedList.Config.Builder()
