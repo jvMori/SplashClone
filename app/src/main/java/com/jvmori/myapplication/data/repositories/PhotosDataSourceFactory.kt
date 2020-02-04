@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 class PhotosDataSourceFactory(
     private var scope: CoroutineScope,
     private val fetchPhotos: GetPhotosList,
-    private val order : String = Order.latest.toString()
+    private val order : String
 ) : DataSource.Factory<Int, PhotoEntity>(){
 
     val photosLiveData = MutableLiveData<PhotosDataSource>()

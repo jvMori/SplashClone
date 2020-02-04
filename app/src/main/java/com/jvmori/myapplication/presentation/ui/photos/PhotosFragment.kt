@@ -1,26 +1,21 @@
 package com.jvmori.myapplication.presentation.ui.photos
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.library.baseAdapters.BR.photoData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.data.remote.Order
-import com.jvmori.myapplication.data.remote.Resource
 import com.jvmori.myapplication.databinding.PhotosFragmentBinding
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.presentation.ui.category.CategoryPageFragment
 import com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class PhotosFragment : CategoryPageFragment() {
 
@@ -44,24 +39,25 @@ class PhotosFragment : CategoryPageFragment() {
         return binding.root
     }
 
+    @ExperimentalCoroutinesApi
     override fun onStart() {
         super.onStart()
-        photosViewModel.fetchPhotos()
+        photosViewModel.fetchPhotos(Order.latest.toString())
         initPhotosRecyclerView()
-        bindPhotos()
+        bindPhotos(Order.popular)
         observeNetworkStatus()
     }
 
-    private fun bindPhotos() {
+    private fun bindPhotos(order: Order) {
         photosViewModel.photos.observe(this, Observer {
             showSuccess(it)
         })
     }
 
     private fun observeNetworkStatus() {
-        photosViewModel.networkStatus.observe(this, Observer {
-            photosAdapter.setState(it)
-        })
+//        photosViewModel.networkStatus.observe(this, Observer {
+//            photosAdapter.setState(it)
+//        })
     }
 
     private fun showSuccess(data: PagedList<PhotoEntity>?) {

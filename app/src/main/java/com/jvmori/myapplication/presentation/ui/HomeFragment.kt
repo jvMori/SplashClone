@@ -15,8 +15,6 @@ import com.jvmori.myapplication.presentation.ui.category.CategoryViewPagerAdapte
 import com.jvmori.myapplication.presentation.ui.common.ZoomOutPageTransformer
 import com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
-import org.mockito.internal.matchers.Or
 
 /**
  * A simple [Fragment] subclass.
@@ -62,15 +60,15 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.latest -> {
-                photosViewModel.setOrder(Order.latest)
+                photosViewModel.fetchPhotos(Order.latest.toString())
                 true
             }
             R.id.popular -> {
-                photosViewModel.setOrder(Order.popular)
+                photosViewModel.fetchPhotos(Order.popular.toString())
                 true
             }
             R.id.oldest -> {
-                photosViewModel.setOrder(Order.oldest)
+                photosViewModel.fetchPhotos(Order.oldest.toString())
                 true
             }
             else -> return super.onOptionsItemSelected(item)

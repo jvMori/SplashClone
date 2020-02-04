@@ -2,6 +2,7 @@ package com.jvmori.myapplication.presentation.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jvmori.myapplication.data.remote.Order
@@ -11,8 +12,11 @@ import com.jvmori.myapplication.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
 import com.jvmori.myapplication.domain.usecases.RefreshPhotos
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class PhotosViewModel(
     private val photosList: GetPhotosList,
@@ -20,39 +24,27 @@ class PhotosViewModel(
 ) : ViewModel() {
 
     private val pageSize = 10
-    private var order: Flow<String> = flow {
-        emit(Order.popular.toString())
-    }
-
-    fun setOrder(order: Order) {
-        Log.i("Photos", "is here")
-        photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, order.toString())
-        photos = LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
-    }
-
+    private val order = Channel<String>()
+    var photos: LiveData<PagedList<PhotoEntity>> = MutableLiveData()
+    //var networkStatus: LiveData<Resource.Status> = MutableLiveData()
     private val config = PagedList.Config.Builder()
         .setPageSize(pageSize)
         .setInitialLoadSizeHint(pageSize)
         .setEnablePlaceholders(false)
         .build()
 
-    private var photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList)
+    fun fetchPhotos(order: String) {
+        val photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, order)
+        initNetworkStatus(photoDataSourceFactory)
+        //photos.value?.dataSource?.invalidate()
+        photos = LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
+    }
 
-    var photos: LiveData<PagedList<PhotoEntity>> =
-        LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
-
-    val networkStatus: LiveData<Resource.Status> = Transformations.switchMap(
-        photoDataSourceFactory.photosLiveData,
-        PhotosDataSource::networkStatus
-    )
-
-    fun fetchPhotos() {
-        viewModelScope.launch {
-            order.map {
-                photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, it)
-                photos = LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
-            }.collect()
-        }
+    private fun initNetworkStatus(photoDataSourceFactory: PhotosDataSourceFactory) {
+//        networkStatus = Transformations.switchMap(
+//            photoDataSourceFactory.photosLiveData,
+//            PhotosDataSource::networkStatus
+//        )
     }
 
     fun refreshPhotos() {

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class PhotosDataSource(
     private var scope: CoroutineScope,
     private val fetchPhotos: GetPhotosList,
-    private val order: String = Order.latest.toString()
+    private val order: String
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
     var networkStatus : MutableLiveData<Resource.Status> = MutableLiveData()
