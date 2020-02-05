@@ -4,6 +4,8 @@ import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jvmori.myapplication.data.remote.Order
+import com.jvmori.myapplication.data.remote.Resource
+import com.jvmori.myapplication.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
@@ -20,12 +22,14 @@ class PhotosViewModel(
 
     private val pageSize = 10
     val order: MutableLiveData<Order> = MutableLiveData()
+    var networkStatus: LiveData<Resource.Status> = MutableLiveData()
+
     val photos: LiveData<PagedList<PhotoEntity>> = Transformations.switchMap(order) { input: Order? ->
         val photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, input.toString())
         initNetworkStatus(photoDataSourceFactory)
         LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
     }
-    //var networkStatus: LiveData<Resource.Status> = MutableLiveData()
+
     private val config = PagedList.Config.Builder()
         .setPageSize(pageSize)
         .setInitialLoadSizeHint(pageSize)
@@ -33,19 +37,14 @@ class PhotosViewModel(
         .build()
 
     fun changeOrder(order: Order) {
-        invalidateDataSource()
         this.order.value = order
     }
 
-    fun invalidateDataSource() {
-        //photos.value?.dataSource?.invalidate()
-    }
-
     private fun initNetworkStatus(photoDataSourceFactory: PhotosDataSourceFactory) {
-//        networkStatus = Transformations.switchMap(
-//            photoDataSourceFactory.photosLiveData,
-//            PhotosDataSource::networkStatus
-//        )
+        networkStatus = Transformations.switchMap(
+            photoDataSourceFactory.photosLiveData,
+            PhotosDataSource::networkStatus
+        )
     }
 
     fun refreshPhotos() {
