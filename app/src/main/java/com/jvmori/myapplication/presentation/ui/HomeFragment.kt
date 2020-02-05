@@ -60,15 +60,15 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.latest -> {
-                photosViewModel.fetchPhotos(Order.latest.toString())
+                photosViewModel.changeOrder(Order.latest)
                 true
             }
             R.id.popular -> {
-                photosViewModel.fetchPhotos(Order.popular.toString())
+                photosViewModel.changeOrder(Order.popular)
                 true
             }
             R.id.oldest -> {
-                photosViewModel.fetchPhotos(Order.oldest.toString())
+                photosViewModel.changeOrder(Order.oldest)
                 true
             }
             else -> return super.onOptionsItemSelected(item)

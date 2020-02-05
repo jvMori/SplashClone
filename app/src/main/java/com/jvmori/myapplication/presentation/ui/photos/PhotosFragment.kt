@@ -42,14 +42,18 @@ class PhotosFragment : CategoryPageFragment() {
     @ExperimentalCoroutinesApi
     override fun onStart() {
         super.onStart()
-        photosViewModel.fetchPhotos(Order.latest.toString())
+        photosViewModel.apply {
+            changeOrder(Order.popular)
+        }
         initPhotosRecyclerView()
-        bindPhotos(Order.popular)
+        bindPhotos()
         observeNetworkStatus()
     }
 
-    private fun bindPhotos(order: Order) {
+    private fun bindPhotos() {
         photosViewModel.photos.observe(this, Observer {
+            binding.photosRecyclerView.recycledViewPool.clear()
+            photosAdapter.notifyDataSetChanged()
             showSuccess(it)
         })
     }

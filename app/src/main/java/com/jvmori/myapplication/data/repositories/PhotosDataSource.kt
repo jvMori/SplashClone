@@ -23,12 +23,14 @@ class PhotosDataSource(
         updateState(Resource.Status.LOADING)
         scope.launch {
             val response = fetchPhotos.getPhotos(currentPage, order)
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    callback.onResult(response.data!!, null, currentPage + 1)
+            response.run {
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        callback.onResult(response.data!!, null, currentPage + 1)
+                    }
                 }
+                updateState(response.status)
             }
-            updateState(response.status)
         }
     }
 
@@ -36,12 +38,14 @@ class PhotosDataSource(
         updateState(Resource.Status.LOADING)
         scope.launch {
             val response = fetchPhotos.getPhotos(params.key, order)
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    callback.onResult(response.data!!, params.key + 1)
+            response.run {
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        callback.onResult(response.data!!, params.key + 1)
+                    }
                 }
+                updateState(response.status)
             }
-            updateState(response.status)
         }
     }
 

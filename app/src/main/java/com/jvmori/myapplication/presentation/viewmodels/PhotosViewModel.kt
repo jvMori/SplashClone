@@ -1,13 +1,9 @@
 package com.jvmori.myapplication.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jvmori.myapplication.data.remote.Order
-import com.jvmori.myapplication.data.remote.Resource
-import com.jvmori.myapplication.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.domain.entities.PhotoEntity
 import com.jvmori.myapplication.domain.usecases.GetPhotosList
@@ -16,7 +12,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class PhotosViewModel(
     private val photosList: GetPhotosList,
@@ -24,8 +19,12 @@ class PhotosViewModel(
 ) : ViewModel() {
 
     private val pageSize = 10
-    private val order = Channel<String>()
-    var photos: LiveData<PagedList<PhotoEntity>> = MutableLiveData()
+    val order: MutableLiveData<Order> = MutableLiveData()
+    val photos: LiveData<PagedList<PhotoEntity>> = Transformations.switchMap(order) { input: Order? ->
+        val photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, input.toString())
+        initNetworkStatus(photoDataSourceFactory)
+        LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
+    }
     //var networkStatus: LiveData<Resource.Status> = MutableLiveData()
     private val config = PagedList.Config.Builder()
         .setPageSize(pageSize)
@@ -33,11 +32,13 @@ class PhotosViewModel(
         .setEnablePlaceholders(false)
         .build()
 
-    fun fetchPhotos(order: String) {
-        val photoDataSourceFactory = PhotosDataSourceFactory(viewModelScope, photosList, order)
-        initNetworkStatus(photoDataSourceFactory)
+    fun changeOrder(order: Order) {
+        invalidateDataSource()
+        this.order.value = order
+    }
+
+    fun invalidateDataSource() {
         //photos.value?.dataSource?.invalidate()
-        photos = LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
     }
 
     private fun initNetworkStatus(photoDataSourceFactory: PhotosDataSourceFactory) {
