@@ -8,11 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.jvmori.myapplication.R
-import com.jvmori.myapplication.photoslist.data.remote.Order
-import com.jvmori.myapplication.databinding.PhotosFragmentBinding
-import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
+import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFragment
+import com.jvmori.myapplication.databinding.PhotosFragmentBinding
+import com.jvmori.myapplication.photoslist.data.remote.Order
+import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -33,9 +35,7 @@ class PhotosFragment : CategoryPageFragment() {
             R.layout.photos_fragment,
             container,
             false
-        ).apply {
-            //items = listOf()
-        }
+        )
         return binding.root
     }
 
@@ -59,12 +59,30 @@ class PhotosFragment : CategoryPageFragment() {
     }
 
     private fun observeNetworkStatus() {
-//        photosViewModel.networkStatus.observe(this, Observer {
-//            photosAdapter.setState(it)
-//        })
+        photosViewModel.networkStatus.observe(this, Observer {
+            when (it){
+                Resource.Status.LOADING -> showLoading()
+                Resource.Status.ERROR -> showError()
+                Resource.Status.SUCCESS -> hideLoading()
+            }
+        })
+    }
+
+    private fun hideLoading() {
+        binding.loadingLayout.visibility = View.GONE
+    }
+
+    private fun showError() {
+        hideLoading()
+        Snackbar.make(this.requireView(), getString(R.string.network_error_message), Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showLoading() {
+        binding.loadingLayout.visibility = View.VISIBLE
     }
 
     private fun showSuccess(data: PagedList<PhotoEntity>?) {
+        hideLoading()
         photosAdapter.submitList(data)
     }
 
