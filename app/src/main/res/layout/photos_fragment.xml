@@ -4,7 +4,7 @@
     <data>
         <variable
                 name="photoData"
-                type="com.jvmori.myapplication.domain.entities.PhotoEntity"
+                type="com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity"
         />
 
     </data>

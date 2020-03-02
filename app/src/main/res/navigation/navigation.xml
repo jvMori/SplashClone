@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/photosFragment"
-            android:name="com.jvmori.myapplication.presentation.ui.HomeFragment"
+            android:name="com.jvmori.myapplication.common.presentation.ui.HomeFragment"
             android:label="fragment_photos"
             tools:layout="@layout/fragment_home" />
 </navigation>

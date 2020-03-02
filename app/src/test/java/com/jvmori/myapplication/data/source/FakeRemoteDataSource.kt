@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.data.source
 
-import com.jvmori.myapplication.data.remote.photodata.PhotoDataResponse
-import com.jvmori.myapplication.domain.repositories.RemotePhotosDataSource
+import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
+import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
 
 class FakeRemoteDataSource(
     private val photos: MutableList<PhotoDataResponse> = mutableListOf()

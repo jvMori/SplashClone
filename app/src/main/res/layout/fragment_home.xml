@@ -5,7 +5,7 @@
     <data class="Photos">
         <variable
                 name="viewModel"
-                type="com.jvmori.myapplication.presentation.viewmodels.PhotosViewModel"/>
+                type="com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
