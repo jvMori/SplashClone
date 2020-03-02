@@ -1,6 +1,5 @@
 package com.jvmori.myapplication.common.presentation.di
 
-import com.jvmori.myapplication.photoslist.data.remote.Api
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -10,12 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 val networkModule = module {
     factory { provideInterceptor() }
     factory { provideOkHttpClient(get()) }
-    factory { provideUnsplashApi(get()) }
     single { provideRetrofit(get()) }
-}
-
-fun provideUnsplashApi(retrofit: Retrofit): Api {
-    return retrofit.create(Api::class.java)
 }
 
 fun provideRetrofit(client: OkHttpClient): Retrofit {
