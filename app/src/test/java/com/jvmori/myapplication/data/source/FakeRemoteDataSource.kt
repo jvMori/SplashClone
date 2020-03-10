@@ -7,7 +7,7 @@ class FakeRemoteDataSource(
     private val photos: MutableList<PhotoDataResponse> = mutableListOf()
 ) : RemotePhotosDataSource<List<PhotoDataResponse>> {
 
-    override suspend fun getPhotos(page: Int): List<PhotoDataResponse> {
-       return photos
+    override suspend fun getPhotos(page: Int, order: String): List<PhotoDataResponse> {
+        return photos
     }
 }

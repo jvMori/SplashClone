@@ -4,52 +4,44 @@ import android.accounts.NetworkErrorException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-suspend fun <RequestType, LocalType, ResultType> fetchData(
-    fetchLocalData: suspend () -> LocalType,
-    fetchNetworkData: suspend () -> RequestType,
-    refreshNeeded: (LocalType) -> Boolean,
-    dataMapper: (RequestType) -> LocalType,
-    saveCallResult: suspend (LocalType) -> Unit,
-    resultDataMapper: (LocalType) -> ResultType
-): Resource<ResultType> {
-    var data: Resource<ResultType> =
-        Resource.loading(null)
-    withContext(Dispatchers.IO) {
+interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
+    suspend fun fetchLocalData(params : Params) : LocalType
+    suspend fun fetchNetworkData(params : Params) : RequestType
+    suspend fun refreshNeeded(data: LocalType) : Boolean
+    suspend fun dataMapper(data : RequestType, params: Params) : LocalType
+    suspend fun saveCallResult(data: LocalType)
+    suspend fun resultDataMapper(data : LocalType) : ResultType
+
+    suspend fun fetchData(params: Params): Resource<ResultType> {
+        var data: Resource<ResultType> =
+            Resource.loading(null)
+        withContext(Dispatchers.IO) {
+            data = try {
+                val local = fetchLocalData(params)
+                if (refreshNeeded(local))
+                    networkRequest(params)
+                Resource.success(resultDataMapper(local))
+            } catch (e: Exception) {
+                Resource.error(e.localizedMessage, null)
+            }
+        }
+        return data
+    }
+
+    suspend fun  networkRequest(params: Params): Resource<ResultType> {
+        val data: Resource<ResultType>
         data = try {
-            val local = fetchLocalData()
-            if (refreshNeeded(local))
-                networkRequest(
-                    fetchNetworkData,
-                    dataMapper,
-                    saveCallResult,
-                    resultDataMapper
-                )
+            val network = fetchNetworkData(params)
+            val local = dataMapper(network, params)
+            saveCallResult(local)
             Resource.success(resultDataMapper(local))
+        } catch (e: NetworkErrorException) {
+            Resource.networkError(null, e.localizedMessage)
         } catch (e: Exception) {
             Resource.error(e.localizedMessage, null)
         }
+        return data
     }
-    return data
-}
-
-suspend fun <RequestType, LocalType, ResultType> networkRequest(
-    fetchNetworkData: suspend () -> RequestType,
-    dataMapper: (RequestType) -> LocalType,
-    saveCallResult: suspend (LocalType) -> Unit,
-    resultDataMapper: (LocalType) -> ResultType
-): Resource<ResultType> {
-    val data: Resource<ResultType>
-    data = try {
-        val network = fetchNetworkData()
-        val local = dataMapper(network)
-        saveCallResult(local)
-        Resource.success(resultDataMapper(local))
-    } catch (e: NetworkErrorException) {
-        Resource.networkError(null, e.localizedMessage)
-    } catch (e: java.lang.Exception) {
-        Resource.error(e.localizedMessage, null)
-    }
-    return data
 }
 
 

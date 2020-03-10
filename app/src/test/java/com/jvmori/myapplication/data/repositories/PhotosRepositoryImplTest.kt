@@ -1,10 +1,8 @@
 package com.jvmori.myapplication.data.repositories
 
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.runner.RunWith
 
 class PhotosRepositoryImplTest {
 
@@ -12,11 +10,12 @@ class PhotosRepositoryImplTest {
     fun setUp() {
     }
 
-    @After
-    fun tearDown() {
+    @Test
+    fun getPhotos_success_returnSuccess() {
     }
 
     @Test
-    fun getPhotos() {
+    fun getPhotos_refreshNeeded_returnFreshData(){
+        
     }
 }

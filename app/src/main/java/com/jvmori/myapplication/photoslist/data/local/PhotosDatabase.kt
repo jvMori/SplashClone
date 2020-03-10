@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.koin.dsl.module
 
-@Database(entities = [PhotoData::class], version = 4, exportSchema = false)
+@Database(entities = [PhotoData::class], version = 5, exportSchema = false)
 abstract class PhotosDatabase : RoomDatabase() {
     abstract fun photosDao(): PhotosDao
 }
