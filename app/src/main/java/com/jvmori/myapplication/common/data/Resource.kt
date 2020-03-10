@@ -2,6 +2,7 @@ package com.jvmori.myapplication.common.data
 
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import java.lang.Exception
 
 class Resource<T>(
     val status: Status?,
@@ -13,6 +14,7 @@ class Resource<T>(
         object SUCCESS : Status()
         object ERROR : Status()
         object LOADING : Status()
+        object NETWORK_ERROR : Status()
     }
 
     companion object {
@@ -37,6 +39,14 @@ class Resource<T>(
                 Status.LOADING,
                 data,
                 null
+            )
+        }
+
+        fun <T> networkError(data : T?, message: String?) : Resource<T>{
+            return Resource(
+                Status.NETWORK_ERROR,
+                data,
+                message
             )
         }
     }
