@@ -2,7 +2,6 @@ package com.jvmori.myapplication.common.data
 
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import java.lang.Exception
 
 class Resource<T>(
     val status: Status?,

@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.common.data
 
+import android.accounts.NetworkErrorException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -14,7 +15,7 @@ suspend fun <RequestType, LocalType, ResultType> fetchData(
     var data: Resource<ResultType> =
         Resource.loading(null)
     withContext(Dispatchers.IO) {
-         data = try {
+        data = try {
             val local = fetchLocalData()
             if (refreshNeeded(local))
                 networkRequest(
@@ -23,9 +24,9 @@ suspend fun <RequestType, LocalType, ResultType> fetchData(
                     saveCallResult,
                     resultDataMapper
                 )
-             Resource.success(resultDataMapper(local))
+            Resource.success(resultDataMapper(local))
         } catch (e: Exception) {
-             Resource.error(e.localizedMessage, null)
+            Resource.error(e.localizedMessage, null)
         }
     }
     return data
@@ -43,6 +44,8 @@ suspend fun <RequestType, LocalType, ResultType> networkRequest(
         val local = dataMapper(network)
         saveCallResult(local)
         Resource.success(resultDataMapper(local))
+    } catch (e: NetworkErrorException) {
+        Resource.networkError(null, e.localizedMessage)
     } catch (e: java.lang.Exception) {
         Resource.error(e.localizedMessage, null)
     }
