@@ -20,8 +20,9 @@ interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
                 val local = fetchLocalData(params)
                 if (refreshNeeded(local))
                     networkRequest(params)
-                Resource.success(resultDataMapper(local))
+                Resource.success(resultDataMapper(fetchLocalData(params)))
             } catch (e: Exception) {
+                e.printStackTrace()
                 Resource.error(e.localizedMessage, null)
             }
         }
