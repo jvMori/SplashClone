@@ -28,12 +28,12 @@ val photosModule = module {
         provideUnsplashApi(get())
     }
     single { (get() as PhotosDatabase).photosDao() }
-    single<LocalPhotosDataSource<List<PhotoData>>> {
+    single<LocalPhotosDataSource> {
         LocalPhotosDataSourceImpl(
             get()
         )
     }
-    single<RemotePhotosDataSource<List<PhotoDataResponse>>> {
+    single<RemotePhotosDataSource> {
         RemotePhotosDataSourceImpl(
             get()
         )

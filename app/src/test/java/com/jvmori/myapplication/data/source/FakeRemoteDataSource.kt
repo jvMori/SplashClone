@@ -5,7 +5,7 @@ import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataS
 
 class FakeRemoteDataSource(
     private val photos: MutableList<PhotoDataResponse> = mutableListOf()
-) : RemotePhotosDataSource<List<PhotoDataResponse>> {
+) : RemotePhotosDataSource {
 
     override suspend fun getPhotos(page: Int, order: String): List<PhotoDataResponse> {
         return photos

@@ -1,6 +1,8 @@
 package com.jvmori.myapplication.photoslist.domain.repositories
 
-interface LocalPhotosDataSource<LocalType> {
-    suspend fun getPhotos(page: Int, order : String) : LocalType
-    suspend fun update(data: LocalType)
+import com.jvmori.myapplication.photoslist.data.local.PhotoData
+
+interface LocalPhotosDataSource {
+    suspend fun getPhotos(page: Int, order : String) : List<PhotoData>
+    suspend fun update(data: List<PhotoData>)
 }

@@ -4,7 +4,7 @@ import com.jvmori.myapplication.photoslist.data.local.PhotoData
 import com.jvmori.myapplication.photoslist.domain.repositories.LocalPhotosDataSource
 
 class FakeLocalDataSource(private var photos : List<PhotoData> = mutableListOf()) :
-    LocalPhotosDataSource<List<PhotoData>> {
+    LocalPhotosDataSource {
 
     override suspend fun getPhotos(page: Int, order: String): List<PhotoData> {
         return photos

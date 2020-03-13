@@ -1,5 +1,7 @@
 package com.jvmori.myapplication.photoslist.domain.repositories
 
-interface RemotePhotosDataSource<ResponseType> {
-    suspend fun getPhotos(page: Int = 1, order : String): ResponseType
+import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
+
+interface RemotePhotosDataSource {
+    suspend fun getPhotos(page: Int = 1, order : String): List<PhotoDataResponse>
 }

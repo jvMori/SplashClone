@@ -12,8 +12,8 @@ import kotlin.math.abs
 data class Parameters(val page : Int, val order : String)
 
 class PhotosRepositoryImpl(
-    private val remotePhotosDataSource: RemotePhotosDataSource<List<PhotoDataResponse>>,
-    private val localPhotosDataSource: LocalPhotosDataSource<List<PhotoData>>
+    private val remotePhotosDataSource: RemotePhotosDataSource,
+    private val localPhotosDataSource: LocalPhotosDataSource
 ) : PhotosRepository, NetworkBoundResource<List<PhotoData>, List<PhotoDataResponse>, List<PhotoEntity>, Parameters>{
 
     override suspend fun getPhotos(page: Int, order : String): Resource<List<PhotoEntity>> {
