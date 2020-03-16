@@ -16,8 +16,8 @@ interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
         var data: Resource<ResultType> =
             Resource.loading(null)
         withContext(Dispatchers.IO) {
+            val local = fetchLocalData(params)
             data = try {
-                val local = fetchLocalData(params)
                 if (refreshNeeded(local))
                     networkRequest(params)
                 Resource.success(resultDataMapper(fetchLocalData(params)))

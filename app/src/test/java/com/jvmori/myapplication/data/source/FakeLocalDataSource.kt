@@ -13,5 +13,4 @@ class FakeLocalDataSource(private var photos : List<PhotoData> = mutableListOf()
     override suspend fun update(data: List<PhotoData>) {
         photos = data.toMutableList()
     }
-
 }
