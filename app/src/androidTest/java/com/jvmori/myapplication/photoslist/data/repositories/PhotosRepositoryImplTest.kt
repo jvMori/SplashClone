@@ -12,6 +12,8 @@ import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataS
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
