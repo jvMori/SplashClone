@@ -8,25 +8,27 @@ import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
-import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosList
-import com.jvmori.myapplication.photoslist.domain.usecases.RefreshPhotos
+import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
+import com.jvmori.myapplication.photoslist.domain.usecases.RefreshPhotosUseCase
 
 class PhotosViewModel(
-    private val photosList: GetPhotosList,
-    private val refreshPhotos: RefreshPhotos
+    private val getPhotosListUseCase: GetPhotosListUseCase,
+    private val refreshPhotosUseCase: RefreshPhotosUseCase
 ) : ViewModel() {
 
     private val pageSize = 10
     val order: MutableLiveData<Order> = MutableLiveData()
     var networkStatus: LiveData<Resource.Status> = MutableLiveData()
+    lateinit var photoDataSource: PhotosDataSource
 
     val photos: LiveData<PagedList<PhotoEntity>> = Transformations.switchMap(order) { input: Order? ->
-        val photoDataSourceFactory =
-            PhotosDataSourceFactory(
-                viewModelScope,
-                photosList,
-                input.toString()
-            )
+        photoDataSource = PhotosDataSource(
+            viewModelScope,
+            getPhotosListUseCase,
+            input.toString()
+        )
+        val photoDataSourceFactory = PhotosDataSourceFactory(photoDataSource)
+        photoDataSourceFactory.order = input.toString()
         initNetworkStatus(photoDataSourceFactory)
         LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
     }

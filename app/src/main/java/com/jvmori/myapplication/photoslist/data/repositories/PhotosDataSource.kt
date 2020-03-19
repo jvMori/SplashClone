@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
-import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosList
+import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class PhotosDataSource(
+open class PhotosDataSource(
     private var scope: CoroutineScope,
-    private val fetchPhotos: GetPhotosList,
+    private val getPhotosListUseCase: GetPhotosListUseCase,
     private val order: String
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
@@ -21,14 +21,14 @@ class PhotosDataSource(
         val currentPage = 1
         updateState(Resource.Status.LOADING)
         scope.launch {
-            val response = fetchPhotos.getPhotos(currentPage, order)
+            val response = getPhotosListUseCase.getPhotos(currentPage, order)
             response.run {
-                when (response.status) {
+                when (response?.status) {
                     Resource.Status.SUCCESS -> {
                         callback.onResult(response.data!!, null, currentPage + 1)
                     }
                 }
-                updateState(response.status)
+                updateState(response?.status)
             }
         }
     }
@@ -36,7 +36,7 @@ class PhotosDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PhotoEntity>) {
         updateState(Resource.Status.LOADING)
         scope.launch {
-            val response = fetchPhotos.getPhotos(params.key, order)
+            val response = getPhotosListUseCase.getPhotos(params.key, order)
             response.run {
                 when (response.status) {
                     Resource.Status.SUCCESS -> {
