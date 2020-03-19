@@ -5,22 +5,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
-    suspend fun fetchLocalData(params : Params) : LocalType
-    suspend fun fetchNetworkData(params : Params) : RequestType
-    suspend fun refreshNeeded(data: LocalType) : Boolean
-    suspend fun dataMapper(data : RequestType, params: Params) : LocalType
+    suspend fun fetchLocalData(params: Params): LocalType
+    suspend fun fetchNetworkData(params: Params): RequestType
+    suspend fun refreshNeeded(data: LocalType): Boolean
+    suspend fun dataMapper(data: RequestType, params: Params): LocalType
     suspend fun saveCallResult(data: LocalType)
-    suspend fun resultDataMapper(data : LocalType) : ResultType
+    suspend fun resultDataMapper(data: LocalType): ResultType
 
     suspend fun fetchData(params: Params): Resource<ResultType> {
         var data: Resource<ResultType> =
             Resource.loading(null)
         withContext(Dispatchers.IO) {
-            val local = fetchLocalData(params)
             data = try {
+                val local = fetchLocalData(params)
                 if (refreshNeeded(local))
                     networkRequest(params)
-                Resource.success(resultDataMapper(fetchLocalData(params)))
+                else
+                    Resource.success(resultDataMapper(fetchLocalData(params)))
             } catch (e: Exception) {
                 e.printStackTrace()
                 Resource.error(e.localizedMessage, null)
@@ -29,7 +30,7 @@ interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
         return data
     }
 
-    suspend fun  networkRequest(params: Params): Resource<ResultType> {
+    suspend fun networkRequest(params: Params): Resource<ResultType> {
         val data: Resource<ResultType>
         data = try {
             val network = fetchNetworkData(params)

@@ -24,10 +24,10 @@ class PhotosDataSource(
             val response = fetchPhotos.getPhotos(currentPage, order)
             response.run {
                 when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    callback.onResult(response.data!!, null, currentPage + 1)
+                    Resource.Status.SUCCESS -> {
+                        callback.onResult(response.data!!, null, currentPage + 1)
+                    }
                 }
-            }
                 updateState(response.status)
             }
         }
