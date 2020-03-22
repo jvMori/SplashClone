@@ -1,11 +1,11 @@
 package com.jvmori.myapplication.collectionslist.data.local
 
-import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsLocalDataSource
+import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollectionsDataSource
 import com.jvmori.myapplication.common.data.Resource
 import java.lang.Exception
 
-class CollectionsLocalDataSourceImpl(val dao: CollectionsDao) :
-    CollectionsLocalDataSource {
+class LocalCollectionsDataSourceImpl(private val dao: CollectionsDao) :
+    LocalCollectionsDataSource {
     override suspend fun getCollections(page: Int): Resource<List<CollectionsData>> {
         return try {
             val data = dao.getCollections(page)

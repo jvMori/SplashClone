@@ -3,7 +3,7 @@ package com.jvmori.myapplication.collectionslist.data.remote
 import android.accounts.NetworkErrorException
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
-import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRemoteDataSource
+import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import com.jvmori.myapplication.common.data.Resource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -15,14 +15,14 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 
-class CollectionsRemoteDataSourceImplTest {
+class RemoteCollectionsDataSourceImplTest {
 
     @Mock
     lateinit var api: CollectionsApi
 
     private lateinit var networkResponse: CollectionsResponse
 
-    private lateinit var remoteDataSource: CollectionsRemoteDataSource
+    private lateinit var remoteCollectionsDataSource: RemoteCollectionsDataSource
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -31,8 +31,8 @@ class CollectionsRemoteDataSourceImplTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
         networkResponse = CollectionsResponse()
-        remoteDataSource =
-            CollectionsRemoteDataSourceImpl(api)
+        remoteCollectionsDataSource =
+            RemoteCollectionsDataSourceImpl(api)
     }
 
     @Test
@@ -43,7 +43,7 @@ class CollectionsRemoteDataSourceImplTest {
             Mockito.`when`(api.getCollections(1)).thenReturn(data)
 
             //Act
-            val result = remoteDataSource.getCollections(1)
+            val result = remoteCollectionsDataSource.getCollections(1)
 
             //Assert
             Assert.assertEquals(result.status, Resource.Status.SUCCESS)
@@ -60,7 +60,7 @@ class CollectionsRemoteDataSourceImplTest {
             }
 
             //Act
-            val result = remoteDataSource.getCollections(1)
+            val result = remoteCollectionsDataSource.getCollections(1)
 
             //Assert
             Assert.assertEquals(result.status, Resource.Status.NETWORK_ERROR)
@@ -77,7 +77,7 @@ class CollectionsRemoteDataSourceImplTest {
             }
 
             //Act
-            val result = remoteDataSource.getCollections(1)
+            val result = remoteCollectionsDataSource.getCollections(1)
 
             //Assert
             Assert.assertEquals(result.status, Resource.Status.ERROR)
