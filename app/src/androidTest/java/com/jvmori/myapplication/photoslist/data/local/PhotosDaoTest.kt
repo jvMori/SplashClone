@@ -1,23 +1,21 @@
 package com.jvmori.myapplication.photoslist.data.local
 
-import androidx.room.Room
 import com.jvmori.myapplication.common.data.PhotosDatabase
 import com.jvmori.myapplication.photoslist.data.remote.Order
+import com.jvmori.myapplication.util.databaseTestModule
 import junit.framework.Assert
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.koin.android.ext.koin.androidApplication
 import org.koin.core.context.loadKoinModules
-import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
 class PhotosDaoTest : KoinTest {
 
-    val photosDatabase : PhotosDatabase by inject()
-    val photosDao : PhotosDao by inject()
+    val photosDatabase: PhotosDatabase by inject()
+    val photosDao: PhotosDao by inject()
 
     @Before
     fun before() {
@@ -30,7 +28,7 @@ class PhotosDaoTest : KoinTest {
     }
 
     @Test
-    fun when_saving_photos_in_db_return_success(){
+    fun when_saving_photos_in_db_return_success() {
         //Arrange
         var results = listOf<PhotoData>()
         val photoData1 = PhotoData(1, Order.popular.toString(), "1")
@@ -48,10 +46,3 @@ class PhotosDaoTest : KoinTest {
     }
 }
 
-val databaseTestModule = module {
-    single(override = true) {
-        Room.inMemoryDatabaseBuilder(androidApplication().applicationContext, PhotosDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-    }
-}

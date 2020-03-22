@@ -6,10 +6,10 @@ import androidx.room.Query
 import androidx.room.Transaction
 
 @Dao
-abstract class CollectionsDao {
+interface CollectionsDao {
 
-    @Query("Select * from collections_table where page like :page")
-    abstract fun getCollections(page: Int): List<CollectionsData>
+    @Query("Select * from collections_table where collection_page like :page")
+    fun getCollections(page: Int): List<CollectionsData>
 
     @Transaction
     fun updateCollection(data: List<CollectionsData>) {
@@ -20,8 +20,8 @@ abstract class CollectionsDao {
     }
 
     @Insert
-    abstract fun insert(collections: List<CollectionsData>)
+    fun insert(collections: List<CollectionsData>)
 
-    @Query("Delete from collections_table where page like :page")
-    abstract fun delete(page: Int)
+    @Query("Delete from collections_table where collection_page like :page")
+    fun delete(page: Int)
 }
