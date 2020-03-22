@@ -5,7 +5,10 @@ import com.jvmori.myapplication.collectionslist.data.remote.response.Collections
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRemoteDataSource
 import com.jvmori.myapplication.common.data.Resource
+import retrofit2.HttpException
 import java.lang.Exception
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class CollectionsRemoteDataSourceImpl(private val api: CollectionsApi) :
     CollectionsRemoteDataSource {
@@ -14,10 +17,11 @@ class CollectionsRemoteDataSourceImpl(private val api: CollectionsApi) :
             Resource.loading(null)
             val data = api.getCollections(page)
             Resource.success(data)
-        } catch (e: NetworkErrorException) {
-            Resource.networkError(null, e.localizedMessage)
         } catch (e: Exception) {
-            Resource.error(e.localizedMessage, null)
+            if (e is SocketTimeoutException || e is NetworkErrorException || e is HttpException || e is UnknownHostException)
+                Resource.networkError(null, e.localizedMessage)
+            else
+                Resource.error(e.localizedMessage ?: "general error!", null)
         }
     }
 

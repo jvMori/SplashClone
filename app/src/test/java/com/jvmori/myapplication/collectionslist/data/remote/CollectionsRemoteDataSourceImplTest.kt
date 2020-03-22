@@ -1,8 +1,7 @@
 package com.jvmori.myapplication.collectionslist.data.remote
 
+import android.accounts.NetworkErrorException
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jvmori.myapplication.collectionslist.data.remote.CollectionsApi
-import com.jvmori.myapplication.collectionslist.data.remote.CollectionsRemoteDataSourceImpl
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRemoteDataSource
 import com.jvmori.myapplication.common.data.Resource
@@ -16,20 +15,20 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 
-class CollectionsRemoteDataSourceImplTest{
+class CollectionsRemoteDataSourceImplTest {
 
     @Mock
-    lateinit var api : CollectionsApi
+    lateinit var api: CollectionsApi
 
-    lateinit var networkResponse : CollectionsResponse
+    private lateinit var networkResponse: CollectionsResponse
 
-    private lateinit var remoteDataSource : CollectionsRemoteDataSource
+    private lateinit var remoteDataSource: CollectionsRemoteDataSource
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
-    fun setup(){
+    fun setup() {
         MockitoAnnotations.initMocks(this)
         networkResponse = CollectionsResponse()
         remoteDataSource =
@@ -37,7 +36,7 @@ class CollectionsRemoteDataSourceImplTest{
     }
 
     @Test
-    fun getCollections_when_success_return_data_and_success(){
+    fun `getCollections when success return data and success`() {
         runBlocking {
             //Arrange
             val data = listOf(networkResponse)
@@ -49,6 +48,40 @@ class CollectionsRemoteDataSourceImplTest{
             //Assert
             Assert.assertEquals(result.status, Resource.Status.SUCCESS)
             Assert.assertNotNull(result.data)
+        }
+    }
+
+    @Test
+    fun `getCollections when network error then return failure`() {
+        runBlocking {
+            //Arrange
+            Mockito.`when`(api.getCollections(1)).thenAnswer {
+                throw NetworkErrorException()
+            }
+
+            //Act
+            val result = remoteDataSource.getCollections(1)
+
+            //Assert
+            Assert.assertEquals(result.status, Resource.Status.NETWORK_ERROR)
+            Assert.assertNull(result.data)
+        }
+    }
+
+    @Test
+    fun `getCollections when general error then return failure`() {
+        runBlocking {
+            //Arrange
+            Mockito.`when`(api.getCollections(1)).thenAnswer {
+                throw Exception()
+            }
+
+            //Act
+            val result = remoteDataSource.getCollections(1)
+
+            //Assert
+            Assert.assertEquals(result.status, Resource.Status.ERROR)
+            Assert.assertNull(result.data)
         }
     }
 }
