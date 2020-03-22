@@ -2,7 +2,7 @@ package com.jvmori.myapplication.common.presentation.ui
 
 import android.app.Application
 import com.jvmori.myapplication.collectionslist.presentation.di.collectionsModule
-import com.jvmori.myapplication.photoslist.data.local.databaseModule
+import com.jvmori.myapplication.common.data.databaseModule
 import com.jvmori.myapplication.common.presentation.di.networkModule
 import com.jvmori.myapplication.photoslist.presentation.di.photosModule
 import org.koin.android.ext.koin.androidContext

@@ -1,15 +1,17 @@
-package com.jvmori.myapplication.photoslist.data.local
+package com.jvmori.myapplication.common.data
 
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import org.koin.android.ext.koin.androidApplication
-import org.koin.core.context.GlobalContext
+import com.jvmori.myapplication.collectionslist.data.local.CollectionsDao
+import com.jvmori.myapplication.photoslist.data.local.PhotoData
+import com.jvmori.myapplication.photoslist.data.local.PhotosDao
 import org.koin.dsl.module
 
-@Database(entities = [PhotoData::class], version = 5, exportSchema = false)
+@Database(entities = [PhotoData::class], version = 6, exportSchema = false)
 abstract class PhotosDatabase : RoomDatabase() {
     abstract fun photosDao(): PhotosDao
+    abstract fun collectionsDao(): CollectionsDao
 }
 
 val databaseModule = module {
