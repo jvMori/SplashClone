@@ -1,15 +1,15 @@
 package com.jvmori.myapplication.collectionslist.data.local
 
 import com.jvmori.myapplication.common.data.PhotosDatabase
-import com.jvmori.myapplication.photoslist.data.local.PhotosDao
 import com.jvmori.myapplication.util.databaseTestModule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
 import org.koin.test.KoinTest
 import org.koin.test.inject
@@ -23,6 +23,7 @@ class CollectionsDaoTest : KoinTest {
         loadKoinModules(databaseTestModule)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun when_saving_data_successfully_then_get_data_returns_success_result(){
         runBlocking {
@@ -32,10 +33,12 @@ class CollectionsDaoTest : KoinTest {
 
             //Act
             collectionsDao.updateCollection(dataToSave)
-            val result = collectionsDao.getCollections(page)
+            val result = async {
+                collectionsDao.getCollections(page).take(2).toList()
+            }
 
             //Assert
-            assertEquals(dataToSave, result)
+            assertEquals(dataToSave, result.await())
         }
     }
 
@@ -49,10 +52,13 @@ class CollectionsDaoTest : KoinTest {
             //Act
             collectionsDao.updateCollection(dataToSave)
             collectionsDao.delete(page)
-            val result = collectionsDao.getCollections(page)
+            val result = async {
+                collectionsDao.getCollections(page)
+                    .toList()
+            }
 
             //Assert
-            assertEquals(result.size, 0)
+            assertEquals(result.await().size, 0)
         }
     }
 }
