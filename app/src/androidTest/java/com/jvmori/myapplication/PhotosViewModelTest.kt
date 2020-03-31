@@ -2,7 +2,6 @@ package com.jvmori.myapplication
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagedList
-import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
@@ -21,8 +20,10 @@ import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import org.koin.test.KoinTest
-import org.mockito.*
-import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 
 
 class PhotosViewModelTest : KoinTest {
@@ -53,7 +54,7 @@ class PhotosViewModelTest : KoinTest {
             //Arrange
             val data = listOf(PhotoEntity("0", "", 1))
             val excepected = mockPagedList(data)
-            `when`(getPhotos.getPhotos(1, Order.popular.toString())).thenReturn(Resource.success(data))
+            //`when`(getPhotos.getPhotos(1, Order.popular.toString())).thenReturn(Resource.success(data))
 
             //Act
             val result = viewmodel.fetchPhotos(Order.popular)
