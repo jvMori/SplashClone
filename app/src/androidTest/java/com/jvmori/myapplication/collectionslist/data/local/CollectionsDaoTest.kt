@@ -72,19 +72,20 @@ class CollectionsDaoTest : KoinTest {
     fun when_deleting_data_successfully_then_get_data_returns_zero_results(){
         runBlocking {
             //Arrange
-//            val page = 1
-//            val dataToSave = listOf(CollectionsData(page, 0), CollectionsData(page, 1))
-//
-//            //Act
-//            collectionsDao.updateCollection(dataToSave)
-//            collectionsDao.delete(page)
-//            val result = async {
-//                collectionsDao.getCollections(page)
-//                    .toList()
-//            }
-//
-//            //Assert
-//            assertEquals(result.await().size, 0)
+            val page = 1
+            val dataToSave = listOf(CollectionsData(page, 0), CollectionsData(page, 1))
+
+            //Act
+            collectionsDao.updateCollection(dataToSave)
+            collectionsDao.delete(page)
+            val result = async {
+                collectionsDao.getCollections(page)
+                    .take(1)
+                    .toList()
+            }
+
+            //Assert
+            assertTrue(result.await().singleOrNull()?.size == 0)
         }
     }
 
