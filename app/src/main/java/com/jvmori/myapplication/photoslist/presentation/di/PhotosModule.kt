@@ -48,11 +48,10 @@ val photosModule = module {
             get()
         )
     }
-    single<PhotosDataSource> { (scope: CoroutineScope, order: Order) ->
+    single<PhotosDataSource> { (scope: CoroutineScope) ->
         PhotosDataSource(
             scope,
-            get(),
-            order.toString()
+            get()
         )
     }
     single { (photoDataSource: PhotosDataSource) -> PhotosDataSourceFactory((photoDataSource)) }

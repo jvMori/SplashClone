@@ -19,23 +19,15 @@ class PhotosViewModel : ViewModel(), KoinComponent {
     private val pageSize = 10
     val order: MutableLiveData<Order> = MutableLiveData()
     var networkStatus: LiveData<Resource.Status> = MutableLiveData()
-    private val photosDataSource: PhotosDataSource by inject { parametersOf(viewModelScope, Order.popular) }
-    private val photoDataSourceFactory: PhotosDataSourceFactory by inject { parametersOf(photosDataSource) }
+    private val photosDataSource: PhotosDataSource by inject { parametersOf(viewModelScope) }
+    private val factory: PhotosDataSourceFactory by inject { parametersOf(photosDataSource) }
 
-    val photos: LiveData<PagedList<PhotoEntity>> = Transformations.switchMap(order) { input: Order? ->
-        //        photoDataSource = PhotosDataSource(
-//            viewModelScope,
-//            getPhotosListUseCase,
-//            input.toString()
-//        )
-
-        initNetworkStatus(photoDataSourceFactory)
-        LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
-    }
-
-    fun fetchPhotos(order: Order): LiveData<PagedList<PhotoEntity>> {
-        initNetworkStatus(photoDataSourceFactory)
-        return LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
+    fun fetchPhotos(): LiveData<PagedList<PhotoEntity>> {
+        return Transformations.switchMap(order) {
+            factory.setOrder(it)
+            initNetworkStatus(factory)
+            LivePagedListBuilder<Int, PhotoEntity>(factory, config).build()
+        }
     }
 
     private val config = PagedList.Config.Builder()
