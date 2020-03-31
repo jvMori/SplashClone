@@ -2,9 +2,7 @@ package com.jvmori.myapplication.collectionslist.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import com.jvmori.myapplication.TestCoroutineRule
 import com.jvmori.myapplication.common.data.PhotosDatabase
-import com.jvmori.myapplication.util.databaseTestModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.async
@@ -13,8 +11,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -26,7 +22,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 class CollectionsDaoTest : KoinTest {
-    private val photosDatabase: PhotosDatabase by inject()
+
     private val collectionsDao: CollectionsDao by inject()
 
     @Before
@@ -38,8 +34,6 @@ class CollectionsDaoTest : KoinTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val testDispatcher = TestCoroutineDispatcher()
-    private val testScope = TestCoroutineScope(testDispatcher)
-
 
     @ExperimentalCoroutinesApi
     @Test
