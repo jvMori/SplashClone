@@ -3,7 +3,10 @@ package com.jvmori.myapplication.photoslist.presentation.di
 import com.jvmori.myapplication.photoslist.data.local.LocalPhotosDataSourceImpl
 import com.jvmori.myapplication.common.data.PhotosDatabase
 import com.jvmori.myapplication.photoslist.data.remote.Api
+import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.data.remote.RemotePhotosDataSourceImpl
+import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
+import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosRepositoryImpl
 import com.jvmori.myapplication.photoslist.data.usecases.GetPhotosListImpl
 import com.jvmori.myapplication.photoslist.data.usecases.RefreshPhotosUseCaseImpl
@@ -13,6 +16,7 @@ import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataS
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
 import com.jvmori.myapplication.photoslist.domain.usecases.RefreshPhotosUseCase
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
+import kotlinx.coroutines.CoroutineScope
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -44,11 +48,15 @@ val photosModule = module {
             get()
         )
     }
-    viewModel {
-        PhotosViewModel(
-            get(),
+    single<PhotosDataSource> { (scope: CoroutineScope) ->
+        PhotosDataSource(
+            scope,
             get()
         )
+    }
+    single { (photoDataSource: PhotosDataSource) -> PhotosDataSourceFactory((photoDataSource)) }
+    viewModel {
+        PhotosViewModel()
     }
 }
 fun provideUnsplashApi(retrofit: Retrofit): Api {

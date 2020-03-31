@@ -43,7 +43,7 @@ class PhotosFragment : CategoryPageFragment() {
     override fun onStart() {
         super.onStart()
         photosViewModel.apply {
-            changeOrder(Order.popular)
+            changeOrder(Order.latest)
         }
         initPhotosRecyclerView()
         bindPhotos()
@@ -51,7 +51,7 @@ class PhotosFragment : CategoryPageFragment() {
     }
 
     private fun bindPhotos() {
-        photosViewModel.photos.observe(this, Observer {
+        photosViewModel.fetchPhotos().observe(this, Observer {
             binding.photosRecyclerView.recycledViewPool.clear()
             photosAdapter.notifyDataSetChanged()
             showSuccess(it)

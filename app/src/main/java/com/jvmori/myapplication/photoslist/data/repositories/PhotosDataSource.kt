@@ -3,6 +3,7 @@ package com.jvmori.myapplication.photoslist.data.repositories
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -11,11 +12,11 @@ import kotlinx.coroutines.launch
 
 open class PhotosDataSource(
     private var scope: CoroutineScope,
-    private val getPhotosListUseCase: GetPhotosListUseCase,
-    private val order: String
+    private val getPhotosListUseCase: GetPhotosListUseCase
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
     var networkStatus : MutableLiveData<Resource.Status> = MutableLiveData()
+    var order : String = Order.popular.toString()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PhotoEntity>) {
         val currentPage = 1
@@ -23,12 +24,12 @@ open class PhotosDataSource(
         scope.launch {
             val response = getPhotosListUseCase.getPhotos(currentPage, order)
             response.run {
-                when (response?.status) {
+                when (response.status) {
                     Resource.Status.SUCCESS -> {
                         callback.onResult(response.data!!, null, currentPage + 1)
                     }
                 }
-                updateState(response?.status)
+                updateState(response.status)
             }
         }
     }

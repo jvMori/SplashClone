@@ -4,12 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CollectionsDao {
 
     @Query("Select * from collections_table where collection_page like :page")
-    fun getCollections(page: Int): List<CollectionsData>
+    fun getCollections(page: Int): Flow<List<CollectionsData>>
 
     @Transaction
     fun updateCollection(data: List<CollectionsData>) {

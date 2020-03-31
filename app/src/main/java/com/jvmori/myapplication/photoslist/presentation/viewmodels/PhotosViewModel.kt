@@ -10,27 +10,24 @@ import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFac
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
 import com.jvmori.myapplication.photoslist.domain.usecases.RefreshPhotosUseCase
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
-class PhotosViewModel(
-    private val getPhotosListUseCase: GetPhotosListUseCase,
-    private val refreshPhotosUseCase: RefreshPhotosUseCase
-) : ViewModel() {
+class PhotosViewModel : ViewModel(), KoinComponent {
 
     private val pageSize = 10
     val order: MutableLiveData<Order> = MutableLiveData()
     var networkStatus: LiveData<Resource.Status> = MutableLiveData()
-    lateinit var photoDataSource: PhotosDataSource
+    private val photosDataSource: PhotosDataSource by inject { parametersOf(viewModelScope) }
+    private val factory: PhotosDataSourceFactory by inject { parametersOf(photosDataSource) }
 
-    val photos: LiveData<PagedList<PhotoEntity>> = Transformations.switchMap(order) { input: Order? ->
-        photoDataSource = PhotosDataSource(
-            viewModelScope,
-            getPhotosListUseCase,
-            input.toString()
-        )
-        val photoDataSourceFactory = PhotosDataSourceFactory(photoDataSource)
-        photoDataSourceFactory.order = input.toString()
-        initNetworkStatus(photoDataSourceFactory)
-        LivePagedListBuilder<Int, PhotoEntity>(photoDataSourceFactory, config).build()
+    fun fetchPhotos(): LiveData<PagedList<PhotoEntity>> {
+        return Transformations.switchMap(order) {
+            factory.setOrder(it)
+            initNetworkStatus(factory)
+            LivePagedListBuilder<Int, PhotoEntity>(factory, config).build()
+        }
     }
 
     private val config = PagedList.Config.Builder()
@@ -43,7 +40,7 @@ class PhotosViewModel(
         this.order.value = order
     }
 
-    private fun initNetworkStatus(photoDataSourceFactory: PhotosDataSourceFactory) {
+    fun initNetworkStatus(photoDataSourceFactory: PhotosDataSourceFactory) {
         networkStatus = Transformations.switchMap(
             photoDataSourceFactory.photosLiveData,
             PhotosDataSource::networkStatus
