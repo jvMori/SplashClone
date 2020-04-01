@@ -1,14 +1,15 @@
 package com.jvmori.myapplication.common.data
 
 import android.accounts.NetworkErrorException
+import com.jvmori.myapplication.collectionslist.data.local.ICountTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
+import kotlin.math.abs
 
-fun <Result, LocalData, NetworkData> fetchData(
+suspend fun <Result, LocalData, NetworkData> fetchData(
     localData: () -> Flow<LocalData>,
-    refreshNeeded: (data: LocalData) -> Boolean,
     networkData: () -> Flow<NetworkData>,
     saveData: suspend (data: LocalData) -> Unit,
     networkToLocalMapper: (data: NetworkData) -> LocalData,
@@ -26,7 +27,7 @@ fun <Result, LocalData, NetworkData> fetchData(
         try {
             localData().flowOn(Dispatchers.IO)
                 .collect {
-                    if (refreshNeeded(it)) {
+                    if (refreshNeeded(it as ICountTime)) {
                         fetchFromNetwork()
                     }
                     val result = localToResultMapper(it)
@@ -36,6 +37,10 @@ fun <Result, LocalData, NetworkData> fetchData(
             emit(handleError(e))
         }
     }
+}
+
+fun refreshNeeded(data: ICountTime) :Boolean {
+    return abs(System.currentTimeMillis() - data.timestamp) > 3600000
 }
 
 private fun <Result> handleError(e: Exception): Resource<Result> {

@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 class RemoteCollectionsDataSourceImpl(private val api: CollectionsApi) :
     RemoteCollectionsDataSource {
-    override suspend fun getCollections(page: Int): Flow<List<CollectionsResponse>> {
+    override fun getCollections(page: Int): Flow<List<CollectionsResponse>> {
         return api.getCollections(page)
     }
 
-    override suspend fun getFeaturedCollections(page: Int): Flow<List<CollectionsResponse>> {
+    override fun getFeaturedCollections(page: Int): Flow<List<CollectionsResponse>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

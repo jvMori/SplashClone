@@ -7,7 +7,7 @@ import java.lang.Exception
 
 class LocalCollectionsDataSourceImpl(private val dao: CollectionsDao) :
     LocalCollectionsDataSource {
-    override suspend fun getCollections(page: Int): Flow<List<CollectionsData>> {
+    override fun getCollections(page: Int): Flow<List<CollectionsData>> {
        return dao.getCollections(page)
     }
 

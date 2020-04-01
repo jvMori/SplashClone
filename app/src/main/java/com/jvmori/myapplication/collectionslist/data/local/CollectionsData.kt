@@ -21,5 +21,13 @@ data class CollectionsData(
     var authorName: String = "",
 
     @ColumnInfo(name = "collection_url")
-    var regularSizeUrl: String = ""
-)
+    var regularSizeUrl: String = "",
+
+    @ColumnInfo(name="collection_time")
+    override val timestamp : Long = System.currentTimeMillis()
+
+) : ICountTime
+
+interface ICountTime{
+    val timestamp : Long
+}
