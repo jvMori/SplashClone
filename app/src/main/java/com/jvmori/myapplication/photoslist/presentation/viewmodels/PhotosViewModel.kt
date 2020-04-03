@@ -16,7 +16,7 @@ import org.koin.core.parameter.parametersOf
 
 class PhotosViewModel : ViewModel(), KoinComponent {
 
-    private val pageSize = 10
+    private val config by inject<PagedList.Config>()
     val order: MutableLiveData<Order> = MutableLiveData()
     var networkStatus: LiveData<Resource.Status> = MutableLiveData()
     private val photosDataSource: PhotosDataSource by inject { parametersOf(viewModelScope) }
@@ -29,12 +29,6 @@ class PhotosViewModel : ViewModel(), KoinComponent {
             LivePagedListBuilder<Int, PhotoEntity>(factory, config).build()
         }
     }
-
-    private val config = PagedList.Config.Builder()
-        .setPageSize(pageSize)
-        .setInitialLoadSizeHint(pageSize)
-        .setEnablePlaceholders(false)
-        .build()
 
     fun changeOrder(order: Order) {
         this.order.value = order

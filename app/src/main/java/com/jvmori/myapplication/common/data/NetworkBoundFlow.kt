@@ -4,6 +4,7 @@ import android.accounts.NetworkErrorException
 import com.jvmori.myapplication.collectionslist.data.local.ICountTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.time.LocalDate
@@ -21,7 +22,9 @@ suspend fun <Result, LocalData, NetworkData> fetchData(
             .map {
                 networkToLocalMapper(it)
             }.collect {
-                saveData(it)
+                withContext(Dispatchers.IO){
+                    saveData(it)
+                }
             }
     }
     return flow {
