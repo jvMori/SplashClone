@@ -1,31 +1,58 @@
 package com.jvmori.myapplication.collectionslist.presentation.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.jvmori.myapplication.collectionslist.data.repositories.CollectionsDataSource
+import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
+import com.jvmori.myapplication.common.data.Resource
+import com.paginate.Paginate
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 class CollectionsViewModel(
     private val useCase: GetCollectionsUseCase
 ) : ViewModel(), KoinComponent {
 
-    private val config by inject<PagedList.Config>()
+    private var currentPage = 1
+    private val totalPages = 10
+    private var loadingInProgress = false
+    private val _collections = MutableLiveData<Resource<List<CollectionEntity>>>()
+    val collections: LiveData<Resource<List<CollectionEntity>>> = _collections
 
-    val collections by lazy {  initializedPagedListBuilder(config).build() }
-    val networkInfo by lazy {  }
+    fun setupRecyclerView(recyclerView: RecyclerView) {
+        Paginate.with(recyclerView, callbacks)
+            .setLoadingTriggerThreshold(2)
+            .setLoadingListItemSpanSizeLookup { 1 }
+            .build()
+    }
 
-    private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, CollectionEntity> {
-        val dataSourceFactory = object : DataSource.Factory<Int, CollectionEntity>() {
-            override fun create(): DataSource<Int, CollectionEntity> {
-                return CollectionsDataSource(viewModelScope, useCase)
+    fun fetchCollections(page: Int) {
+        viewModelScope.launch {
+            useCase.getCollections(page).collect {
+                loadingInProgress = when (it.status) {
+                    is Resource.Status.LOADING -> true
+                    else -> false
+                }
+                _collections.value = it
             }
         }
-        return LivePagedListBuilder<Int, CollectionEntity>(dataSourceFactory, config)
+    }
+
+    private val callbacks: Paginate.Callbacks = object : Paginate.Callbacks {
+        override fun onLoadMore() {
+            loadingInProgress = true
+            fetchCollections(currentPage)
+            currentPage++
+        }
+
+        override fun isLoading(): Boolean {
+            return loadingInProgress
+        }
+
+        override fun hasLoadedAllItems(): Boolean {
+            return currentPage == totalPages
+        }
     }
 }
