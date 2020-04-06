@@ -17,8 +17,8 @@ class CollectionsRepositoryImpl(
     CollectionsRepository {
     override suspend fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
         return fetchData(
-            { localCollectionsDataSource.getCollections(1) },
-            { remoteCollectionsDataSource.getCollections(1) },
+            { localCollectionsDataSource.getCollections(page) },
+            { remoteCollectionsDataSource.getCollections(page) },
             { localCollectionsDataSource.insertCollections(it) },
             { networkToLocalMapper(it, page) },
             { localToResultMapper(it) }
