@@ -6,15 +6,14 @@
     </data>
 
     <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-                android:text="collections"
-                android:gravity="center"
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/collections_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
     </LinearLayout>
 </layout>
