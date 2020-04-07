@@ -12,7 +12,6 @@ class RemoteCollectionsDataSourceImpl(private val api: CollectionsApi) :
             emit(api.getCollections(page))
         }
     }
-
     override fun getFeaturedCollections(page: Int): Flow<List<CollectionsResponse>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -8,7 +8,9 @@ import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollect
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.common.data.fetchData
-import kotlinx.coroutines.flow.Flow
+import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 
 class CollectionsRepositoryImpl(
     private val localCollectionsDataSource: LocalCollectionsDataSource,
@@ -41,6 +43,7 @@ class CollectionsRepositoryImpl(
             )
         }
     }
+
     private fun localToResultMapper(localData: List<CollectionsData>): List<CollectionEntity> {
         return localData.map {
             CollectionEntity(

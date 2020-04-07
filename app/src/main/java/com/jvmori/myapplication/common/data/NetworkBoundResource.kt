@@ -8,9 +8,9 @@ interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
     suspend fun fetchLocalData(params: Params): LocalType
     suspend fun fetchNetworkData(params: Params): RequestType
     suspend fun refreshNeeded(data: LocalType): Boolean
-    suspend fun dataMapper(data: RequestType, params: Params): LocalType
+    fun dataMapper(data: RequestType, params: Params): LocalType
     suspend fun saveCallResult(data: LocalType)
-    suspend fun resultDataMapper(data: LocalType): ResultType
+    fun resultDataMapper(data: LocalType): ResultType
 
     suspend fun fetchData(params: Params): Resource<ResultType> {
         var data: Resource<ResultType> =

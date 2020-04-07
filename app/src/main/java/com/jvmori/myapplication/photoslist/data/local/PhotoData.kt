@@ -11,6 +11,8 @@ import java.sql.Timestamp
 data class PhotoData(
     @ColumnInfo(name = "photo_page")
     var page: Int,
+    @ColumnInfo(name = "collection_id")
+    var collectionId : Int = 0,
     @ColumnInfo(name= "photo_order")
     var order : String,
     @ColumnInfo(name = "photo_id")
