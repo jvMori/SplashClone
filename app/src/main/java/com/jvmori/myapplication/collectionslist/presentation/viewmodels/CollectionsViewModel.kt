@@ -1,18 +1,23 @@
 package com.jvmori.myapplication.collectionslist.presentation.viewmodels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
 import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.handleError
+import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosForCollection
 import com.paginate.Paginate
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
 class CollectionsViewModel(
-    private val useCase: GetCollectionsUseCase
+    private val useCase: GetCollectionsUseCase,
+    private val getPhotosUseCase: GetPhotosForCollection
 ) : ViewModel(), KoinComponent {
 
     private var currentPage = 1
@@ -30,13 +35,24 @@ class CollectionsViewModel(
 
     fun fetchCollections(page: Int) {
         viewModelScope.launch {
-            useCase.getCollections(page).collect {
-                loadingInProgress = when (it.status) {
-                    is Resource.Status.LOADING -> true
-                    else -> false
+            useCase.getCollections(page)
+                .onStart { loadingInProgress = true }
+                .catch { exception -> _collections.value = handleError(exception) }
+                .flatMapConcat { collections ->
+                    flow {
+                        collections.map { collectionEntity ->
+                            getPhotosUseCase.getPhotosForCollection(collectionEntity.id).distinctUntilChanged()
+                                .collect { photos ->
+                                    collectionEntity.photos = photos
+                                }
+                        }
+                        emit(collections)
+                    }
                 }
-                _collections.value = it
-            }
+                .collect {
+                    loadingInProgress = false
+                    _collections.value = Resource.success(it)
+                }
         }
     }
 

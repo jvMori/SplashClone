@@ -15,7 +15,7 @@ fun <Result, LocalData, NetworkData> fetchData(
     saveData: suspend (data: List<LocalData>) -> Unit,
     networkToLocalMapper: (data: List<NetworkData>) -> List<LocalData>,
     localToResultMapper: (data: List<LocalData>) -> List<Result>
-): Flow<Resource<List<Result>>> {
+): Flow<List<Result>> {
     suspend fun fetchFromNetwork() {
         networkData().flowOn(Dispatchers.IO)
             .map {
@@ -27,18 +27,13 @@ fun <Result, LocalData, NetworkData> fetchData(
             }
     }
     return flow {
-        try {
-            localData().flowOn(Dispatchers.IO)
-                .collect {
-                    if (refreshNeeded(it)) {
-                        fetchFromNetwork()
-                    }
-                    val result = localToResultMapper(it)
-                    emit(Resource.success(result))
+        localData().flowOn(Dispatchers.IO)
+            .collect {
+                if (refreshNeeded(it)) {
+                    fetchFromNetwork()
                 }
-        } catch (e: Exception) {
-            emit(handleError(e))
-        }
+                emit(localToResultMapper(it))
+            }
     }
 }
 
@@ -49,7 +44,7 @@ fun <LocalData> refreshNeeded(data: List<LocalData>): Boolean {
     return true
 }
 
-private fun <Result> handleError(e: Exception): Resource<Result> {
+fun <Result> handleError(e: Throwable): Resource<Result> {
     if (e is NetworkErrorException || e is SocketTimeoutException || e is HttpException) {
         return Resource.networkError(null, e.localizedMessage)
     }

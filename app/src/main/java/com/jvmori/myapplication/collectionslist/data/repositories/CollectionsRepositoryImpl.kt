@@ -15,9 +15,8 @@ import kotlinx.coroutines.flow.*
 class CollectionsRepositoryImpl(
     private val localCollectionsDataSource: LocalCollectionsDataSource,
     private val remoteCollectionsDataSource: RemoteCollectionsDataSource
-) :
-    CollectionsRepository {
-    override fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
+) : CollectionsRepository {
+    override fun getCollections(page: Int): Flow<List<CollectionEntity>> {
         return fetchData(
             { localCollectionsDataSource.getCollections(page) },
             { remoteCollectionsDataSource.getCollections(page) },

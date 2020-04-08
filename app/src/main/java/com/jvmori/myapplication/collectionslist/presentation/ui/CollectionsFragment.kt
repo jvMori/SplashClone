@@ -1,6 +1,7 @@
 package com.jvmori.myapplication.collectionslist.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class CollectionsFragment : CategoryPageFragment() {
             collections.observe(this@CollectionsFragment, Observer {
                 when (it.status) {
                     is Resource.Status.SUCCESS -> collectionsAdapter.submitItems(it.data ?: listOf())
+                    else -> Log.i("error", it.message ?: "")
                 }
             })
         }

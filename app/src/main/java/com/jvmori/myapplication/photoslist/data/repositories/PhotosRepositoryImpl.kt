@@ -20,7 +20,7 @@ class PhotosRepositoryImpl(
     private val localPhotosDataSource: LocalPhotosDataSource
 ) : PhotosRepository, NetworkBoundResource<List<PhotoData>, List<PhotoDataResponse>, List<PhotoEntity>, Parameters> {
 
-    override fun getPhotosForCollection(id: Int): Flow<Resource<List<PhotoEntity>>> {
+    override fun getPhotosForCollection(id: Int): Flow<List<PhotoEntity>> {
         return fetchData(
             { localPhotosDataSource.getPhotosForCollection(id) },
             { remotePhotosDataSource.getPhotosForCollection(id) },
