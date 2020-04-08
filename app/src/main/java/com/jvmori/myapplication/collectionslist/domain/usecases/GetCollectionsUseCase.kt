@@ -5,5 +5,5 @@ import com.jvmori.myapplication.common.data.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface GetCollectionsUseCase {
-    suspend fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>>
+    fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>>
 }

@@ -7,10 +7,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
-import java.time.LocalDate
 import kotlin.math.abs
 
-suspend fun <Result, LocalData, NetworkData> fetchData(
+fun <Result, LocalData, NetworkData> fetchData(
     localData: () -> Flow<List<LocalData>>,
     networkData: () -> Flow<List<NetworkData>>,
     saveData: suspend (data: List<LocalData>) -> Unit,
@@ -22,7 +21,7 @@ suspend fun <Result, LocalData, NetworkData> fetchData(
             .map {
                 networkToLocalMapper(it)
             }.collect {
-                withContext(Dispatchers.IO){
+                withContext(Dispatchers.IO) {
                     saveData(it)
                 }
             }

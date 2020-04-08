@@ -17,7 +17,7 @@ class CollectionsRepositoryImpl(
     private val remoteCollectionsDataSource: RemoteCollectionsDataSource
 ) :
     CollectionsRepository {
-    override suspend fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
+    override fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
         return fetchData(
             { localCollectionsDataSource.getCollections(page) },
             { remoteCollectionsDataSource.getCollections(page) },

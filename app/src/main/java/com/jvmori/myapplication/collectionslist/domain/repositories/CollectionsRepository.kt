@@ -5,6 +5,6 @@ import com.jvmori.myapplication.common.data.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface CollectionsRepository {
-    suspend fun getCollections(page : Int) : Flow<Resource<List<CollectionEntity>>>
+    fun getCollections(page : Int) : Flow<Resource<List<CollectionEntity>>>
     suspend fun getFeaturedCollections(page : Int) : Resource<List<CollectionEntity>>
 }

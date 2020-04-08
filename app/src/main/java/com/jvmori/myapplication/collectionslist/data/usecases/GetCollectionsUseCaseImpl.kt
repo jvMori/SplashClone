@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetCollectionsUseCaseImpl(private val repository: CollectionsRepository) :
     GetCollectionsUseCase {
-    override suspend fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
+    override fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
         return repository.getCollections(page)
     }
 }
