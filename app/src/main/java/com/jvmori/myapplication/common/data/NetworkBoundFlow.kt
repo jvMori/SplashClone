@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import kotlin.math.abs
 
 fun <Result, LocalData, NetworkData> fetchData(
@@ -41,11 +42,11 @@ fun <LocalData> refreshNeeded(data: List<LocalData>): Boolean {
     if (data.isNotEmpty() && data[0] is ICountTime) {
         return abs(System.currentTimeMillis() - (data[0] as ICountTime).timestamp) > 3600000
     }
-    return true
+    return data.isEmpty()
 }
 
 fun <Result> handleError(e: Throwable): Resource<Result> {
-    if (e is NetworkErrorException || e is SocketTimeoutException || e is HttpException) {
+    if (e is NetworkErrorException || e is SocketTimeoutException || e is HttpException || e is UnknownHostException) {
         return Resource.networkError(null, e.localizedMessage)
     }
     return Resource.error(e.localizedMessage, null)

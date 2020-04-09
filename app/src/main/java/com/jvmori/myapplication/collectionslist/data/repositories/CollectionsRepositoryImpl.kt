@@ -8,8 +8,6 @@ import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollect
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.common.data.fetchData
-import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 class CollectionsRepositoryImpl(
@@ -38,7 +36,7 @@ class CollectionsRepositoryImpl(
                 it.title,
                 it.totalPhotos,
                 it.user.name,
-                it.coverPhoto.urls.regular
+                it.coverPhoto.urls.small
             )
         }
     }
@@ -50,7 +48,7 @@ class CollectionsRepositoryImpl(
                 it.title,
                 it.totalPhotos,
                 it.authorName,
-                it.regularSizeUrl
+                it.smallSizeUrl
             )
         }
     }

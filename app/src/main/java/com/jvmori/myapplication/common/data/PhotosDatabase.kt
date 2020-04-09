@@ -9,7 +9,7 @@ import com.jvmori.myapplication.photoslist.data.local.PhotoData
 import com.jvmori.myapplication.photoslist.data.local.PhotosDao
 import org.koin.dsl.module
 
-@Database(entities = [PhotoData::class, CollectionsData::class], version = 9, exportSchema = false)
+@Database(entities = [PhotoData::class, CollectionsData::class], version = 11, exportSchema = false)
 abstract class PhotosDatabase : RoomDatabase() {
     abstract fun photosDao(): PhotosDao
     abstract fun collectionsDao(): CollectionsDao

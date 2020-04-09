@@ -20,7 +20,7 @@ class LocalPhotosDataSourceImplTest{
         runBlocking {
             //Arrange
             val params = Parameters(1, Order.popular.toString())
-            val localData = listOf(PhotoData(params.page, params.order, "1"))
+            val localData = listOf(PhotoData(params.page, 0, params.order, "1"))
             `when`(photosDao.getPhotos(1, Order.popular.toString())).thenReturn(localData)
 
             //Act
