@@ -1,14 +1,16 @@
 package com.jvmori.myapplication.collectionslist.presentation.ui
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.databinding.CollectionItemBinding
 
-class CollectionsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CollectionsAdapter (private val context : Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items = mutableListOf<CollectionEntity>()
 
@@ -21,6 +23,7 @@ class CollectionsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        holder.itemView.animation = AnimationUtils.loadAnimation(context, R.anim.item_fade_transition_anim)
         (holder as CollectionsViewHolder).bind(items[position])
     }
 

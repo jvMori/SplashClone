@@ -87,7 +87,7 @@ class PhotosFragment : CategoryPageFragment() {
     }
 
     private fun initPhotosRecyclerView() {
-        photosAdapter = PhotosAdapter()
+        photosAdapter = PhotosAdapter(this.requireContext())
         binding.photosRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = photosAdapter
