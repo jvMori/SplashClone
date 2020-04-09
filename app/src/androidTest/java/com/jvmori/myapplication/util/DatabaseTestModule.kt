@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.util
 
 import androidx.room.Room
-import com.jvmori.myapplication.common.data.PhotosDatabase
+import com.jvmori.myapplication.common.data.local.PhotosDatabase
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 

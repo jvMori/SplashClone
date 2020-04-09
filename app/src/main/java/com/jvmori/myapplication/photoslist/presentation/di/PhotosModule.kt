@@ -1,6 +1,6 @@
 package com.jvmori.myapplication.photoslist.presentation.di
 
-import com.jvmori.myapplication.common.data.PhotosDatabase
+import com.jvmori.myapplication.common.data.local.PhotosDatabase
 import com.jvmori.myapplication.photoslist.data.local.LocalPhotosDataSourceImpl
 import com.jvmori.myapplication.photoslist.data.remote.Api
 import com.jvmori.myapplication.photoslist.data.remote.RemotePhotosDataSourceImpl

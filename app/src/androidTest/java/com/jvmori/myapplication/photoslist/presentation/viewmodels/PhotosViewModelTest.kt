@@ -5,13 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.jvmori.myapplication.TestCoroutineRule
-import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

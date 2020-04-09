@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.photoslist.data.repositories
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.photoslist.data.local.PhotoData
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
@@ -12,8 +12,6 @@ import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataS
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
-import org.koin.test.KoinTest
-import org.koin.test.inject
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 

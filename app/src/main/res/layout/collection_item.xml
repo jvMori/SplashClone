@@ -35,9 +35,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="267dp"
                         android:layout_marginTop="8dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title"
+                        app:loadImage="@{CollectionItem.smallSizeUrl}"
                         app:srcCompat="@color/design_default_color_secondary"/>
                 <TextView
                         android:id="@+id/author"

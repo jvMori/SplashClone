@@ -1,6 +1,6 @@
 package com.jvmori.myapplication.photoslist.domain.repositories
 
-import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
 import kotlinx.coroutines.flow.Flow
 

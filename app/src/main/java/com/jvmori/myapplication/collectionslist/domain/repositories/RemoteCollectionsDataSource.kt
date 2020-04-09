@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.collectionslist.domain.repositories
 
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
-import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.remote.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteCollectionsDataSource {

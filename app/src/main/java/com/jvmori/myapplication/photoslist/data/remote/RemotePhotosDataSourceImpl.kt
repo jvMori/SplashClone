@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.photoslist.data.remote
 
-import com.jvmori.myapplication.common.data.Resource
-import com.jvmori.myapplication.common.data.handleError
+import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.data.remote.handleError
 import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
 import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
 import kotlinx.coroutines.flow.Flow

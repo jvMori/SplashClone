@@ -2,7 +2,7 @@ package com.jvmori.myapplication.photoslist.data.repositories
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase

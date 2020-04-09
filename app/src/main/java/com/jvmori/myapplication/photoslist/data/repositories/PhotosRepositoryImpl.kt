@@ -1,9 +1,9 @@
 package com.jvmori.myapplication.photoslist.data.repositories
 
-import com.jvmori.myapplication.common.data.NetworkBoundResource
-import com.jvmori.myapplication.common.data.Resource
-import com.jvmori.myapplication.common.data.STALE_DATA_MS
-import com.jvmori.myapplication.common.data.fetchData
+import com.jvmori.myapplication.common.data.remote.NetworkBoundResource
+import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.data.util.STALE_DATA_MS
+import com.jvmori.myapplication.common.data.remote.fetchData
 import com.jvmori.myapplication.photoslist.data.local.PhotoData
 import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
@@ -18,7 +18,8 @@ data class Parameters(val page: Int = 0, val order: String = "None", var collect
 class PhotosRepositoryImpl(
     private val remotePhotosDataSource: RemotePhotosDataSource,
     private val localPhotosDataSource: LocalPhotosDataSource
-) : PhotosRepository, NetworkBoundResource<List<PhotoData>, List<PhotoDataResponse>, List<PhotoEntity>, Parameters> {
+) : PhotosRepository,
+    NetworkBoundResource<List<PhotoData>, List<PhotoDataResponse>, List<PhotoEntity>, Parameters> {
 
     override fun getPhotosForCollection(id: Int): Flow<Resource<List<PhotoEntity>>> {
         return fetchData(

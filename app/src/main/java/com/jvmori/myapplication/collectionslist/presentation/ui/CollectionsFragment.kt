@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.presentation.viewmodels.CollectionsViewModel
-import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFragment
 import com.jvmori.myapplication.databinding.CollectionsFragmentBinding
 import org.koin.android.ext.android.inject

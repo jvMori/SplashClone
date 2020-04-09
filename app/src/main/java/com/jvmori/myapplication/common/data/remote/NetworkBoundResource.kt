@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.common.data
+package com.jvmori.myapplication.common.data.remote
 
 import android.accounts.NetworkErrorException
 import kotlinx.coroutines.Dispatchers
@@ -21,10 +21,17 @@ interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
                 if (refreshNeeded(local))
                     networkRequest(params)
                 else
-                    Resource.success(resultDataMapper(fetchLocalData(params)))
+                    Resource.success(
+                        resultDataMapper(
+                            fetchLocalData(params)
+                        )
+                    )
             } catch (e: Exception) {
                 e.printStackTrace()
-                Resource.error(e.localizedMessage, null)
+                Resource.error(
+                    e.localizedMessage,
+                    null
+                )
             }
         }
         return data
@@ -38,7 +45,10 @@ interface NetworkBoundResource<LocalType, RequestType, ResultType, Params> {
             saveCallResult(local)
             Resource.success(resultDataMapper(local))
         } catch (e: NetworkErrorException) {
-            Resource.networkError(null, e.localizedMessage)
+            Resource.networkError(
+                null,
+                e.localizedMessage
+            )
         } catch (e: Exception) {
             Resource.error(e.localizedMessage, null)
         }

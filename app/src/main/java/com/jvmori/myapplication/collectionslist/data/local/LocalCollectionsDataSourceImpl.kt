@@ -1,9 +1,7 @@
 package com.jvmori.myapplication.collectionslist.data.local
 
 import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollectionsDataSource
-import com.jvmori.myapplication.common.data.Resource
 import kotlinx.coroutines.flow.Flow
-import java.lang.Exception
 
 class LocalCollectionsDataSourceImpl(private val dao: CollectionsDao) :
     LocalCollectionsDataSource {

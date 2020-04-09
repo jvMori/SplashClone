@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.common.data
+package com.jvmori.myapplication.common.data.remote
 
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -41,7 +41,7 @@ class Resource<T>(
             )
         }
 
-        fun <T> networkError(data : T?, message: String?) : Resource<T>{
+        fun <T> networkError(data : T?, message: String?) : Resource<T> {
             return Resource(
                 Status.NETWORK_ERROR,
                 data,

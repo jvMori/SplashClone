@@ -6,8 +6,8 @@ import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRepository
 import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollectionsDataSource
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
-import com.jvmori.myapplication.common.data.Resource
-import com.jvmori.myapplication.common.data.fetchData
+import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.data.remote.fetchData
 import kotlinx.coroutines.flow.Flow
 
 class CollectionsRepositoryImpl(

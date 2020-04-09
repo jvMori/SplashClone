@@ -11,9 +11,7 @@ import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollect
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
 import com.jvmori.myapplication.collectionslist.presentation.viewmodels.CollectionsViewModel
-import com.jvmori.myapplication.common.data.PhotosDatabase
-import com.jvmori.myapplication.photoslist.data.usecases.GetPhotosForCollectionImpl
-import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
+import com.jvmori.myapplication.common.data.local.PhotosDatabase
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

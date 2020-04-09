@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.common.data
+package com.jvmori.myapplication.common.data.local
 
 import androidx.room.Database
 import androidx.room.Room

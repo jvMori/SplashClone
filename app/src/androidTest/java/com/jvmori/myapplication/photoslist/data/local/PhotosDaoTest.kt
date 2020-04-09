@@ -1,6 +1,6 @@
 package com.jvmori.myapplication.photoslist.data.local
 
-import com.jvmori.myapplication.common.data.PhotosDatabase
+import com.jvmori.myapplication.common.data.local.PhotosDatabase
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.util.databaseTestModule
 import junit.framework.Assert

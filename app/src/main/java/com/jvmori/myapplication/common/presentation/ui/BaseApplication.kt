@@ -2,7 +2,8 @@ package com.jvmori.myapplication.common.presentation.ui
 
 import android.app.Application
 import com.jvmori.myapplication.collectionslist.presentation.di.collectionsModule
-import com.jvmori.myapplication.common.data.databaseModule
+import com.jvmori.myapplication.common.data.local.databaseModule
+import com.jvmori.myapplication.common.presentation.di.imageModule
 import com.jvmori.myapplication.common.presentation.di.networkModule
 import com.jvmori.myapplication.common.presentation.di.pagingModule
 import com.jvmori.myapplication.photoslist.presentation.di.photosModule
@@ -22,7 +23,8 @@ class BaseApplication : Application() {
                     photosModule,
                     collectionsModule,
                     databaseModule,
-                    pagingModule
+                    pagingModule,
+                    imageModule
                 )
             )
         }

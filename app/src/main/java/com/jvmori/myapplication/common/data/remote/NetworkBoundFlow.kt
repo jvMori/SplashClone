@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.common.data
+package com.jvmori.myapplication.common.data.remote
 
 import android.accounts.NetworkErrorException
 import com.jvmori.myapplication.collectionslist.data.local.ICountTime
@@ -19,7 +19,8 @@ fun <Result, LocalData, NetworkData> fetchData(
 ): Flow<Resource<List<Result>>> {
 
     suspend fun fetchFromNetwork(): Resource.Status {
-        var status: Resource.Status = Resource.Status.LOADING
+        var status: Resource.Status =
+            Resource.Status.LOADING
         withContext(Dispatchers.IO) {
             networkData().collect {
                 if (it.status == Resource.Status.SUCCESS) {
@@ -41,7 +42,11 @@ fun <Result, LocalData, NetworkData> fetchData(
                     val result = localToResultMapper(it)
                     emitResult(status, result)
                 } else {
-                    emit(Resource.success(localToResultMapper(it)))
+                    emit(
+                        Resource.success(
+                            localToResultMapper(it)
+                        )
+                    )
                 }
             }
     }
@@ -52,9 +57,23 @@ private suspend fun <Result> FlowCollector<Resource<List<Result>>>.emitResult(
     result: List<Result>
 ) {
     when (status) {
-        is Resource.Status.SUCCESS -> emit(Resource.success(result))
-        is Resource.Status.NETWORK_ERROR -> emit(Resource.networkError(result, "Network error"))
-        is Resource.Status.ERROR -> emit(Resource.error("General error", result))
+        is Resource.Status.SUCCESS -> emit(
+            Resource.success(
+                result
+            )
+        )
+        is Resource.Status.NETWORK_ERROR -> emit(
+            Resource.networkError(
+                result,
+                "Network error"
+            )
+        )
+        is Resource.Status.ERROR -> emit(
+            Resource.error(
+                "General error",
+                result
+            )
+        )
     }
 }
 
@@ -67,8 +86,14 @@ fun <LocalData> refreshNeeded(data: List<LocalData>): Boolean {
 
 fun <Result> handleError(e: Throwable?): Resource<Result> {
     if (e is NetworkErrorException || e is SocketTimeoutException || e is HttpException || e is UnknownHostException) {
-        return Resource.networkError(null, e.localizedMessage)
+        return Resource.networkError(
+            null,
+            e.localizedMessage
+        )
     }
-    return Resource.error(e?.localizedMessage ?: "", null)
+    return Resource.error(
+        e?.localizedMessage ?: "",
+        null
+    )
 }
 

@@ -3,7 +3,7 @@ package com.jvmori.myapplication.collectionslist.data.remote
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
-import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.remote.Resource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.take
