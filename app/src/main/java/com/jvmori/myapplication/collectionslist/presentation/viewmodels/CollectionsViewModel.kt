@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
 import com.jvmori.myapplication.common.data.Resource
-import com.jvmori.myapplication.common.data.handleError
 import com.paginate.Paginate
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch

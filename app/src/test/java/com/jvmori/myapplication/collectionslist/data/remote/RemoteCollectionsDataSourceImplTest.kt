@@ -5,22 +5,23 @@ import com.jvmori.myapplication.collectionslist.data.remote.response.Collections
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import com.jvmori.myapplication.common.data.Resource
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 
 class RemoteCollectionsDataSourceImplTest {
 
     lateinit var api: CollectionsApi
+    lateinit var errorApi: CollectionsApi
     private lateinit var networkResponse: CollectionsResponse
     private lateinit var remoteCollectionsDataSource: RemoteCollectionsDataSource
+    private lateinit var remoteErrorCollectionsDataSource: RemoteCollectionsDataSource
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -30,7 +31,9 @@ class RemoteCollectionsDataSourceImplTest {
         MockitoAnnotations.initMocks(this)
         networkResponse = CollectionsResponse()
         api = FakeCollectionsApi(networkResponse)
+        errorApi = FakeCollectionsApi(networkResponse, true)
         remoteCollectionsDataSource = RemoteCollectionsDataSourceImpl(api)
+        remoteErrorCollectionsDataSource = RemoteCollectionsDataSourceImpl(errorApi)
     }
 
     @Test
@@ -42,23 +45,22 @@ class RemoteCollectionsDataSourceImplTest {
             }
 
             //Assert
-            Assert.assertTrue(result.await()?.status == Resource.Status.SUCCESS)
+            val status = result.await()
+            Assert.assertTrue(status?.status == Resource.Status.SUCCESS)
         }
     }
 
     @Test
     fun `getCollections when network error return network failure result`() {
         runBlocking {
-            //Arrange
-            //api = FakeCollectionsApi(networkResponse, true)
-
             //Act
             val result = async {
-                remoteCollectionsDataSource.getCollections(1).take(1).firstOrNull()
+                remoteErrorCollectionsDataSource.getCollections(1).take(1).firstOrNull()
             }
 
             //Assert
-            Assert.assertTrue(result.await()?.status == Resource.Status.NETWORK_ERROR)
+            val status = result.await()
+            Assert.assertTrue(status?.status == Resource.Status.NETWORK_ERROR)
         }
     }
 }
