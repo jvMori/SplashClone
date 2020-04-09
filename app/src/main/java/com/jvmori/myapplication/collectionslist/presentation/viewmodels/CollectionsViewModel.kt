@@ -9,15 +9,15 @@ import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
 import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.common.data.handleError
-import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosForCollection
 import com.paginate.Paginate
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
 class CollectionsViewModel(
-    private val useCase: GetCollectionsUseCase,
-    private val getPhotosUseCase: GetPhotosForCollection
+    private val useCase: GetCollectionsUseCase
 ) : ViewModel(), KoinComponent {
 
     private var currentPage = 1
@@ -38,17 +38,6 @@ class CollectionsViewModel(
             useCase.getCollections(page)
                 .onStart { loadingInProgress = true }
                 .catch { exception -> _collections.value = handleError(exception) }
-                .flatMapConcat { collections ->
-                    flow {
-                        collections.map { collectionEntity ->
-                            getPhotosUseCase.getPhotosForCollection(collectionEntity.id).distinctUntilChanged()
-                                .collect { photos ->
-                                    collectionEntity.photos = photos
-                                }
-                        }
-                        emit(collections)
-                    }
-                }
                 .collect {
                     loadingInProgress = false
                     _collections.value = Resource.success(it)

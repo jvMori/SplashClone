@@ -42,7 +42,9 @@ class CollectionsFragment : CategoryPageFragment() {
             setupRecyclerView(binding.collectionsRv)
             collections.observe(this@CollectionsFragment, Observer {
                 when (it.status) {
-                    is Resource.Status.SUCCESS -> collectionsAdapter.submitItems(it.data ?: listOf())
+                    is Resource.Status.SUCCESS -> {
+                        collectionsAdapter.submitItems(it.data ?: listOf())
+                    }
                     else -> Log.i("error", it.message ?: "")
                 }
             })

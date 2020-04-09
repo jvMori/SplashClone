@@ -24,5 +24,5 @@ val collectionsModule = module {
     single<LocalCollectionsDataSource> { LocalCollectionsDataSourceImpl(get()) }
     single<CollectionsRepository> { CollectionsRepositoryImpl(get(), get()) }
     single<GetCollectionsUseCase> { GetCollectionsUseCaseImpl(get()) }
-    single { CollectionsViewModel(get(), get()) }
+    single { CollectionsViewModel(get()) }
 }

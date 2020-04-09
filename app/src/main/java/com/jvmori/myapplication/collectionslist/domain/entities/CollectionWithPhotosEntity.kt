@@ -4,5 +4,5 @@ import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 
 data class CollectionWithPhotosEntity(
     val collectionEntity: CollectionEntity,
-    val photos : List<PhotoEntity>
+    var photos : List<PhotoEntity> = mutableListOf()
 )
