@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.data.source
 
+import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
 import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ class FakeRemoteDataSource(
         return photos
     }
 
-    override fun getPhotosForCollection(id: Int): Flow<List<PhotoDataResponse>> {
+    override fun getPhotosForCollection(id: Int): Flow<Resource<List<PhotoDataResponse>>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

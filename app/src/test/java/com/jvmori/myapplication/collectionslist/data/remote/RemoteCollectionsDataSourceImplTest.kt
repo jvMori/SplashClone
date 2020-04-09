@@ -3,8 +3,9 @@ package com.jvmori.myapplication.collectionslist.data.remote
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import com.jvmori.myapplication.common.data.Resource
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -33,13 +34,31 @@ class RemoteCollectionsDataSourceImplTest {
     }
 
     @Test
-    fun `getCollections when success return flow`() {
+    fun `getCollections when success return success result`() {
         runBlocking {
             //Act
-            val result = remoteCollectionsDataSource.getCollections(1)
+            val result = async {
+                remoteCollectionsDataSource.getCollections(1).take(1).firstOrNull()
+            }
 
             //Assert
-            Assert.assertNotNull(result)
+            Assert.assertTrue(result.await()?.status == Resource.Status.SUCCESS)
+        }
+    }
+
+    @Test
+    fun `getCollections when network error return network failure result`() {
+        runBlocking {
+            //Arrange
+            //api = FakeCollectionsApi(networkResponse, true)
+
+            //Act
+            val result = async {
+                remoteCollectionsDataSource.getCollections(1).take(1).firstOrNull()
+            }
+
+            //Assert
+            Assert.assertTrue(result.await()?.status == Resource.Status.NETWORK_ERROR)
         }
     }
 }

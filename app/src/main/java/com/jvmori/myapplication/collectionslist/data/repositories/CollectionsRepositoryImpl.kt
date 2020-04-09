@@ -8,13 +8,13 @@ import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollect
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import com.jvmori.myapplication.common.data.Resource
 import com.jvmori.myapplication.common.data.fetchData
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
 class CollectionsRepositoryImpl(
     private val localCollectionsDataSource: LocalCollectionsDataSource,
     private val remoteCollectionsDataSource: RemoteCollectionsDataSource
 ) : CollectionsRepository {
-    override fun getCollections(page: Int): Flow<List<CollectionEntity>> {
+    override fun getCollections(page: Int): Flow<Resource<List<CollectionEntity>>> {
         return fetchData(
             { localCollectionsDataSource.getCollections(page) },
             { remoteCollectionsDataSource.getCollections(page) },

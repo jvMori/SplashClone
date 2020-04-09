@@ -37,11 +37,9 @@ class CollectionsViewModel(
         viewModelScope.launch {
             useCase.getCollections(page)
                 .onStart { loadingInProgress = true }
-                .catch { exception ->
-                    _collections.value = handleError(exception) }
                 .collect {
                     loadingInProgress = false
-                    _collections.value = Resource.success(it)
+                    _collections.value = it
                 }
         }
     }

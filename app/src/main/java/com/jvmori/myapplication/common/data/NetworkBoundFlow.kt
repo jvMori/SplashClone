@@ -4,7 +4,6 @@ import android.accounts.NetworkErrorException
 import com.jvmori.myapplication.collectionslist.data.local.ICountTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -12,28 +11,37 @@ import kotlin.math.abs
 
 fun <Result, LocalData, NetworkData> fetchData(
     localData: () -> Flow<List<LocalData>>,
-    networkData: () -> Flow<List<NetworkData>>,
+    networkData: () -> Flow<Resource<List<NetworkData>>>,
     saveData: suspend (data: List<LocalData>) -> Unit,
     networkToLocalMapper: (data: List<NetworkData>) -> List<LocalData>,
     localToResultMapper: (data: List<LocalData>) -> List<Result>
-): Flow<List<Result>> {
-    suspend fun fetchFromNetwork() {
-        networkData().flowOn(Dispatchers.IO)
-            .map {
-                networkToLocalMapper(it)
-            }.collect {
-                withContext(Dispatchers.IO) {
-                    saveData(it)
+): Flow<Resource<List<Result>>> {
+    suspend fun fetchFromNetwork(): Resource.Status {
+        var status: Resource.Status = Resource.Status.LOADING
+        networkData()
+            .flowOn(Dispatchers.IO)
+            .collect {
+                if (it.status == Resource.Status.SUCCESS) {
+                    val local = networkToLocalMapper(it.data!!)
+                    saveData(local)
                 }
+                status = it.status!!
             }
+        return status
     }
     return flow {
-        localData().flowOn(Dispatchers.IO)
+        localData()
+            .flowOn(Dispatchers.IO)
             .collect {
                 if (refreshNeeded(it)) {
-                    fetchFromNetwork()
+                    val status = fetchFromNetwork()
+                    val result = localToResultMapper(it)
+                    when (status){
+                        is Resource.Status.SUCCESS -> emit(Resource.success(result))
+                        is Resource.Status.NETWORK_ERROR -> emit(Resource.networkError(result, "Network error"))
+                        is Resource.Status.ERROR -> emit(Resource.error("General error", result))
+                    }
                 }
-                emit(localToResultMapper(it))
             }
     }
 }

@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface PhotosRepository {
     suspend fun getPhotos(page : Int = 1, order : String) : Resource<List<PhotoEntity>>
     suspend fun refreshPhotos(page : Int = 1, order: String) : Resource<List<PhotoEntity>>
-    fun getPhotosForCollection(id : Int) : Flow<List<PhotoEntity>>
+    fun getPhotosForCollection(id : Int) : Flow<Resource<List<PhotoEntity>>>
 }

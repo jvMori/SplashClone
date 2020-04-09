@@ -1,5 +1,7 @@
 package com.jvmori.myapplication.photoslist.data.remote
 
+import com.jvmori.myapplication.common.data.Resource
+import com.jvmori.myapplication.common.data.handleError
 import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataResponse
 import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
 import kotlinx.coroutines.flow.Flow
@@ -11,9 +13,13 @@ class RemotePhotosDataSourceImpl(private var api: Api) :
         return api.getPhotos(page, order)
     }
 
-    override fun getPhotosForCollection(id: Int): Flow<List<PhotoDataResponse>> {
+    override fun getPhotosForCollection(id: Int): Flow<Resource<List<PhotoDataResponse>>> {
         return flow {
-            emit(api.getPhotosForCollection(id))
+            try {
+                emit(Resource.success(api.getPhotosForCollection(id)))
+            } catch (e: Exception) {
+                emit(handleError(e))
+            }
         }
     }
 }
