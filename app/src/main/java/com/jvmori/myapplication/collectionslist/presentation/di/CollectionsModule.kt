@@ -12,6 +12,7 @@ import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollec
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
 import com.jvmori.myapplication.collectionslist.presentation.viewmodels.CollectionsViewModel
 import com.jvmori.myapplication.common.data.local.PhotosDatabase
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -22,5 +23,5 @@ val collectionsModule = module {
     single<LocalCollectionsDataSource> { LocalCollectionsDataSourceImpl(get()) }
     single<CollectionsRepository> { CollectionsRepositoryImpl(get(), get()) }
     single<GetCollectionsUseCase> { GetCollectionsUseCaseImpl(get()) }
-    single { CollectionsViewModel(get()) }
+    single { CollectionsViewModel(get(), androidApplication()) }
 }

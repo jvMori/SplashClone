@@ -62,7 +62,7 @@ class CollectionsFragment : CategoryPageFragment() {
     }
 
     private fun setupRecyclerView() {
-        collectionsAdapter = CollectionsAdapter(this.requireContext())
+        collectionsAdapter = CollectionsAdapter()
         binding.collectionsRv.run {
             adapter = collectionsAdapter
             layoutManager = LinearLayoutManager(this@CollectionsFragment.requireContext(), RecyclerView.VERTICAL, false)
