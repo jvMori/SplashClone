@@ -58,11 +58,6 @@ private suspend fun <Result> FlowCollector<Resource<List<Result>>>.emitResult(
     result: List<Result>
 ) {
     when (status) {
-//        is Resource.Status.SUCCESS -> emit(
-//            Resource.success(
-//                result
-//            )
-//        )
         is Resource.Status.NETWORK_ERROR -> emit(
             Resource.networkError(
                 result,
