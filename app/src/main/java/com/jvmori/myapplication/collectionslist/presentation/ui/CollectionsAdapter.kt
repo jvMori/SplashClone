@@ -4,21 +4,48 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
+import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolder
 
 class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewHolder>(CollectionsDiffUtilCallback) {
 
+    private var networkState: Resource.Status? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return CollectionsViewHolder.create(parent)
+        return when (viewType) {
+            R.layout.collection_item -> CollectionsViewHolder.create(parent)
+            R.layout.network_state_item -> NetworkStateViewHolder.create(parent)
+            else -> throw IllegalArgumentException("unknown view type $viewType")
+        }
     }
 
     override fun getItemCount(): Int {
-        return currentList?.size ?: 0
+        return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as CollectionsViewHolder).bind(getItem(position) ?: CollectionEntity(0))
+        when (getItemViewType(position)) {
+            R.layout.collection_item -> (holder as CollectionsViewHolder).bind(getItem(position) ?: CollectionEntity(0))
+            R.layout.network_state_item -> (holder as NetworkStateViewHolder).bind(networkState)
+        }
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (hasExtraRow() && position == itemCount - 1) {
+            R.layout.network_state_item
+        } else {
+            R.layout.collection_item
+        }
+    }
+
+    fun setNetworkState(networkState: Resource.Status?) {
+        this.networkState = networkState
+        notifyDataSetChanged()
+    }
+
+    private fun hasExtraRow() = networkState != null && networkState != Resource.Status.SUCCESS
 
     companion object {
         val CollectionsDiffUtilCallback = object : DiffUtil.ItemCallback<CollectionEntity>() {
