@@ -12,6 +12,7 @@ import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolde
 class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewHolder>(CollectionsDiffUtilCallback) {
 
     private var networkState: Resource.Status? = null
+    private lateinit var retryAction : () -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -28,7 +29,7 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.collection_item -> (holder as CollectionsViewHolder).bind(getItem(position) ?: CollectionEntity(0))
-            R.layout.network_state_item -> (holder as NetworkStateViewHolder).bind(networkState)
+            R.layout.network_state_item -> (holder as NetworkStateViewHolder).bind(networkState, retryAction)
         }
     }
 
@@ -45,7 +46,14 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
         notifyDataSetChanged()
     }
 
-    private fun hasExtraRow() = networkState != null && networkState != Resource.Status.SUCCESS
+    fun setRetryAction(retryAction : () -> Unit){
+        this.retryAction = retryAction
+    }
+
+
+    private fun hasExtraRow() = networkState != null && isError()
+
+    private fun isError() = networkState == Resource.Status.NETWORK_ERROR || networkState == Resource.Status.ERROR
 
     companion object {
         val CollectionsDiffUtilCallback = object : DiffUtil.ItemCallback<CollectionEntity>() {

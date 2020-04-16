@@ -3,7 +3,6 @@ package com.jvmori.myapplication.collectionslist.presentation.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -29,4 +28,5 @@ class CollectionsViewModel(
     val collections by lazy {
         LivePagedListBuilder<Int, CollectionEntity>(dataSourceFactory, config).build()
     }
+    val networkState : LiveData<Resource.Status> = dataSourceFactory.networkState
 }
