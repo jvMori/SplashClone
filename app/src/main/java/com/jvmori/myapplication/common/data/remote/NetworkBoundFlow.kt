@@ -38,16 +38,11 @@ fun <Result, LocalData, NetworkData> fetchData(
             .flowOn(Dispatchers.IO)
             .distinctUntilChanged()
             .collect {
+                emit(Resource.success(localToResultMapper(it)))
                 if (refreshNeeded(it)) {
                     val status = fetchFromNetwork()
                     val result = localToResultMapper(it)
                     emitResult(status, result)
-                } else {
-                    emit(
-                        Resource.success(
-                            localToResultMapper(it)
-                        )
-                    )
                 }
             }
     }

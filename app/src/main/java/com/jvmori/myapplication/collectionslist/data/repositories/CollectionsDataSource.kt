@@ -19,31 +19,29 @@ class CollectionsDataSource(
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CollectionEntity>) {
         networkState.postValue(Resource.Status.LOADING)
         scope.launch {
-            getCollectionsUseCase.getCollections(1).run {
-                this.collect {
-                    when (it.status) {
-                        is Resource.Status.SUCCESS ->
-                            callback.onResult(it.data!!, null, 2)
-                    }
-                    networkState.value = it.status
+            getCollectionsUseCase.getCollections(1).collect {
+                when (it.status) {
+                    is Resource.Status.SUCCESS ->
+                        callback.onResult(it.data!!, null, 2)
                 }
+                networkState.value = it.status
             }
         }
     }
 
+
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, CollectionEntity>) {
         networkState.postValue(Resource.Status.LOADING)
         scope.launch {
-            getCollectionsUseCase.getCollections(params.key).run {
-                this.collect {
-                    when (it.status) {
-                        is Resource.Status.SUCCESS -> callback.onResult(it.data!!, params.key + 1)
-                    }
-                    networkState.value = it.status
+            getCollectionsUseCase.getCollections(params.key).collect {
+                when (it.status) {
+                    is Resource.Status.SUCCESS -> callback.onResult(it.data!!, params.key + 1)
                 }
+                networkState.value = it.status
             }
         }
     }
+
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, CollectionEntity>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
