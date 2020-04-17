@@ -24,9 +24,16 @@ class CollectionsViewModel(
         .build()
 
     private val collectionsDataSource = CollectionsDataSource(viewModelScope, useCase)
+
     private val dataSourceFactory = CollectionsDataSourceFactory(collectionsDataSource)
+
     val collections by lazy {
         LivePagedListBuilder<Int, CollectionEntity>(dataSourceFactory, config).build()
     }
-    val networkState : LiveData<Resource.Status> = dataSourceFactory.networkState
+
+    val networkState: LiveData<Resource.Status> = dataSourceFactory.networkState
+
+    fun retry() {
+        collectionsDataSource.retry?.invoke()
+    }
 }

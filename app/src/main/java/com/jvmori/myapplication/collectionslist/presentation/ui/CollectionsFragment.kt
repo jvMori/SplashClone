@@ -38,12 +38,12 @@ class CollectionsFragment : CategoryPageFragment() {
     override fun onStart() {
         super.onStart()
         setupRecyclerView()
-        collectionsAdapter.setRetryAction {
-            Log.i("", "Click")
-        }
         viewmodel.run {
             observeCollections()
             observeNetworkState()
+            collectionsAdapter.setRetryAction {
+                this.retry()
+            }
         }
     }
 
