@@ -36,33 +36,36 @@ class CollectionsDaoTest : KoinTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun when_saving_data_successfully_then_get_data_returns_success_result(){
+    fun when_saving_data_successfully_then_get_data_returns_success_result() {
         runBlocking {
             //Arrange
             val page = 1
-            val dataToSave = listOf(CollectionsData(
-               1,
-                1,
-                "title",
-                20,
-                "name",
-                "link"
-            ))
+            val dataToSave = listOf(
+                CollectionsData(
+                    1,
+                    1,
+                    "title",
+                    20,
+                    "name",
+                    "link"
+                )
+            )
 
             //Act
             collectionsDao.updateCollection(dataToSave)
-            val result = async {
-                collectionsDao.getCollections(page).take(1).toList()
+            val collectionsData = mutableListOf<CollectionsData>()
+            collectionsDao.getCollections().map {
+                collectionsData.add(it)
             }
 
             //Assert
-            assertTrue(result.await().isNotEmpty())
-            assertTrue(result.await().contains(dataToSave))
+            assertTrue(collectionsData.isNotEmpty())
+            assertTrue(collectionsData.containsAll(dataToSave))
         }
     }
 
     @Test
-    fun when_deleting_data_successfully_then_get_data_returns_zero_results(){
+    fun when_deleting_data_successfully_then_get_data_returns_zero_results() {
         runBlocking {
             //Arrange
             val page = 1
@@ -71,14 +74,14 @@ class CollectionsDaoTest : KoinTest {
             //Act
             collectionsDao.updateCollection(dataToSave)
             collectionsDao.delete(page)
-            val result = async {
-                collectionsDao.getCollections(page)
-                    .take(1)
-                    .toList()
+
+            val collectionsData = mutableListOf<CollectionsData>()
+            collectionsDao.getCollections().map {
+                collectionsData.add(it)
             }
 
             //Assert
-            assertTrue(result.await().singleOrNull()?.size == 0)
+            assertTrue(collectionsData.size == 0)
         }
     }
 
