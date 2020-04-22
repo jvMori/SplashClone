@@ -1,7 +1,6 @@
 package com.jvmori.myapplication.collectionslist.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,7 @@ class CollectionsFragment : CategoryPageFragment() {
 
     private fun CollectionsViewModel.observeNetworkState() {
         networkState.observe(this@CollectionsFragment, Observer {
-            if (it == Resource.Status.ERROR || it == Resource.Status.NETWORK_ERROR) {
+            if (it != Resource.Status.SUCCESS) {
                 collectionsAdapter.setNetworkState(it)
             }
         })

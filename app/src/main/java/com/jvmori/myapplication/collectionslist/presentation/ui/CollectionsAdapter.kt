@@ -11,6 +11,7 @@ import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolde
 
 class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewHolder>(CollectionsDiffUtilCallback) {
 
+    //TODO: make it observable
     private var networkState: Resource.Status? = null
     private lateinit var retryAction : () -> Unit
 
@@ -49,7 +50,6 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
     fun setRetryAction(retryAction : () -> Unit){
         this.retryAction = retryAction
     }
-
 
     private fun hasExtraRow() = networkState != null && isError()
 
