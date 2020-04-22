@@ -54,11 +54,11 @@ class CollectionsFragment : CategoryPageFragment() {
     }
 
     private fun CollectionsViewModel.observeNetworkState() {
-        networkState.observe(this@CollectionsFragment, Observer {
-            if (it == Resource.Status.ERROR || it == Resource.Status.NETWORK_ERROR) {
-                collectionsAdapter.setNetworkState(it)
-            }
-        })
+//        networkState.observe(this@CollectionsFragment, Observer {
+//            if (it == Resource.Status.ERROR || it == Resource.Status.NETWORK_ERROR) {
+//                collectionsAdapter.setNetworkState(it)
+//            }
+//        })
     }
 
     private fun setupRecyclerView() {

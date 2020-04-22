@@ -8,5 +8,6 @@ data class CollectionEntity(
     var totalPhotos: Int = 0,
     var authorName: String = "",
     var smallSizeUrl: String = "",
+    var page : Int = 0,
     override val timestamp: Long = System.currentTimeMillis()
 ) : ICountTime

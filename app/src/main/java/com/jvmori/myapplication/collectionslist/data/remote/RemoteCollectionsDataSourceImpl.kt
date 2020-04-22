@@ -10,13 +10,8 @@ import kotlinx.coroutines.flow.flow
 
 class RemoteCollectionsDataSourceImpl(private val api: CollectionsApi) :
     RemoteCollectionsDataSource {
-    override fun getCollections(page: Int): Flow<Resource<List<CollectionsResponse>>> {
-        return flow {
-            val result = api.getCollections(page)
-            emit(Resource.success(result))
-        }.catch {
-            emit(handleError(it))
-        }
+    override suspend fun getCollections(page: Int): List<CollectionsResponse> {
+        return api.getCollections(page)
     }
 
     override fun getFeaturedCollections(page: Int): Flow<List<CollectionsResponse>> {

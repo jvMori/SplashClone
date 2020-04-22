@@ -5,6 +5,6 @@ import com.jvmori.myapplication.common.data.remote.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteCollectionsDataSource {
-    fun getCollections(page: Int): Flow<Resource<List<CollectionsResponse>>>
+    suspend fun getCollections(page: Int): List<CollectionsResponse>
     fun getFeaturedCollections(page: Int): Flow<List<CollectionsResponse>>
 }

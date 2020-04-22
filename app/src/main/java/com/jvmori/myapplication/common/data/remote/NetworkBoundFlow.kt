@@ -76,6 +76,13 @@ fun <LocalData> refreshNeeded(data: List<LocalData>): Boolean {
     return data.isEmpty()
 }
 
+fun <LocalData> refreshNeeded(data: LocalData): Boolean {
+    if (data is ICountTime) {
+        return abs(System.currentTimeMillis() - (data as ICountTime).timestamp) > 3600000
+    }
+    return false
+}
+
 fun <Result> handleError(e: Throwable?): Resource<Result> {
     if (e is NetworkErrorException || e is SocketTimeoutException || e is HttpException || e is UnknownHostException) {
         return Resource.networkError(
