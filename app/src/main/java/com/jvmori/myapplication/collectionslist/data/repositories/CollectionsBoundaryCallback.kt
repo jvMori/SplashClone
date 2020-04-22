@@ -1,8 +1,10 @@
 package com.jvmori.myapplication.collectionslist.data.repositories
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRepository
+import com.jvmori.myapplication.common.data.remote.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,11 +14,13 @@ class CollectionsBoundaryCallback(
     private val scope: CoroutineScope
 ) : PagedList.BoundaryCallback<CollectionEntity>() {
 
+    val networkState = MutableLiveData<Resource.Status?>()
+    var retryCallback: (suspend () -> Unit)? = null
+
     override fun onZeroItemsLoaded() {
         super.onZeroItemsLoaded()
         scope.launch(Dispatchers.IO) {
-            //TODO:  handle errors and network status
-            repository.fetchAndSaveRemoteCollections(1)
+            fetchData(1)
         }
     }
 
@@ -24,8 +28,7 @@ class CollectionsBoundaryCallback(
         super.onItemAtFrontLoaded(itemAtFront)
         scope.launch(Dispatchers.IO) {
             if (repository.shouldUpdate(itemAtFront)) {
-                //TODO: handle errors and network status
-                repository.fetchAndSaveRemoteCollections(itemAtFront.page)
+                fetchData(itemAtFront.page)
             }
         }
     }
@@ -33,8 +36,19 @@ class CollectionsBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: CollectionEntity) {
         super.onItemAtEndLoaded(itemAtEnd)
         scope.launch(Dispatchers.IO) {
-            //TODO: handle errors and network status
-            repository.fetchAndSaveRemoteCollections(itemAtEnd.page + 1)
+            fetchData(itemAtEnd.page + 1)
         }
+    }
+
+    private suspend fun fetchData(page: Int) {
+        networkState.postValue(Resource.Status.LOADING)
+        val result = repository.fetchAndSaveRemoteCollections(page)
+        retryCallback = when (result.status) {
+            is Resource.Status.NETWORK_ERROR, Resource.Status.ERROR -> {
+                { fetchData(page) }
+            }
+            else -> null
+        }
+        networkState.postValue(result.status)
     }
 }

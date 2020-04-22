@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.collectionslist.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
@@ -8,6 +9,9 @@ import com.jvmori.myapplication.collectionslist.data.repositories.CollectionsBou
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRepository
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
+import com.jvmori.myapplication.common.data.remote.Resource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
 class CollectionsViewModel(
@@ -29,9 +33,11 @@ class CollectionsViewModel(
             .build()
     }
 
-    //val networkState: LiveData<Resource.Status> = dataSourceFactory.networkState
+    val networkState: LiveData<Resource.Status?> = boundaryCallback.networkState
 
     fun retry() {
-        //collectionsDataSource.retry?.invoke()
+        viewModelScope.launch(Dispatchers.IO) {
+            boundaryCallback.retryCallback?.invoke()
+        }
     }
 }
