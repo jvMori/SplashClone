@@ -10,23 +10,32 @@
             android:orientation="vertical">
 
         <include layout="@layout/loading" android:id="@+id/loadingLayout"/>
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/photosRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@+id/loadingLayout"/>
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                           android:layout_height="0dp"
+                                                           app:layout_constraintBottom_toBottomOf="parent"
+                                                           app:layout_constraintEnd_toEndOf="parent"
+                                                           app:layout_constraintStart_toStartOf="parent"
+                                                           app:layout_constraintTop_toTopOf="parent">
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/photosRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView android:id="@+id/retryPanel"
                                            android:layout_width="match_parent"
                                            android:layout_height="wrap_content"
                                            android:visibility="gone"
-                                           app:layout_constraintBottom_toBottomOf="@+id/photosRecyclerView"
-                                           app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+                                           app:layout_constraintBottom_toBottomOf="parent"
+                                           app:layout_constraintEnd_toEndOf="parent"
+                                           app:layout_constraintStart_toStartOf="parent">
             <ImageView
                     android:id="@+id/retryBtn"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:clickable="true" app:srcCompat="@drawable/replay"/>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
