@@ -41,9 +41,22 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
         }
     }
 
-    fun setNetworkState(networkState: Resource.Status?) {
-        this.networkState = networkState
-        notifyDataSetChanged()
+    fun setNetworkState(newNetworkState: Resource.Status?) {
+        //this.networkState = networkState
+        //notifyDataSetChanged()
+        val previousState = this.networkState
+        val hadExtraRow = hasExtraRow()
+        this.networkState = newNetworkState
+        val hasExtraRow = hasExtraRow()
+        if (hadExtraRow != hasExtraRow) {
+            if (hadExtraRow) {
+                notifyItemRemoved(super.getItemCount())
+            } else {
+                notifyItemInserted(super.getItemCount())
+            }
+        } else if (hasExtraRow && previousState != newNetworkState) {
+            notifyItemChanged(itemCount - 1)
+        }
     }
 
     fun setRetryAction(retryAction : () -> Unit){

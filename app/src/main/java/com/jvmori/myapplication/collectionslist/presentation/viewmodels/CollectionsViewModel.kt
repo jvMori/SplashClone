@@ -21,6 +21,7 @@ class CollectionsViewModel(
 
     private val config = PagedList.Config.Builder()
         .setPageSize(10)
+        .setPrefetchDistance(10)
         .setEnablePlaceholders(false)
         .build()
 
