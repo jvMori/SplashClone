@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
@@ -16,7 +17,10 @@ class NetworkStateViewHolder(private val binding: NetworkStateItemBinding) : Rec
     fun bind(networkState: Resource.Status?, retryAction : () -> Unit) {
         this.networkState = networkState
         when (networkState){
-            is Resource.Status.LOADING -> binding.loading.visibility = View.VISIBLE
+            is Resource.Status.LOADING -> {
+                binding.retryBtn.visibility = View.GONE
+                binding.loading.visibility = View.VISIBLE
+            }
             is Resource.Status.NETWORK_ERROR -> {
                 binding.apply {
                     retryBtn.apply {

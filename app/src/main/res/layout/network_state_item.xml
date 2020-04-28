@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
 
     </data>
@@ -12,12 +12,12 @@
                 android:id="@+id/loading"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" tools:visibility="visible"/>
         <ImageView
                 android:id="@+id/retryBtn"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:clickable="true"
-                android:visibility="gone" app:srcCompat="@drawable/replay"
-                android:focusable="true"/>
+                android:focusable="true" android:visibility="visible"
+                app:srcCompat="@drawable/replay"/>
     </LinearLayout>
 </layout>

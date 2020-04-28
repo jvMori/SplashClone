@@ -27,11 +27,11 @@ class CollectionsViewModel(
     private val dataSourceFactory = getCollectionsUseCase.getCollections()
     private val boundaryCallback = CollectionsBoundaryCallback(repository, viewModelScope)
 
-    val collections by lazy {
+    val collections =
         LivePagedListBuilder<Int, CollectionEntity>(dataSourceFactory, config)
             .setBoundaryCallback(boundaryCallback)
             .build()
-    }
+
 
     val networkState: LiveData<Resource.Status?> = boundaryCallback.networkState
 

@@ -12,7 +12,7 @@ import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolde
 class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewHolder>(CollectionsDiffUtilCallback) {
 
     //TODO: make it observable
-    private var networkState: Resource.Status? = null
+    private var networkState : Resource.Status? = null
     private lateinit var retryAction : () -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -51,9 +51,9 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
         this.retryAction = retryAction
     }
 
-    private fun hasExtraRow() = networkState != null && isError()
+    private fun hasExtraRow() = networkState != null && isNotSuccess()
 
-    private fun isError() = networkState == Resource.Status.NETWORK_ERROR || networkState == Resource.Status.ERROR
+    private fun isNotSuccess() = networkState != Resource.Status.SUCCESS
 
     companion object {
         val CollectionsDiffUtilCallback = object : DiffUtil.ItemCallback<CollectionEntity>() {
