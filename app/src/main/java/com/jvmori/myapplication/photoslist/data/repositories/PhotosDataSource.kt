@@ -17,6 +17,7 @@ open class PhotosDataSource(
 
     var networkStatus : MutableLiveData<Resource.Status> = MutableLiveData()
     var order : String = Order.popular.toString()
+    var retryAction : (() -> Unit)? = null
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PhotoEntity>) {
         val currentPage = 1
@@ -27,6 +28,9 @@ open class PhotosDataSource(
                 when (response.status) {
                     Resource.Status.SUCCESS -> {
                         callback.onResult(response.data!!, null, currentPage + 1)
+                    }
+                    Resource.Status.ERROR, Resource.Status.NETWORK_ERROR -> retryAction = {
+                        loadInitial(params, callback)
                     }
                 }
                 updateState(response.status)
@@ -42,6 +46,9 @@ open class PhotosDataSource(
                 when (response.status) {
                     Resource.Status.SUCCESS -> {
                         callback.onResult(response.data!!, params.key + 1)
+                    }
+                    Resource.Status.ERROR, Resource.Status.NETWORK_ERROR -> retryAction = {
+                        loadAfter(params, callback)
                     }
                 }
                 updateState(response.status)

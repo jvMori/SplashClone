@@ -62,7 +62,7 @@ class PhotosFragment : CategoryPageFragment() {
         photosViewModel.networkStatus.observe(this, Observer {
             when (it){
                 Resource.Status.LOADING -> showLoading()
-                Resource.Status.ERROR -> showError()
+                Resource.Status.ERROR, Resource.Status.NETWORK_ERROR -> showError()
                 Resource.Status.SUCCESS -> hideLoading()
             }
         })
@@ -74,7 +74,11 @@ class PhotosFragment : CategoryPageFragment() {
 
     private fun showError() {
         hideLoading()
-        Snackbar.make(this.requireView(), getString(R.string.network_error_message), Snackbar.LENGTH_LONG).show()
+        binding.retryPanel.visibility = View.VISIBLE
+        binding.retryBtn.setOnClickListener {
+            photosViewModel.retryAction()
+            it.visibility = View.GONE
+        }
     }
 
     private fun showLoading() {
