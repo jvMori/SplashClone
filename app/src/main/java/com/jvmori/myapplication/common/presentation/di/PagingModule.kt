@@ -8,6 +8,7 @@ val pagingModule = module {
         PagedList.Config.Builder()
             .setPageSize(10)
             .setInitialLoadSizeHint(10)
+            .setPrefetchDistance(10 * 3)
             .setEnablePlaceholders(false)
             .build()
     }

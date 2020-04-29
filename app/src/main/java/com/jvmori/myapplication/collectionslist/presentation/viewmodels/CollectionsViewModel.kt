@@ -13,18 +13,14 @@ import com.jvmori.myapplication.common.data.remote.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class CollectionsViewModel(
     private val getCollectionsUseCase: GetCollectionsUseCase,
     private val repository: CollectionsRepository
 ) : ViewModel(), KoinComponent {
 
-    //TODO: inject with koin
-    private val config = PagedList.Config.Builder()
-        .setPageSize(10)
-        .setPrefetchDistance(10)
-        .setEnablePlaceholders(false)
-        .build()
+    private val config by inject<PagedList.Config>()
 
     //TODO: inject with koin
     private val boundaryCallback = CollectionsBoundaryCallback(repository, viewModelScope)
