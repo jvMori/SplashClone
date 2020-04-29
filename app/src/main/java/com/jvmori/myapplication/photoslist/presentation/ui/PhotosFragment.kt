@@ -1,14 +1,12 @@
 package com.jvmori.myapplication.photoslist.presentation.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFragment
@@ -25,6 +23,11 @@ class PhotosFragment : CategoryPageFragment() {
 
     private lateinit var binding: PhotosFragmentBinding
     private lateinit var photosAdapter: PhotosAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +51,30 @@ class PhotosFragment : CategoryPageFragment() {
         initPhotosRecyclerView()
         bindPhotos()
         observeNetworkStatus()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.photos_menu, menu)
+        (menu as MenuBuilder).setOptionalIconsVisible(true)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.latest -> {
+                photosViewModel.changeOrder(Order.latest)
+                true
+            }
+            R.id.popular -> {
+                photosViewModel.changeOrder(Order.popular)
+                true
+            }
+            R.id.oldest -> {
+                photosViewModel.changeOrder(Order.oldest)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun bindPhotos() {

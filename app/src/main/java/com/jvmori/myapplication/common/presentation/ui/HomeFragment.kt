@@ -23,11 +23,6 @@ class HomeFragment : Fragment() {
     private val photosViewModel: PhotosViewModel by sharedViewModel<PhotosViewModel>()
     private lateinit var binding: Photos
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,31 +43,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu, menu)
-        (menu as MenuBuilder).setOptionalIconsVisible(true)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.latest -> {
-                photosViewModel.changeOrder(Order.latest)
-                true
-            }
-            R.id.popular -> {
-                photosViewModel.changeOrder(Order.popular)
-                true
-            }
-            R.id.oldest -> {
-                photosViewModel.changeOrder(Order.oldest)
-                true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-
     }
 
     override fun onStart() {
