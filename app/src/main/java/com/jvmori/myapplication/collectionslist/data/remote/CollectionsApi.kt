@@ -7,4 +7,7 @@ import retrofit2.http.Query
 interface CollectionsApi {
     @GET("collections/")
     suspend fun getCollections(@Query("page") page: Int): List<CollectionsResponse>
+
+    @GET("collections/featured/")
+    suspend fun getFeaturedCollections(@Query("page") page: Int): List<CollectionsResponse>
 }

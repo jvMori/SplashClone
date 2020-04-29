@@ -23,6 +23,9 @@ data class CollectionsData(
     @ColumnInfo(name = "collection_url")
     var smallSizeUrl: String = "",
 
+    @ColumnInfo(name = "collection_type")
+    var collectionType : String = "",
+
     @ColumnInfo(name="collection_time")
     override val timestamp : Long = System.currentTimeMillis()
 

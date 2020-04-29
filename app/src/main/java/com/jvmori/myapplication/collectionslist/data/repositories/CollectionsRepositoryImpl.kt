@@ -1,6 +1,7 @@
 package com.jvmori.myapplication.collectionslist.data.repositories
 
 import androidx.paging.DataSource
+import com.jvmori.myapplication.collectionslist.data.CollectionType
 import com.jvmori.myapplication.collectionslist.data.local.CollectionsData
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
@@ -16,10 +17,10 @@ class CollectionsRepositoryImpl(
     private val remoteCollectionsDataSource: RemoteCollectionsDataSource
 ) : CollectionsRepository {
 
-    override suspend fun fetchAndSaveRemoteCollections(page: Int): Resource<List<CollectionEntity>> {
+    override suspend fun fetchAndSaveRemoteCollections(page: Int, type : CollectionType): Resource<List<CollectionEntity>> {
         return try {
-            val local = remoteCollectionsDataSource.getCollections(page).map {
-                networkToLocalMapper(it, page)
+            val local = remoteCollectionsDataSource.getCollections(page, type).map {
+                networkToLocalMapper(it, page, type)
             }
             localCollectionsDataSource.insertCollections(local)
             val result = local.map {
@@ -35,26 +36,22 @@ class CollectionsRepositoryImpl(
        return refreshNeeded(data)
     }
 
-    override fun fetchLocalCollections(): DataSource.Factory<Int, CollectionEntity> {
-        return localCollectionsDataSource.getCollections().map {
+    override fun fetchLocalCollections(type : CollectionType): DataSource.Factory<Int, CollectionEntity> {
+        return localCollectionsDataSource.getCollections(type).map {
             localToResultMapper(it)
         }
     }
 
-    override suspend fun getFeaturedCollections(page: Int): Resource<List<CollectionEntity>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun networkToLocalMapper(networkData: CollectionsResponse, page: Int): CollectionsData {
+    private fun networkToLocalMapper(networkData: CollectionsResponse, page: Int, type : CollectionType): CollectionsData {
         return CollectionsData(
             page,
             networkData.id,
             networkData.title,
             networkData.totalPhotos,
             networkData.user.name,
-            networkData.coverPhoto.urls.small
+            networkData.coverPhoto.urls.small,
+            type.toString()
         )
-
     }
 
     private fun localToResultMapper(localData: CollectionsData): CollectionEntity {

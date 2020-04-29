@@ -2,6 +2,7 @@ package com.jvmori.myapplication.collectionslist.data.local
 
 import androidx.paging.DataSource
 import androidx.room.*
+import com.jvmori.myapplication.collectionslist.data.CollectionType
 
 @Dao
 interface CollectionsDao {
@@ -9,8 +10,8 @@ interface CollectionsDao {
     @Query("Select * from collections_table")
     fun getCollections(): DataSource.Factory<Int, CollectionsData>
 
-//    @Query("Select * from collections_table where collection_page like :page")
-//    fun getCollections(page: Int): DataSource.Factory<Int, CollectionsData>
+    @Query("Select * from collections_table where collection_type like :type")
+    fun getFeaturedCollections(type : String): DataSource.Factory<Int, CollectionsData>
 
     @Transaction
     fun updateCollection(data: List<CollectionsData>) {

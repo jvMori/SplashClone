@@ -1,6 +1,7 @@
 package com.jvmori.myapplication.collectionslist.data.remote
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.jvmori.myapplication.collectionslist.data.CollectionType
 import com.jvmori.myapplication.collectionslist.data.remote.response.CollectionsResponse
 import com.jvmori.myapplication.collectionslist.domain.repositories.RemoteCollectionsDataSource
 import kotlinx.coroutines.runBlocking
@@ -36,7 +37,7 @@ class RemoteCollectionsDataSourceImplTest {
     fun `getCollections when success return success result`() {
         runBlocking {
             //Act
-            val result = remoteCollectionsDataSource.getCollections(1)
+            val result = remoteCollectionsDataSource.getCollections(1, CollectionType.DefaultCollection)
 
             //Assert
             Assert.assertTrue(result.isNotEmpty())
