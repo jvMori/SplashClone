@@ -35,11 +35,6 @@ class CollectionsFragment : CategoryPageFragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true)
-    }
-
     override fun onStart() {
         super.onStart()
         setupRecyclerView()
@@ -51,26 +46,6 @@ class CollectionsFragment : CategoryPageFragment() {
             }
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.collections_menu, menu)
-//        (menu as MenuBuilder).setOptionalIconsVisible(true)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.all -> {
-//                viewmodel.changeCollectionTo(CollectionType.DefaultCollection)
-//                true
-//            }
-//            R.id.featured -> {
-//                viewmodel.changeCollectionTo(CollectionType.FeaturedCollection)
-//                true
-//            }
-//            else -> return super.onOptionsItemSelected(item)
-//        }
-//    }
 
     private fun CollectionsViewModel.observeCollections() {
         collections.observe(this@CollectionsFragment, Observer {
