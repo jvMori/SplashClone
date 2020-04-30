@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jvmori.myapplication.R
@@ -71,6 +72,10 @@ class PhotosFragment : CategoryPageFragment() {
             }
             R.id.oldest -> {
                 photosViewModel.changeOrder(Order.oldest)
+                true
+            }
+            R.id.searchIcon -> {
+                NavHostFragment.findNavController(this).navigate(R.id.action_photosFragment_to_searchFragment)
                 true
             }
             else -> return super.onOptionsItemSelected(item)

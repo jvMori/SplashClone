@@ -9,5 +9,17 @@
             android:id="@+id/photosFragment"
             android:name="com.jvmori.myapplication.common.presentation.ui.HomeFragment"
             android:label="fragment_photos"
-            tools:layout="@layout/fragment_home" />
+            tools:layout="@layout/fragment_home" >
+        <action android:id="@+id/action_photosFragment_to_searchFragment" app:destination="@id/searchFragment"
+                app:popUpTo="@+id/photosFragment"/>
+    </fragment>
+    <fragment android:id="@+id/collectionsFragment"
+              android:name="com.jvmori.myapplication.collectionslist.presentation.ui.CollectionsFragment"
+              android:label="CollectionsFragment">
+        <action android:id="@+id/action_collectionsFragment_to_searchFragment" app:destination="@id/searchFragment"
+                app:popUpTo="@+id/collectionsFragment"/>
+    </fragment>
+    <fragment android:id="@+id/searchFragment"
+              android:name="com.jvmori.myapplication.search.presentation.ui.SearchFragment"
+    />
 </navigation>
