@@ -27,7 +27,7 @@ class PhotosFragment : CategoryPageFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        //setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -54,33 +54,32 @@ class PhotosFragment : CategoryPageFragment() {
         observeNetworkStatus()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.photos_menu, menu)
-        (menu as MenuBuilder).setOptionalIconsVisible(true)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.photos_menu, menu)
+//        (menu as MenuBuilder).setOptionalIconsVisible(true)
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.latest -> {
-                photosViewModel.changeOrder(Order.latest)
-                true
-            }
-            R.id.popular -> {
-                photosViewModel.changeOrder(Order.popular)
-                true
-            }
-            R.id.oldest -> {
-                photosViewModel.changeOrder(Order.oldest)
-                true
-            }
-            R.id.searchIcon -> {
-                NavHostFragment.findNavController(this).navigate(R.id.action_photosFragment_to_searchFragment)
-                true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.latest -> {
+//                photosViewModel.changeOrder(Order.latest)
+//                true
+//            }
+//            R.id.popular -> {
+//                photosViewModel.changeOrder(Order.popular)
+//                true
+//            }
+//            R.id.oldest -> {
+//                photosViewModel.changeOrder(Order.oldest)
+//                true
+//            }
+//            R.id.searchIcon -> {
+//                true
+//            }
+//            else -> return super.onOptionsItemSelected(item)
+//        }
+//    }
 
     private fun bindPhotos() {
         photosViewModel.fetchPhotos().observe(this, Observer {

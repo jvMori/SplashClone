@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.jvmori.myapplication.R
+import com.jvmori.myapplication.common.presentation.ui.MainActivity
 import com.jvmori.myapplication.databinding.SearchFragmentBinding
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
@@ -32,11 +34,16 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).apply {
+            if (this is MainActivity) {
+                setSupportActionBar(binding.toolbar)
+                setupActionBarWithNavController(navController, appBarConfiguration)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.search_menu, menu)
         setupSearchViewInAppBar(inflater, menu)
     }
 
@@ -48,15 +55,15 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         }
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return true
-    }
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return true
+        }
 
-    override fun onQueryTextChange(newText: String?): Boolean {
-        return true
-    }
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return true
+        }
 
-    override fun onClose(): Boolean {
-        return false
+        override fun onClose(): Boolean {
+            return false
+        }
     }
-}
