@@ -13,4 +13,6 @@
     <string name="featured">Featured</string>
     <string name="search_items">Search...</string>
     <string name="app_title">Splash</string>
+    <string name="photos">PHOTOS</string>
+    <string name="collections">COLLECTIONS</string>
 </resources>

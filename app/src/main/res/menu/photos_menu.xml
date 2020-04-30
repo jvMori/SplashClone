@@ -23,4 +23,15 @@
           android:title="@string/oldest"
           app:showAsAction="never"
     />
+    <item android:id="@+id/all"
+          android:icon="@drawable/baseline_collections_black_24dp"
+          android:title="@string/all"
+          app:showAsAction="never"
+    >
+    </item>
+    <item android:id="@+id/featured"
+          android:icon="@drawable/collections_featured"
+          android:title="@string/featured"
+          app:showAsAction="never"
+    />
 </menu>

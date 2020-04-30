@@ -1,8 +1,10 @@
 package com.jvmori.myapplication.photoslist.presentation.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
@@ -24,11 +26,6 @@ class PhotosFragment : CategoryPageFragment() {
 
     private lateinit var binding: PhotosFragmentBinding
     private lateinit var photosAdapter: PhotosAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,33 +51,6 @@ class PhotosFragment : CategoryPageFragment() {
         observeNetworkStatus()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.photos_menu, menu)
-//        (menu as MenuBuilder).setOptionalIconsVisible(true)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.latest -> {
-//                photosViewModel.changeOrder(Order.latest)
-//                true
-//            }
-//            R.id.popular -> {
-//                photosViewModel.changeOrder(Order.popular)
-//                true
-//            }
-//            R.id.oldest -> {
-//                photosViewModel.changeOrder(Order.oldest)
-//                true
-//            }
-//            R.id.searchIcon -> {
-//                true
-//            }
-//            else -> return super.onOptionsItemSelected(item)
-//        }
-//    }
-
     private fun bindPhotos() {
         photosViewModel.fetchPhotos().observe(this, Observer {
             binding.photosRecyclerView.recycledViewPool.clear()
@@ -91,7 +61,7 @@ class PhotosFragment : CategoryPageFragment() {
 
     private fun observeNetworkStatus() {
         photosViewModel.networkStatus.observe(this, Observer {
-            when (it){
+            when (it) {
                 Resource.Status.LOADING -> showLoading()
                 Resource.Status.ERROR, Resource.Status.NETWORK_ERROR -> showError()
                 Resource.Status.SUCCESS -> hideLoading()
