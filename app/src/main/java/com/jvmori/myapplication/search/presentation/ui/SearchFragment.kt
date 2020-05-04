@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.material.tabs.TabLayoutMediator
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.presentation.ui.MainActivity
 import com.jvmori.myapplication.databinding.SearchFragmentBinding
@@ -34,6 +35,11 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
+        setupViewPager()
+    }
+
+    private fun setupToolbar() {
         (activity as AppCompatActivity).apply {
             if (this is MainActivity) {
                 setSupportActionBar(binding.toolbar)
@@ -41,6 +47,18 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
                 setupActionBarWithNavController(navController, appBarConfiguration)
             }
         }
+    }
+
+    private fun setupViewPager() {
+        binding.viewPager.adapter = SearchViewPagerAdapter(this)
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.photos)
+                1 -> getString(R.string.collections)
+                2 -> getString(R.string.users)
+                else -> ""
+            }
+        }.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

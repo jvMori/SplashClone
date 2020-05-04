@@ -15,4 +15,5 @@
     <string name="app_title">Splash</string>
     <string name="photos">PHOTOS</string>
     <string name="collections">COLLECTIONS</string>
+    <string name="users">Users</string>
 </resources>

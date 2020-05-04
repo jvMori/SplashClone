@@ -13,9 +13,6 @@
     <fragment android:id="@+id/collectionsFragment"
               android:name="com.jvmori.myapplication.collectionslist.presentation.ui.CollectionsFragment"
               android:label="CollectionsFragment"/>
-    <fragment android:id="@+id/searchFragment"
-              android:name="com.jvmori.myapplication.search.presentation.ui.SearchFragment"
-    />
     <fragment android:id="@+id/homeFragment2"
               android:name="com.jvmori.myapplication.common.presentation.ui.HomeFragment" android:label="PhotoSplash">
         <action android:id="@+id/action_homeFragment2_to_photosFragment" app:destination="@id/photosFragment"/>
@@ -24,4 +21,25 @@
         <action android:id="@+id/action_homeFragment2_to_searchFragment" app:destination="@id/searchFragment"
                 app:popUpTo="@+id/homeFragment2" app:popUpToInclusive="false"/>
     </fragment>
+    <navigation android:id="@+id/searchFragment" app:startDestination="@id/searchFragment">
+        <fragment android:id="@+id/searchFragment"
+                      android:name="com.jvmori.myapplication.search.presentation.ui.SearchFragment"
+        >
+            <action android:id="@+id/action_searchFragment_to_searchPhotosFragment"
+                    app:destination="@id/searchPhotosFragment"/>
+            <action android:id="@+id/action_searchFragment_to_searchCollectionsFragment"
+                    app:destination="@id/searchCollectionsFragment"/>
+            <action android:id="@+id/action_searchFragment_to_searchUsersFragment"
+                    app:destination="@id/searchUsersFragment"/>
+        </fragment>
+        <fragment android:id="@+id/searchPhotosFragment"
+                  android:name="com.jvmori.myapplication.search.presentation.ui.SearchPhotosFragment"
+                  android:label="fragment_search_photos" tools:layout="@layout/fragment_search_photos"/>
+        <fragment android:id="@+id/searchCollectionsFragment"
+                  android:name="com.jvmori.myapplication.search.presentation.ui.SearchCollectionsFragment"
+                  android:label="SearchCollectionsFragment"/>
+        <fragment android:id="@+id/searchUsersFragment"
+                  android:name="com.jvmori.myapplication.search.presentation.ui.SearchUsersFragment"
+                  android:label="SearchUsersFragment"/>
+    </navigation>
 </navigation>
