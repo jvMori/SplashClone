@@ -121,13 +121,6 @@ class HomeFragment : Fragment() {
             if (this is MainActivity) {
                 setSupportActionBar(binding.toolbar)
                 setupActionBarWithNavController(navController, appBarConfiguration)
-                navController.addOnDestinationChangedListener { controller, destination, arguments ->
-                    title = when (destination.id) {
-                        R.id.homeFragment2 -> getString(R.string.app_title)
-                        R.id.searchFragment -> ""
-                        else -> "Splash"
-                    }
-                }
             }
         }
     }

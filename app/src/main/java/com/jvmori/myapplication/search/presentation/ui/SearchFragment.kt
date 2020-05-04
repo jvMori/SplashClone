@@ -37,6 +37,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         (activity as AppCompatActivity).apply {
             if (this is MainActivity) {
                 setSupportActionBar(binding.toolbar)
+                supportActionBar?.setDisplayShowTitleEnabled(false)
                 setupActionBarWithNavController(navController, appBarConfiguration)
             }
         }
@@ -44,12 +45,13 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
-        setupSearchViewInAppBar(inflater, menu)
+        setupSearchViewInAppBar(menu)
     }
 
-    private fun setupSearchViewInAppBar(inflater: MenuInflater, menu: Menu) {
-        inflater.inflate(R.menu.search_menu, menu)
+    private fun setupSearchViewInAppBar(menu: Menu) {
         searchView = (menu.findItem(R.id.action_search)?.actionView as SearchView).apply {
+            queryHint = resources.getString(R.string.search_items)
+            setIconifiedByDefault(false)
             setOnQueryTextListener(this@SearchFragment)
             setOnCloseListener(this@SearchFragment)
         }
