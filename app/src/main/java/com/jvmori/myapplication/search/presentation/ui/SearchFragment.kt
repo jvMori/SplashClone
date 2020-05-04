@@ -12,7 +12,7 @@ import com.jvmori.myapplication.common.presentation.ui.MainActivity
 import com.jvmori.myapplication.databinding.SearchFragmentBinding
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
-    SearchView.OnCloseListener {
+    SearchView.OnCloseListener{
 
     private lateinit var binding: SearchFragmentBinding
     private lateinit var searchView: SearchView
@@ -51,21 +51,32 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     private fun setupSearchViewInAppBar(menu: Menu) {
         searchView = (menu.findItem(R.id.action_search)?.actionView as SearchView).apply {
             queryHint = resources.getString(R.string.search_items)
-            setIconifiedByDefault(false)
+            isActivated = true
+            onActionViewExpanded()
+            isIconified = false
             setOnQueryTextListener(this@SearchFragment)
             setOnCloseListener(this@SearchFragment)
         }
     }
 
         override fun onQueryTextSubmit(query: String?): Boolean {
-            return true
+            searchView.apply {
+                isIconified = true
+                onActionViewCollapsed()
+                clearFocus()
+            }
+            return false
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            return true
+            return false
         }
 
         override fun onClose(): Boolean {
-            return false
+            searchView.apply {
+                onActionViewCollapsed()
+                clearFocus()
+            }
+            return true
         }
     }
