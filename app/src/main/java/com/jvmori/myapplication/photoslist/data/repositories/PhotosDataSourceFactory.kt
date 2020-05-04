@@ -15,7 +15,7 @@ class PhotosDataSourceFactory(
     val photosLiveData = MutableLiveData<PhotosDataSource>()
 
     fun setOrder(order : Order) {
-        (photosDataSource as PhotosDataSource).order = order.toString()
+        (photosDataSource as PhotosDataSource).photoParams.order = order
     }
 
     override fun create(): DataSource<Int, PhotoEntity> {

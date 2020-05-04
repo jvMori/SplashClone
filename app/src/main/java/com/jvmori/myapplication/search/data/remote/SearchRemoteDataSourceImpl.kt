@@ -15,7 +15,13 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
         mapOfParams["color"] = params.color
         mapOfParams["orientation"] = params.orientation.toString()
 
-        return api.searchPhotos(mapOfParams)
+        return api.searchPhotos(mapOfParams)?.map {
+            PhotoEntity(
+                it.id,
+                it.urls.regular,
+                params.page
+            )
+        } ?: listOf()
     }
 
     override suspend fun searchCollections(query: String, page: Int): List<CollectionEntity> {

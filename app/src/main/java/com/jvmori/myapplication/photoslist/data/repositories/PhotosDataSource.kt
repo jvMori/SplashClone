@@ -6,6 +6,8 @@ import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
+import com.jvmori.myapplication.search.data.Orientation
+import com.jvmori.myapplication.search.data.PhotoParams
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -16,14 +18,15 @@ open class PhotosDataSource(
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
     var networkStatus : MutableLiveData<Resource.Status> = MutableLiveData()
-    var order : String = Order.popular.toString()
+    var photoParams : PhotoParams = PhotoParams("", 1, Orientation.All)
     var retryAction : (() -> Unit)? = null
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PhotoEntity>) {
         val currentPage = 1
+        photoParams.page = currentPage
         updateState(Resource.Status.LOADING)
         scope.launch {
-            val response = getPhotosListUseCase.getPhotos(currentPage, order)
+            val response = getPhotosListUseCase.getPhotos(photoParams)
             response.run {
                 when (response.status) {
                     Resource.Status.SUCCESS -> {
@@ -41,7 +44,8 @@ open class PhotosDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PhotoEntity>) {
         updateState(Resource.Status.LOADING)
         scope.launch {
-            val response = getPhotosListUseCase.getPhotos(params.key, order)
+            photoParams.page = params.key
+            val response = getPhotosListUseCase.getPhotos(photoParams)
             response.run {
                 when (response.status) {
                     Resource.Status.SUCCESS -> {
