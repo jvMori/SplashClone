@@ -10,4 +10,11 @@ class FakeCollectionsApi(private val data: CollectionsResponse, private val isEr
         }
         return listOf(data)
     }
+
+    override suspend fun getFeaturedCollections(page: Int): List<CollectionsResponse> {
+        if (isError) {
+            throw NetworkErrorException()
+        }
+        return listOf(data)
+    }
 }
