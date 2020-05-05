@@ -40,8 +40,8 @@ class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos), SearchFr
     override fun onStart() {
         super.onStart()
         adapter = PhotosAdapter.initGridAdapter(binding.recyclerView, this.requireContext())
+        binding.showLoading(false)
         viewModel.apply {
-            setPhotoParams(PhotoParams("sad", 1))
             observePhotos()
             observeNetworkStatus()
         }
