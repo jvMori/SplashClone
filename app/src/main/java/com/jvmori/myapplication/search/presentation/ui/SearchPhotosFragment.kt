@@ -14,7 +14,7 @@ import org.koin.core.qualifier.named
 
 class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos) {
 
-    private val searchScope = getKoin().createScope("searchScope", named(searchModuleNamed))
+    private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
     private val viewModel: SearchViewModel = searchScope.get<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
