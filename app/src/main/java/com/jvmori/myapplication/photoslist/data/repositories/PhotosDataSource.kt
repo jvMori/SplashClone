@@ -18,7 +18,7 @@ open class PhotosDataSource(
 ) : PageKeyedDataSource<Int, PhotoEntity>() {
 
     var networkStatus : MutableLiveData<Resource.Status> = MutableLiveData()
-    var photoParams : PhotoParams = PhotoParams("", 1, Orientation.All)
+    var photoParams : PhotoParams = PhotoParams("", 1)
     var retryAction : (() -> Unit)? = null
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PhotoEntity>) {

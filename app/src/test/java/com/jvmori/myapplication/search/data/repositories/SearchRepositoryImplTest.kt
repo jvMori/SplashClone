@@ -31,7 +31,7 @@ class SearchRepositoryImplTest {
     fun `when search photos success then return success object`() {
         runBlocking {
             //arrange
-            val params = PhotoParams("", 1, Orientation.All)
+            val params = PhotoParams("", 1)
             Mockito.`when`(remoteDataSource.searchPhotos(params)).thenReturn(listOf())
 
             //act
@@ -46,7 +46,7 @@ class SearchRepositoryImplTest {
     fun `when search photos network error then return network error object`() {
         runBlocking {
             //arrange
-            val params = PhotoParams("", 1, Orientation.All)
+            val params = PhotoParams("", 1)
             Mockito.`when`(remoteDataSource.searchPhotos(params)).then {
                 throw NetworkErrorException()
             }
@@ -63,7 +63,7 @@ class SearchRepositoryImplTest {
     fun `when search photos general error then return error object`() {
         runBlocking {
             //arrange
-            val params = PhotoParams("", 1, Orientation.All)
+            val params = PhotoParams("", 1)
             Mockito.`when`(remoteDataSource.searchPhotos(params)).then {
                 throw IOException()
             }

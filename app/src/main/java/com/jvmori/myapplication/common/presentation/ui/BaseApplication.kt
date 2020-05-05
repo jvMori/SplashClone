@@ -7,6 +7,7 @@ import com.jvmori.myapplication.common.presentation.di.imageModule
 import com.jvmori.myapplication.common.presentation.di.networkModule
 import com.jvmori.myapplication.common.presentation.di.pagingModule
 import com.jvmori.myapplication.photoslist.presentation.di.photosModule
+import com.jvmori.myapplication.search.presentation.di.searchModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -24,7 +25,8 @@ class BaseApplication : Application() {
                     collectionsModule,
                     databaseModule,
                     pagingModule,
-                    imageModule
+                    imageModule,
+                    searchModule
                 )
             )
         }

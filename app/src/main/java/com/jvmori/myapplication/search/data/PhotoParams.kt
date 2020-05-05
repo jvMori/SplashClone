@@ -12,7 +12,7 @@ enum class Orientation {
 data class PhotoParams (
     var query : String,
     var page : Int,
-    var orientation : Orientation,
+    var orientation : String = "",
     var order : Order = Order.latest,
     var color : String = ""
 )
