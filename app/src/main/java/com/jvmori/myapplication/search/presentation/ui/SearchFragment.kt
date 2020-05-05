@@ -7,16 +7,18 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.presentation.ui.MainActivity
 import com.jvmori.myapplication.databinding.SearchFragmentBinding
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
-    SearchView.OnCloseListener{
+    SearchView.OnCloseListener {
 
     private lateinit var binding: SearchFragmentBinding
     private lateinit var searchView: SearchView
+    private lateinit var viewPagerAdapter: SearchViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,28 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         setupViewPager()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+        setupSearchViewInAppBar(menu)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        viewPagerAdapter.iSearchQuery?.search(query)
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return false
+    }
+
+    override fun onClose(): Boolean {
+        searchView.apply {
+            onActionViewCollapsed()
+            clearFocus()
+        }
+        return true
+    }
+
     private fun setupToolbar() {
         (activity as AppCompatActivity).apply {
             if (this is MainActivity) {
@@ -50,7 +74,10 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     private fun setupViewPager() {
-        binding.viewPager.adapter = SearchViewPagerAdapter(this)
+        viewPagerAdapter = SearchViewPagerAdapter(this).apply {
+            binding.viewPager.adapter = this
+            addOnPageChangedListener()
+        }
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.photos)
@@ -61,9 +88,18 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         }.attach()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
-        setupSearchViewInAppBar(menu)
+    private fun addOnPageChangedListener() {
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                viewPagerAdapter.iSearchQuery = when (position) {
+                    0 -> viewPagerAdapter.searchPhotosFragment
+                    1 -> viewPagerAdapter.searchCollectionsFragment
+                    2 -> viewPagerAdapter.searchUsersFragment
+                    else -> null
+                }
+            }
+        })
     }
 
     private fun setupSearchViewInAppBar(menu: Menu) {
@@ -77,24 +113,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         }
     }
 
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            searchView.apply {
-                isIconified = true
-                onActionViewCollapsed()
-                clearFocus()
-            }
-            return false
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
-
-        override fun onClose(): Boolean {
-            searchView.apply {
-                onActionViewCollapsed()
-                clearFocus()
-            }
-            return true
-        }
+    interface ISearchQuery {
+        fun search(query: String?)
     }
+}

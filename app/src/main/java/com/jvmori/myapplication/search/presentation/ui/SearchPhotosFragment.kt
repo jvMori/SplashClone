@@ -20,7 +20,7 @@ import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 
-class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos) {
+class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos), SearchFragment.ISearchQuery {
 
     private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
     private val viewModel: SearchViewModel = searchScope.get()
@@ -45,6 +45,10 @@ class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos) {
             observePhotos()
             observeNetworkStatus()
         }
+    }
+
+    override fun search(query: String?) {
+        viewModel.setPhotoQuery(query)
     }
 
     private fun SearchViewModel.observePhotos() {

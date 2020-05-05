@@ -24,9 +24,18 @@ class SearchViewModel : ViewModel(), KoinComponent {
     private val factory: PhotosDataSourceFactory = searchScope.get { parametersOf(photosDataSource) }
 
     private val photoParams = MutableLiveData<PhotoParams>()
+    private var _photoParams = PhotoParams("", 1)
 
     fun setPhotoParams(photoParams: PhotoParams){
+        _photoParams = photoParams
         this.photoParams.value = photoParams
+    }
+
+    fun setPhotoQuery(query : String?){
+        query?.let{
+            _photoParams.query = it
+            this.photoParams.value = _photoParams
+        }
     }
 
     fun getPhotos() : LiveData<PagedList<PhotoEntity>>{
