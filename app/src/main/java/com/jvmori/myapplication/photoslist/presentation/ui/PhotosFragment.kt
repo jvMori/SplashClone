@@ -11,6 +11,7 @@ import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFragment
 import com.jvmori.myapplication.databinding.PhotosFragmentBinding
+import com.jvmori.myapplication.databinding.SearchPhotosBinding
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
@@ -21,16 +22,16 @@ class PhotosFragment : CategoryPageFragment() {
 
     private val photosViewModel: PhotosViewModel by sharedViewModel()
 
-    private lateinit var binding: PhotosFragmentBinding
+    private lateinit var binding: SearchPhotosBinding
     private lateinit var photosAdapter: PhotosAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<PhotosFragmentBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.photos_fragment,
+            R.layout.fragment_search_photos,
             container,
             false
         )
@@ -50,7 +51,7 @@ class PhotosFragment : CategoryPageFragment() {
 
     private fun bindPhotos() {
         photosViewModel.fetchPhotos().observe(this, Observer {
-            binding.photosRecyclerView.recycledViewPool.clear()
+            binding.recyclerView.recycledViewPool.clear()
             photosAdapter.notifyDataSetChanged()
             showSuccess(it)
         })
@@ -72,7 +73,7 @@ class PhotosFragment : CategoryPageFragment() {
 
     private fun showError() {
         hideLoading()
-        binding.retryPanel.visibility = View.VISIBLE
+        binding.errorLayout.visibility = View.VISIBLE
         binding.retryBtn.setOnClickListener {
             photosViewModel.retryAction()
             it.visibility = View.GONE
@@ -89,6 +90,6 @@ class PhotosFragment : CategoryPageFragment() {
     }
 
     private fun initPhotosAdapter() {
-        photosAdapter = PhotosAdapter.initGridAdapter(binding.photosRecyclerView, this.requireContext())
+        photosAdapter = PhotosAdapter.initGridAdapter(binding.recyclerView, this.requireContext())
     }
 }
