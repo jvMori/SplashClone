@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".search.presentation.ui.SearchPhotosFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <data class="SearchPhotosBinding">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    </data>
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Photos"/>
+            tools:context=".search.presentation.ui.SearchPhotosFragment">
 
-</FrameLayout>
+        <FrameLayout
+                android:id="@+id/errorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.9"
+                android:background="?attr/colorPrimaryDark"
+                android:elevation="16dp"
+                android:visibility="gone">
+            <ImageView android:id="@+id/retryBtn"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:clickable="true"
+                       android:contentDescription="@string/retrybutton"
+                       android:focusable="true" android:padding="8dp"
+                       android:src="@drawable/baseline_replay_white_48dp" android:visibility="visible"/>
+        </FrameLayout>
+        <FrameLayout
+                android:id="@+id/loadingLayout"
+                android:layout_width="match_parent"
+                android:elevation="16dp"
+                android:layout_height="wrap_content"
+                tools:visibility="gone">
+            <ProgressBar
+                    android:id="@+id/loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:visibility="visible"/>
+        </FrameLayout>
+        <FrameLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="8dp">
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </FrameLayout>
+    </FrameLayout>
+</layout>

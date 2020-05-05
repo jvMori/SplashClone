@@ -7,6 +7,7 @@ import android.widget.AbsListView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 
@@ -51,6 +52,15 @@ class PhotosAdapter(private val context : Context) : PagedListAdapter<PhotoEntit
             override fun areContentsTheSame(oldItem: PhotoEntity, newItem: PhotoEntity): Boolean {
                 return oldItem == newItem
             }
+        }
+
+        fun initGridAdapter(recyclerView: RecyclerView, context: Context) : PhotosAdapter{
+            val photosAdapter = PhotosAdapter(context)
+            recyclerView.apply {
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                adapter = photosAdapter
+            }
+            return photosAdapter
         }
     }
 }

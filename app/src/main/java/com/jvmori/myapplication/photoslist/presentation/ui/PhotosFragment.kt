@@ -1,15 +1,12 @@
 package com.jvmori.myapplication.photoslist.presentation.ui
 
-import android.os.Build
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFragment
@@ -46,7 +43,7 @@ class PhotosFragment : CategoryPageFragment() {
         photosViewModel.apply {
             changeOrder(Order.latest)
         }
-        initPhotosRecyclerView()
+        initPhotosAdapter()
         bindPhotos()
         observeNetworkStatus()
     }
@@ -91,11 +88,7 @@ class PhotosFragment : CategoryPageFragment() {
         photosAdapter.submitList(data)
     }
 
-    private fun initPhotosRecyclerView() {
-        photosAdapter = PhotosAdapter(this.requireContext())
-        binding.photosRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = photosAdapter
-        }
+    private fun initPhotosAdapter() {
+        photosAdapter = PhotosAdapter.initGridAdapter(binding.photosRecyclerView, this.requireContext())
     }
 }
