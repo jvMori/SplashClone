@@ -12,14 +12,20 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
 
         mapOfParams["query"] = params.query
         mapOfParams["page"] = params.page.toString()
-        mapOfParams["color"] = params.color
-        mapOfParams["orientation"] = params.orientation.toString()
+        if (params.color.isNotEmpty())
+            mapOfParams["color"] = params.color
+        if (params.orientation.isNotEmpty())
+            mapOfParams["orientation"] = params.orientation
 
-        return api.searchPhotos(mapOfParams)?.map {
+        return api.searchPhotos(mapOfParams).mapToEntity(params.page)
+    }
+
+    private fun SearchPhotosResponse?.mapToEntity(page: Int): List<PhotoEntity> {
+        return this?.photos?.map {
             PhotoEntity(
                 it.id,
                 it.urls.regular,
-                params.page
+                page
             )
         } ?: listOf()
     }
