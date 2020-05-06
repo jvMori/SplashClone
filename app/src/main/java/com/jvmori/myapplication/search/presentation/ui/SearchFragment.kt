@@ -105,6 +105,18 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                setISearchQueryListener(position)
+                setOptionsToolbarVisibility(position)
+            }
+
+            private fun setOptionsToolbarVisibility(position: Int) {
+                binding.optionsToolbar.visibility = when (position) {
+                    0 -> View.VISIBLE
+                    else -> View.GONE
+                }
+            }
+
+            private fun setISearchQueryListener(position: Int) {
                 viewPagerAdapter.iSearchQuery = when (position) {
                     0 -> viewPagerAdapter.searchPhotosFragment
                     1 -> viewPagerAdapter.searchCollectionsFragment

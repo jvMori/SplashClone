@@ -32,9 +32,15 @@ class SearchViewModel : ViewModel(), KoinComponent {
         this.photoParams.value = photoParams
     }
 
+    fun clearPhotos(){
+
+    }
+
     fun setPhotoOrientation(orientation: String){
-        _photoParams.orientation = orientation.toLowerCase()
-        this.photoParams.value = _photoParams
+        if (_photoParams.query.isNotEmpty()){
+            _photoParams.orientation = orientation.toLowerCase()
+            this.photoParams.value = _photoParams
+        }
     }
 
     fun setPhotoQuery(query : String?){
