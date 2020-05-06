@@ -2,6 +2,7 @@ package com.jvmori.myapplication.search.presentation.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -16,11 +17,12 @@ import com.jvmori.myapplication.databinding.SearchFragmentBinding
 import com.jvmori.myapplication.search.data.Orientation
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
-    SearchView.OnCloseListener {
+    SearchView.OnCloseListener, AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: SearchFragmentBinding
     private lateinit var searchView: SearchView
     private lateinit var viewPagerAdapter: SearchViewPagerAdapter
+    var spinnerItemSelected: ISpinnerItemSelected? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +68,14 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         return true
     }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        spinnerItemSelected?.select(position)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
     private fun setupToolbar() {
         (activity as AppCompatActivity).apply {
             if (this is MainActivity) {
@@ -107,13 +117,13 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     private fun setupPhotoOrientationsSpinner() {
         val orientations = Orientation.values().map { it.toString() }
+        binding.spinner.onItemSelectedListener = this
         binding.spinner.adapter = ArrayAdapter<String>(
             this.requireContext(),
             android.R.layout.simple_spinner_item,
             orientations
         ).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spinner.adapter = this
         }
     }
 
@@ -130,5 +140,9 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     interface ISearchQuery {
         fun search(query: String?)
+    }
+
+    interface ISpinnerItemSelected {
+        fun select(position: Int)
     }
 }

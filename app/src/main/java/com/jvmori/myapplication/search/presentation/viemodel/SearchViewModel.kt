@@ -7,6 +7,7 @@ import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
+import com.jvmori.myapplication.search.data.Orientation
 import com.jvmori.myapplication.search.data.PhotoParams
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
 import org.koin.android.ext.android.getKoin
@@ -29,6 +30,11 @@ class SearchViewModel : ViewModel(), KoinComponent {
     fun setPhotoParams(photoParams: PhotoParams){
         _photoParams = photoParams
         this.photoParams.value = photoParams
+    }
+
+    fun setPhotoOrientation(orientation: String){
+        _photoParams.orientation = orientation.toLowerCase()
+        this.photoParams.value = _photoParams
     }
 
     fun setPhotoQuery(query : String?){

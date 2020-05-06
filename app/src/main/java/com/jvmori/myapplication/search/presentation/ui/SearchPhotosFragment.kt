@@ -1,6 +1,7 @@
 package com.jvmori.myapplication.search.presentation.ui
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +15,15 @@ import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.databinding.SearchPhotosBinding
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.presentation.ui.PhotosAdapter
-import com.jvmori.myapplication.search.data.PhotoParams
+import com.jvmori.myapplication.search.data.Orientation
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
 import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 
-class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos), SearchFragment.ISearchQuery {
+class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos),
+    SearchFragment.ISearchQuery,
+    SearchFragment.ISpinnerItemSelected {
 
     private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
     private val viewModel: SearchViewModel = searchScope.get()
@@ -47,8 +50,18 @@ class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos), SearchFr
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (parentFragment as SearchFragment).spinnerItemSelected = this
+    }
+
     override fun search(query: String?) {
         viewModel.setPhotoQuery(query)
+    }
+
+    override fun select(position: Int) {
+        val orientation = if (position > 0) Orientation.values()[position].toString() else ""
+        viewModel.setPhotoOrientation(orientation)
     }
 
     private fun SearchViewModel.observePhotos() {
