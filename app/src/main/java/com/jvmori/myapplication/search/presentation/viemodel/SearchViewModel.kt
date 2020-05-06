@@ -29,14 +29,6 @@ class SearchViewModel : ViewModel(), KoinComponent {
     private val photoParams = MutableLiveData<PhotoParams>()
     private var _photoParams = PhotoParams("", 1)
 
-    private val query = MutableLiveData<String>()
-
-    fun setCollectionQuery(query: String?) {
-        query?.let {
-            this.query.value = it
-        }
-    }
-
     fun setPhotoOrientation(orientation: String) {
         if (_photoParams.query.isNotEmpty()) {
             _photoParams.orientation = orientation.toLowerCase()
@@ -48,7 +40,6 @@ class SearchViewModel : ViewModel(), KoinComponent {
         query?.let {
             _photoParams.query = it
             this.photoParams.value = _photoParams
-            this.query.value = query
         }
     }
 
@@ -60,8 +51,8 @@ class SearchViewModel : ViewModel(), KoinComponent {
     }
 
     fun getCollections(): LiveData<PagedList<CollectionEntity>> {
-        return Transformations.switchMap(query) {
-            collectionsDataSource.query = it
+        return Transformations.switchMap(photoParams) {
+            collectionsDataSource.query = it.query
             LivePagedListBuilder<Int, CollectionEntity>(object : DataSource.Factory<Int, CollectionEntity>() {
                 override fun create(): DataSource<Int, CollectionEntity> {
                     return collectionsDataSource

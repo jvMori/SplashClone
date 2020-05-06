@@ -18,6 +18,7 @@ class CollectionsDataSource(
     var retryAction: (() -> Unit)? = null
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CollectionEntity>) {
+        networkStatus.postValue(Resource.Status.LOADING)
         scope.launch {
             useCase.searchCollections(query, 1).run {
                 when (status) {
@@ -32,6 +33,7 @@ class CollectionsDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, CollectionEntity>) {
+        networkStatus.postValue(Resource.Status.LOADING)
         scope.launch {
             useCase.searchCollections(query, params.key).run {
                 when (status) {

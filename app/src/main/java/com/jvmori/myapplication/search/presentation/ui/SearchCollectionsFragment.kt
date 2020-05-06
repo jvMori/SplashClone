@@ -70,7 +70,7 @@ class SearchCollectionsFragment : Fragment(), SearchFragment.ISearchQuery {
     }
 
     override fun search(query: String?) {
-        viewModel.setCollectionQuery(query)
+        viewModel.setPhotoQuery(query)
     }
 
 }
