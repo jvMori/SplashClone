@@ -20,6 +20,10 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
         return api.searchPhotos(mapOfParams).mapToEntity(params.page)
     }
 
+    override suspend fun searchCollections(query: String, page: Int): List<CollectionEntity> {
+        return api.searchCollections(query, page).mapToEntity(page)
+    }
+
     private fun SearchPhotosResponse?.mapToEntity(page: Int): List<PhotoEntity> {
         return this?.photos?.map {
             PhotoEntity(
@@ -30,7 +34,16 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
         } ?: listOf()
     }
 
-    override suspend fun searchCollections(query: String, page: Int): List<CollectionEntity> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun SearchCollectionsResponse?.mapToEntity(page: Int): List<CollectionEntity> {
+        return this?.collections?.map {
+            CollectionEntity(
+                it.id,
+                it.title,
+                it.totalPhotos,
+                it.user.name,
+                it.coverPhoto.urls.small,
+                page
+            )
+        } ?: listOf()
     }
 }

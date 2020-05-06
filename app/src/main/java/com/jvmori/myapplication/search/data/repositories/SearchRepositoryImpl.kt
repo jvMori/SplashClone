@@ -21,7 +21,12 @@ class SearchRepositoryImpl(
         }
     }
 
-    override suspend fun searchCollections(query: String, page: Int): Resource<List<CollectionEntity>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun searchCollections(query: String, page : Int): Resource<List<CollectionEntity>> {
+        return try {
+            val results = remoteDataSource.searchCollections(query, page)
+            Resource.success(results)
+        } catch (e: java.lang.Exception) {
+            handleError(e)
+        }
     }
 }
