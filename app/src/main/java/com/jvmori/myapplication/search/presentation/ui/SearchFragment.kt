@@ -2,6 +2,7 @@ package com.jvmori.myapplication.search.presentation.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -12,6 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.presentation.ui.MainActivity
 import com.jvmori.myapplication.databinding.SearchFragmentBinding
+import com.jvmori.myapplication.search.data.Orientation
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     SearchView.OnCloseListener {
@@ -39,6 +41,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupViewPager()
+        setupPhotoOrientationsSpinner()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -100,6 +103,18 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
                 }
             }
         })
+    }
+
+    private fun setupPhotoOrientationsSpinner() {
+        val orientations = Orientation.values().map { it.toString() }
+        binding.spinner.adapter = ArrayAdapter<String>(
+            this.requireContext(),
+            android.R.layout.simple_spinner_item,
+            orientations
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinner.adapter = this
+        }
     }
 
     private fun setupSearchViewInAppBar(menu: Menu) {
