@@ -89,7 +89,7 @@ class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos),
                     binding.apply {
                         showLoading(false)
                         showError(true) {
-                            viewModel.retryAction()
+                            viewModel.getPhotosRetryAction()
                         }
                     }
                 }

@@ -1,8 +1,10 @@
 package com.jvmori.myapplication.collectionslist.presentation.ui
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
@@ -42,8 +44,6 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
     }
 
     fun setNetworkState(newNetworkState: Resource.Status?) {
-        //this.networkState = networkState
-        //notifyDataSetChanged()
         val previousState = this.networkState
         val hadExtraRow = hasExtraRow()
         this.networkState = newNetworkState
@@ -77,8 +77,14 @@ class CollectionsAdapter : PagedListAdapter<CollectionEntity, RecyclerView.ViewH
                 return oldItem == newItem
             }
         }
-    }
 
+        fun initAdapter(recyclerView: RecyclerView, context : Context) : CollectionsAdapter{
+            return CollectionsAdapter().apply {
+                recyclerView.adapter = this
+                recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            }
+        }
+    }
 }
 
 

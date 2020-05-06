@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.search.data.repositories
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.common.data.remote.Resource
@@ -13,7 +14,7 @@ class CollectionsDataSource(
 ) : PageKeyedDataSource<Int, CollectionEntity>() {
 
     var query: String = ""
-    var networkStatus: Resource.Status? = Resource.Status.LOADING
+    var networkStatus: MutableLiveData<Resource.Status> = MutableLiveData()
     var retryAction: (() -> Unit)? = null
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, CollectionEntity>) {
@@ -25,7 +26,7 @@ class CollectionsDataSource(
                         loadInitial(params, callback)
                     }
                 }
-                networkStatus = status
+                networkStatus.postValue(status)
             }
         }
     }
@@ -39,7 +40,7 @@ class CollectionsDataSource(
                         loadAfter(params, callback)
                     }
                 }
-                networkStatus = status
+                networkStatus.postValue(status)
             }
         }
     }
