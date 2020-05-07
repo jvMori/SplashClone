@@ -29,7 +29,7 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
         return api.searchUsers(query, page).mapToEntity()
     }
 
-    private fun SearchUsersResponse?.mapToEntity(): List<UserEntity> {
+    fun SearchUsersResponse?.mapToEntity(): List<UserEntity> {
         return this?.users?.map {
             UserEntity(
                 it.id,
@@ -41,7 +41,7 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
         } ?: listOf()
     }
 
-    private fun SearchPhotosResponse?.mapToEntity(page: Int): List<PhotoEntity> {
+    fun SearchPhotosResponse?.mapToEntity(page: Int): List<PhotoEntity> {
         return this?.photos?.map {
             PhotoEntity(
                 it.id,
@@ -51,7 +51,7 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
         } ?: listOf()
     }
 
-    private fun SearchCollectionsResponse?.mapToEntity(page: Int): List<CollectionEntity> {
+    fun SearchCollectionsResponse?.mapToEntity(page: Int): List<CollectionEntity> {
         return this?.collections?.map {
             CollectionEntity(
                 it.id,
