@@ -10,4 +10,7 @@ interface SearchApi {
 
     @GET("search/collections")
     suspend fun searchCollections(@Query("query") query : String, @Query("page") page : Int) : SearchCollectionsResponse?
+
+    @GET("search/users")
+    suspend fun searchUsers(@Query("query") query: String, @Query("page")page: Int) : SearchUsersResponse?
 }

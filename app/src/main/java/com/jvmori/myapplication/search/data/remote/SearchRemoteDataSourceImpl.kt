@@ -3,6 +3,7 @@ package com.jvmori.myapplication.search.data.remote
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.search.data.PhotoParams
+import com.jvmori.myapplication.search.domain.entities.UserEntity
 import com.jvmori.myapplication.search.domain.repositories.SearchRemoteDataSource
 
 class SearchRemoteDataSourceImpl(val api: SearchApi) :
@@ -22,6 +23,22 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
 
     override suspend fun searchCollections(query: String, page: Int): List<CollectionEntity> {
         return api.searchCollections(query, page).mapToEntity(page)
+    }
+
+    override suspend fun searchUsers(query: String, page: Int): List<UserEntity> {
+        return api.searchUsers(query, page).mapToEntity()
+    }
+
+    private fun SearchUsersResponse?.mapToEntity(): List<UserEntity> {
+        return this?.users?.map {
+            UserEntity(
+                it.id,
+                it.name,
+                it.username,
+                it.profileImage.small,
+                it.totalLikes
+            )
+        } ?: listOf()
     }
 
     private fun SearchPhotosResponse?.mapToEntity(page: Int): List<PhotoEntity> {
