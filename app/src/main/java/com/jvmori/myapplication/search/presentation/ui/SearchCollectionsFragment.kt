@@ -14,7 +14,6 @@ import com.jvmori.myapplication.databinding.CollectionsFragmentBinding
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
 import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
 import org.koin.android.ext.android.getKoin
-import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 
 class SearchCollectionsFragment : Fragment(), SearchFragment.ISearchQuery {
@@ -70,7 +69,7 @@ class SearchCollectionsFragment : Fragment(), SearchFragment.ISearchQuery {
     }
 
     override fun search(query: String?) {
-        viewModel.setPhotoQuery(query)
+        viewModel.setQuery(query)
     }
 
 }

@@ -8,7 +8,7 @@ import com.jvmori.myapplication.search.domain.usecases.SearchCollectionsUseCase
 class SearchCollectionsUseCaseImpl(
     private val repository: SearchRepository
 ) : SearchCollectionsUseCase {
-    override suspend fun searchCollections(query: String, page: Int): Resource<List<CollectionEntity>> {
+    override suspend fun fetchData(query: String, page: Int): Resource<List<CollectionEntity>> {
         return repository.searchCollections(query, page)
     }
 }

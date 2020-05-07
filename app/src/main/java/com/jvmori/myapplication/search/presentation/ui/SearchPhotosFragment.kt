@@ -56,7 +56,7 @@ class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos),
     }
 
     override fun search(query: String?) {
-        viewModel.setPhotoQuery(query)
+        viewModel.setQuery(query)
     }
 
     override fun select(position: Int) {
@@ -71,7 +71,7 @@ class SearchPhotosFragment : Fragment(R.layout.fragment_search_photos),
     }
 
     private fun SearchViewModel.observeNetworkStatus() {
-        networkStatus.observe(this@SearchPhotosFragment, Observer {
+        photosNetworkStatus.observe(this@SearchPhotosFragment, Observer {
             when (it) {
                 Resource.Status.LOADING -> {
                     binding.apply {
