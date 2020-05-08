@@ -46,7 +46,7 @@ class SearchCollectionsFragment : Fragment(), SearchFragment.ISearchQuery {
         viewModel.apply {
             observeCollections()
             observeNetworkStatus()
-            adapter.setRetryAction {
+            adapter.setupRetryAction {
                 getCollectionsRetryAction()
             }
         }
@@ -55,7 +55,7 @@ class SearchCollectionsFragment : Fragment(), SearchFragment.ISearchQuery {
     private fun SearchViewModel.observeNetworkStatus() {
         collectionsNetworkStatus.observe(this@SearchCollectionsFragment, Observer {
             if (it != Resource.Status.SUCCESS) {
-                adapter.setNetworkState(it)
+                adapter.setupNetworkState(it)
             }
         })
     }

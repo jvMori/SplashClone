@@ -38,7 +38,7 @@ class CollectionsFragment : CategoryPageFragment() {
         viewmodel.run {
             observeCollections()
             observeNetworkState()
-            collectionsAdapter.setRetryAction {
+            collectionsAdapter.setupRetryAction {
                 this.retry()
             }
         }
@@ -53,7 +53,7 @@ class CollectionsFragment : CategoryPageFragment() {
     private fun CollectionsViewModel.observeNetworkState() {
         networkState.observe(this@CollectionsFragment, Observer {
             if (it != Resource.Status.SUCCESS) {
-                collectionsAdapter.setNetworkState(it)
+                collectionsAdapter.setupNetworkState(it)
             }
         })
     }
