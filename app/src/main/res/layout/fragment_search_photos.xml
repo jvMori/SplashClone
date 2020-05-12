@@ -6,7 +6,7 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".search.presentation.ui.SearchPhotosFragment">
+            tools:context=".search.presentation.ui.fragments.SearchPhotosFragment">
 
         <FrameLayout
                 android:id="@+id/errorLayout"

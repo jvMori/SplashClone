@@ -5,7 +5,7 @@ import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.common.data.remote.handleError
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.search.data.PhotoParams
-import com.jvmori.myapplication.search.domain.entities.UserEntity
+import com.jvmori.myapplication.users.domain.UserEntity
 import com.jvmori.myapplication.search.domain.repositories.SearchRemoteDataSource
 import com.jvmori.myapplication.search.domain.repositories.SearchRepository
 

@@ -1,7 +1,11 @@
-package com.jvmori.myapplication.search.presentation.ui
+package com.jvmori.myapplication.search.presentation.ui.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.jvmori.myapplication.search.presentation.ui.fragments.SearchCollectionsFragment
+import com.jvmori.myapplication.search.presentation.ui.fragments.SearchFragment
+import com.jvmori.myapplication.search.presentation.ui.fragments.SearchPhotosFragment
+import com.jvmori.myapplication.search.presentation.ui.fragments.SearchUsersFragment
 
 class SearchViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 

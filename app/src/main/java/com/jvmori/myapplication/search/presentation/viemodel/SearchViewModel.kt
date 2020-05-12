@@ -9,7 +9,7 @@ import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.search.data.repositories.SearchDataSource
-import com.jvmori.myapplication.search.domain.entities.UserEntity
+import com.jvmori.myapplication.users.domain.UserEntity
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
 import com.jvmori.myapplication.search.presentation.di.searchUsersId
 import com.jvmori.myapplication.search.presentation.di.searchUsersQualifier

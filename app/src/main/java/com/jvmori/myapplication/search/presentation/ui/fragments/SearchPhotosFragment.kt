@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.search.presentation.ui
+package com.jvmori.myapplication.search.presentation.ui.fragments
 
 
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.search.domain.entities
+package com.jvmori.myapplication.users.domain
 
 data class UserEntity(
     var userId: String = "",

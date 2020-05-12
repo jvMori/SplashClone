@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.search.presentation.ui
+package com.jvmori.myapplication.search.presentation.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,8 @@ import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 
-class SearchCollectionsFragment : Fragment(), SearchFragment.ISearchQuery {
+class SearchCollectionsFragment : Fragment(),
+    SearchFragment.ISearchQuery {
 
     private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
     private val viewModel: SearchViewModel  = searchScope.get()

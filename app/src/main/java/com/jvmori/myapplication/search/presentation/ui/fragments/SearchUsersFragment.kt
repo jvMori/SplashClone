@@ -1,10 +1,11 @@
-package com.jvmori.myapplication.search.presentation.ui
+package com.jvmori.myapplication.search.presentation.ui.fragments
 
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
+import com.jvmori.myapplication.search.presentation.ui.fragments.SearchFragment
 import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named

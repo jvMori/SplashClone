@@ -8,7 +8,7 @@ import com.jvmori.myapplication.photoslist.data.remote.photodata.PhotoDataRespon
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.search.data.Orientation
 import com.jvmori.myapplication.search.data.PhotoParams
-import com.jvmori.myapplication.search.domain.entities.UserEntity
+import com.jvmori.myapplication.users.domain.UserEntity
 import com.jvmori.myapplication.search.domain.repositories.SearchRemoteDataSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

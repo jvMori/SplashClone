@@ -2,7 +2,7 @@ package com.jvmori.myapplication.search.presentation.di
 
 import com.jvmori.myapplication.search.data.repositories.SearchDataSource
 import com.jvmori.myapplication.search.data.usecases.SearchUsersUseCaseImpl
-import com.jvmori.myapplication.search.domain.entities.UserEntity
+import com.jvmori.myapplication.users.domain.UserEntity
 import com.jvmori.myapplication.search.domain.usecases.SearchUsersUseCase
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.qualifier.named

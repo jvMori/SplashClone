@@ -1,7 +1,7 @@
 package com.jvmori.myapplication.search.data.usecases
 
 import com.jvmori.myapplication.common.data.remote.Resource
-import com.jvmori.myapplication.search.domain.entities.UserEntity
+import com.jvmori.myapplication.users.domain.UserEntity
 import com.jvmori.myapplication.search.domain.repositories.SearchRepository
 import com.jvmori.myapplication.search.domain.usecases.SearchUsersUseCase
 

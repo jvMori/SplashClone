@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.search.presentation.ui
+package com.jvmori.myapplication.search.presentation.ui.fragments
 
 import android.os.Bundle
 import android.view.*
@@ -15,6 +15,7 @@ import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.presentation.ui.MainActivity
 import com.jvmori.myapplication.databinding.SearchFragmentBinding
 import com.jvmori.myapplication.search.data.Orientation
+import com.jvmori.myapplication.search.presentation.ui.adapters.SearchViewPagerAdapter
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     SearchView.OnCloseListener, AdapterView.OnItemSelectedListener {
@@ -87,7 +88,9 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     private fun setupViewPager() {
-        viewPagerAdapter = SearchViewPagerAdapter(this).apply {
+        viewPagerAdapter = SearchViewPagerAdapter(
+            this
+        ).apply {
             binding.viewPager.adapter = this
             addOnPageChangedListener()
         }
