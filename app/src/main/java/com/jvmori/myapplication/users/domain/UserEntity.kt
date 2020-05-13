@@ -5,5 +5,5 @@ data class UserEntity(
     var name: String = "",
     var username: String = "",
     var profilePicLink: String = "",
-    var totalLikes: Int = 0
+    var totalPhotos: Int = 0
 )

@@ -36,7 +36,7 @@ class SearchRemoteDataSourceImpl(val api: SearchApi) :
                 it.name,
                 it.username,
                 it.profileImage.small,
-                it.totalLikes
+                it.totalPhotos
             )
         } ?: listOf()
     }

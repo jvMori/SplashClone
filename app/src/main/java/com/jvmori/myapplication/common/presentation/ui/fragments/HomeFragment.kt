@@ -1,4 +1,4 @@
-package com.jvmori.myapplication.common.presentation.ui
+package com.jvmori.myapplication.common.presentation.ui.fragments
 
 
 import android.os.Bundle
@@ -15,6 +15,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.data.CollectionType
 import com.jvmori.myapplication.collectionslist.presentation.viewmodels.CollectionsViewModel
+import com.jvmori.myapplication.common.presentation.ui.MainActivity
+import com.jvmori.myapplication.common.presentation.ui.ZoomOutPageTransformer
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryViewPagerAdapter
 import com.jvmori.myapplication.databinding.Photos
 import com.jvmori.myapplication.photoslist.data.remote.Order

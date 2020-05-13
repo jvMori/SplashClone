@@ -10,36 +10,23 @@ import androidx.lifecycle.Observer
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.presentation.ui.CollectionsAdapter
 import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.presentation.ui.fragments.BaseFragment
 import com.jvmori.myapplication.databinding.CollectionsFragmentBinding
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
 import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 
-class SearchCollectionsFragment : Fragment(),
+class SearchCollectionsFragment : BaseFragment(R.layout.collections_fragment),
     SearchFragment.ISearchQuery {
 
     private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
     private val viewModel: SearchViewModel  = searchScope.get()
-    private lateinit var binding: CollectionsFragmentBinding
     private lateinit var adapter : CollectionsAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.collections_fragment,
-            container,
-            false
-        )
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CollectionsAdapter.initAdapter(binding.collectionsRv, this.requireContext())
+        adapter = CollectionsAdapter.initAdapter((binding as CollectionsFragmentBinding).collectionsRv, this.requireContext())
     }
 
     override fun onStart() {
@@ -63,7 +50,7 @@ class SearchCollectionsFragment : Fragment(),
 
     private fun SearchViewModel.observeCollections() {
         getCollections().observe(this@SearchCollectionsFragment, Observer {
-            binding.collectionsRv.recycledViewPool.clear()
+            (binding as CollectionsFragmentBinding).collectionsRv.recycledViewPool.clear()
             adapter.notifyDataSetChanged()
             adapter.submitList(it)
         })

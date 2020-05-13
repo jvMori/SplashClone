@@ -54,11 +54,11 @@ class SearchViewModel : BaseSearchViewModel() {
         }
     }
 
-    fun getRetryAction() {
+    fun getUsersRetryAction() {
         userDataSource.retryAction?.invoke()
     }
 
-    val networkStatus: LiveData<Resource.Status> by lazy {
+    val usersNetworkStatus: LiveData<Resource.Status> by lazy {
         userDataSource.networkStatus
     }
 

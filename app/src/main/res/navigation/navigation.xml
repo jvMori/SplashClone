@@ -7,14 +7,14 @@
 
     <fragment
             android:id="@+id/photosFragment"
-            android:name="com.jvmori.myapplication.common.presentation.ui.HomeFragment"
+            android:name="com.jvmori.myapplication.common.presentation.ui.fragments.HomeFragment"
             android:label="fragment_photos"
             tools:layout="@layout/fragment_home" />
     <fragment android:id="@+id/collectionsFragment"
               android:name="com.jvmori.myapplication.collectionslist.presentation.ui.CollectionsFragment"
               android:label="CollectionsFragment"/>
     <fragment android:id="@+id/homeFragment2"
-              android:name="com.jvmori.myapplication.common.presentation.ui.HomeFragment" android:label="PhotoSplash">
+              android:name="com.jvmori.myapplication.common.presentation.ui.fragments.HomeFragment" android:label="PhotoSplash">
         <action android:id="@+id/action_homeFragment2_to_photosFragment" app:destination="@id/photosFragment"/>
         <action android:id="@+id/action_homeFragment2_to_collectionsFragment"
                 app:destination="@id/collectionsFragment"/>
