@@ -15,8 +15,10 @@ open class BaseSearchViewModel : ViewModel(), KoinComponent {
 
     fun setQuery(query: String?) {
         query?.let {
-            photoParams.query = it
-            this.photoParamsObservable.value = photoParams
+            if (it.isNotEmpty()){
+                photoParams.query = it
+                this.photoParamsObservable.value = photoParams
+            }
         }
     }
 
