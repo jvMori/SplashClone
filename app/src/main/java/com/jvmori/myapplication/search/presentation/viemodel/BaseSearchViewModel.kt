@@ -21,12 +21,4 @@ open class BaseSearchViewModel : ViewModel(), KoinComponent {
             }
         }
     }
-
-    protected fun <T> getFactory(dataSource: DataSource<Int, T>): DataSource.Factory<Int, T> {
-        return object : DataSource.Factory<Int, T>() {
-            override fun create(): DataSource<Int, T> {
-                return dataSource
-            }
-        }
-    }
 }

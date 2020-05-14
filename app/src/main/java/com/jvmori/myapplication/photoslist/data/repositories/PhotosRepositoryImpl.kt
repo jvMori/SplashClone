@@ -11,6 +11,8 @@ import com.jvmori.myapplication.photoslist.domain.repositories.LocalPhotosDataSo
 import com.jvmori.myapplication.photoslist.domain.repositories.PhotosRepository
 import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.take
 import kotlin.math.abs
 
 data class Parameters(val page: Int = 0, val order: String = "None", var collectionId: Int = 0)
@@ -21,14 +23,14 @@ class PhotosRepositoryImpl(
 ) : PhotosRepository,
     NetworkBoundResource<List<PhotoData>, List<PhotoDataResponse>, List<PhotoEntity>, Parameters> {
 
-    override fun getPhotosForCollection(id: Int): Flow<Resource<List<PhotoEntity>>> {
+    override suspend fun getPhotosForCollection(id: Int): Resource<List<PhotoEntity>>? {
         return fetchData(
             { localPhotosDataSource.getPhotosForCollection(id) },
             { remotePhotosDataSource.getPhotosForCollection(id) },
             { localPhotosDataSource.update(it) },
             { dataMapper(it, Parameters(collectionId = id)) },
             { resultDataMapper(it) }
-        )
+        ).firstOrNull()
     }
 
     override suspend fun getPhotos(page: Int, order: String): Resource<List<PhotoEntity>> {

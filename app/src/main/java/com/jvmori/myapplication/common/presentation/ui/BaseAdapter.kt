@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.domain.IOnClickListener
 
 open class BaseAdapter<T>(
     private val layoutItem: Int,
     private val diffUtil: DiffUtil.ItemCallback<T>
 ) : PagedListAdapter<T, RecyclerView.ViewHolder>(diffUtil) {
 
+    protected var onClickListener : IOnClickListener? = null
     protected var networkState: Resource.Status? = null
     protected lateinit var retryAction: () -> Unit
 
@@ -31,7 +33,9 @@ open class BaseAdapter<T>(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {}
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+    }
 
     fun setupNetworkState(newNetworkState: Resource.Status?) {
         val previousState = this.networkState

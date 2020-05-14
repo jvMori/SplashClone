@@ -5,6 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.data.util.getFactory
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSource
 import com.jvmori.myapplication.photoslist.data.repositories.PhotosDataSourceFactory
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity

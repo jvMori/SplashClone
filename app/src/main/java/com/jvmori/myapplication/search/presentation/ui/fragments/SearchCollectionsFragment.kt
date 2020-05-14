@@ -1,15 +1,12 @@
 package com.jvmori.myapplication.search.presentation.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.presentation.ui.CollectionsAdapter
 import com.jvmori.myapplication.common.data.remote.Resource
+import com.jvmori.myapplication.common.domain.IOnClickListener
 import com.jvmori.myapplication.common.presentation.ui.fragments.BaseFragment
 import com.jvmori.myapplication.databinding.CollectionsFragmentBinding
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
@@ -18,15 +15,17 @@ import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 
 class SearchCollectionsFragment : BaseFragment(R.layout.collections_fragment),
-    SearchFragment.ISearchQuery {
+    SearchFragment.ISearchQuery,
+    IOnClickListener {
 
     private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
-    private val viewModel: SearchViewModel  = searchScope.get()
-    private lateinit var adapter : CollectionsAdapter
+    private val viewModel: SearchViewModel = searchScope.get()
+    private lateinit var adapter: CollectionsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CollectionsAdapter.initAdapter((binding as CollectionsFragmentBinding).collectionsRv, this.requireContext())
+        adapter =
+            CollectionsAdapter.initAdapter((binding as CollectionsFragmentBinding).collectionsRv, this.requireContext())
     }
 
     override fun onStart() {
@@ -60,4 +59,7 @@ class SearchCollectionsFragment : BaseFragment(R.layout.collections_fragment),
         viewModel.setQuery(query)
     }
 
+    override fun click(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

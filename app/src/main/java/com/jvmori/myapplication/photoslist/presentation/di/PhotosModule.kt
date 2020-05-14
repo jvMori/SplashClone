@@ -13,20 +13,22 @@ import com.jvmori.myapplication.photoslist.data.usecases.RefreshPhotosUseCaseImp
 import com.jvmori.myapplication.photoslist.domain.repositories.LocalPhotosDataSource
 import com.jvmori.myapplication.photoslist.domain.repositories.PhotosRepository
 import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
-import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosForCollection
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
 import com.jvmori.myapplication.photoslist.domain.usecases.RefreshPhotosUseCase
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
+
+const val photosForCollections = "photosForCollections"
+const val photosForCollectionsId = "photosForCollectionsId"
 
 val photosModule = module {
     single<RefreshPhotosUseCase> { RefreshPhotosUseCaseImpl(get()) }
     single<GetPhotosListUseCase> { GetPhotosListImpl(get()) }
     factory { provideUnsplashApi(get()) }
-    single<GetPhotosForCollection> { GetPhotosForCollectionImpl(get()) }
     single { (get() as PhotosDatabase).photosDao() }
     single<LocalPhotosDataSource> { LocalPhotosDataSourceImpl(get()) }
     single<RemotePhotosDataSource> { RemotePhotosDataSourceImpl(get()) }
@@ -34,6 +36,11 @@ val photosModule = module {
     single<PhotosDataSource> { (scope: CoroutineScope) -> PhotosDataSource(scope, get()) }
     single { (photoDataSource: PhotosDataSource) -> PhotosDataSourceFactory((photoDataSource)) }
     viewModel { PhotosViewModel() }
+
+    scope(named(photosForCollections)) {
+        scoped<GetPhotosListUseCase> { GetPhotosForCollectionImpl(repository = get()) }
+        scoped { (scope: CoroutineScope) -> PhotosDataSource(scope, getPhotosListUseCase = (get())) }
+    }
 }
 
 fun provideUnsplashApi(retrofit: Retrofit): Api {

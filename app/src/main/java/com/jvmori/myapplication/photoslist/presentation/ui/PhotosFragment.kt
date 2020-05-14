@@ -10,7 +10,6 @@ import androidx.paging.PagedList
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
 import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFragment
-import com.jvmori.myapplication.databinding.PhotosFragmentBinding
 import com.jvmori.myapplication.databinding.SearchPhotosBinding
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
@@ -21,9 +20,10 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 class PhotosFragment : CategoryPageFragment() {
 
     private val photosViewModel: PhotosViewModel by sharedViewModel()
-
     private lateinit var binding: SearchPhotosBinding
     private lateinit var photosAdapter: PhotosAdapter
+
+    private var collectionId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,16 +41,22 @@ class PhotosFragment : CategoryPageFragment() {
     @ExperimentalCoroutinesApi
     override fun onStart() {
         super.onStart()
+        collectionId = 296
         photosViewModel.apply {
             changeOrder(Order.latest)
+            fetchPhotos(collectionId)
         }
         initPhotosAdapter()
         bindPhotos()
         observeNetworkStatus()
     }
 
+    private fun getCollectionId() : Int? {
+        return 296
+    }
+
     private fun bindPhotos() {
-        photosViewModel.fetchPhotos().observe(this, Observer {
+        photosViewModel.photos?.observe(this, Observer {
             binding.recyclerView.recycledViewPool.clear()
             photosAdapter.notifyDataSetChanged()
             showSuccess(it)
@@ -75,7 +81,7 @@ class PhotosFragment : CategoryPageFragment() {
         hideLoading()
         binding.errorLayout.visibility = View.VISIBLE
         binding.retryBtn.setOnClickListener {
-            photosViewModel.retryAction()
+            photosViewModel.retryAction(null)
             it.visibility = View.GONE
         }
     }

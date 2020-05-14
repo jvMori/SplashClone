@@ -14,5 +14,6 @@ data class PhotoParams (
     var page : Int,
     var orientation : String = "",
     var order : Order = Order.latest,
-    var color : String = ""
+    var color : String = "",
+    var collectionId : Int = 0
 )

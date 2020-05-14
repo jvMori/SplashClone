@@ -10,11 +10,16 @@ import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
 import com.jvmori.myapplication.common.presentation.ui.BaseAdapter
 import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolder
 
-class CollectionsAdapter : BaseAdapter<CollectionEntity>( R.layout.collection_item, CollectionsDiffUtilCallback) {
+class CollectionsAdapter : BaseAdapter<CollectionEntity>(R.layout.collection_item, CollectionsDiffUtilCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.collection_item -> (holder as CollectionsViewHolder).bind(getItem(position) ?: CollectionEntity(0))
+            R.layout.collection_item -> {
+                (holder as CollectionsViewHolder).bind(getItem(position) ?: CollectionEntity(0))
+                holder.itemView.setOnClickListener {
+                    onClickListener?.click(position)
+                }
+            }
             R.layout.network_state_item -> (holder as NetworkStateViewHolder).bind(networkState, retryAction)
         }
     }
