@@ -5,8 +5,21 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 kapt {
     correctErrorTypes = true
+}
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        def nav_version = "2.1.0"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+    }
 }
 
 android {
@@ -62,7 +75,6 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
     androidTestImplementation "org.koin:koin-test:$koin_version"
-
 
     //ViewModel & LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"

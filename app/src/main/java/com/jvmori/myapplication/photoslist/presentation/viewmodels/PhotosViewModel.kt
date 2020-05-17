@@ -44,7 +44,7 @@ class PhotosViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    fun fetchPhotosForCollection(id: Int) {
+    private fun fetchPhotosForCollection(id: Int) {
         photosForCollectionsDataSource.apply {
             photoParams.collectionId = id
             factory = PhotosDataSourceFactory(this)

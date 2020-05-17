@@ -4,7 +4,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/navigation"
         app:startDestination="@id/homeFragment2">
-
     <fragment
             android:id="@+id/photosFragment"
             android:name="com.jvmori.myapplication.common.presentation.ui.fragments.HomeFragment"
@@ -21,25 +20,5 @@
         <action android:id="@+id/action_homeFragment2_to_searchFragment" app:destination="@id/searchFragment"
                 app:popUpTo="@+id/homeFragment2" app:popUpToInclusive="false"/>
     </fragment>
-    <navigation android:id="@+id/searchFragment" app:startDestination="@id/searchFragment">
-        <fragment android:id="@+id/searchFragment"
-                      android:name="com.jvmori.myapplication.search.presentation.ui.fragments.SearchFragment"
-        >
-            <action android:id="@+id/action_searchFragment_to_searchPhotosFragment"
-                    app:destination="@id/searchPhotosFragment"/>
-            <action android:id="@+id/action_searchFragment_to_searchCollectionsFragment"
-                    app:destination="@id/searchCollectionsFragment"/>
-            <action android:id="@+id/action_searchFragment_to_searchUsersFragment"
-                    app:destination="@id/searchUsersFragment"/>
-        </fragment>
-        <fragment android:id="@+id/searchPhotosFragment"
-                  android:name="com.jvmori.myapplication.search.presentation.ui.fragments.SearchPhotosFragment"
-                  android:label="fragment_search_photos" tools:layout="@layout/fragment_search_photos"/>
-        <fragment android:id="@+id/searchCollectionsFragment"
-                  android:name="com.jvmori.myapplication.search.presentation.ui.fragments.SearchCollectionsFragment"
-                  android:label="SearchCollectionsFragment"/>
-        <fragment android:id="@+id/searchUsersFragment"
-                  android:name="com.jvmori.myapplication.search.presentation.ui.fragments.SearchUsersFragment"
-                  android:label="SearchUsersFragment"/>
-    </navigation>
+    <include app:graph="@navigation/search_nav_graph" />
 </navigation>

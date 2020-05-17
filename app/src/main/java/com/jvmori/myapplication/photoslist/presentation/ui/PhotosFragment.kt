@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.common.data.remote.Resource
@@ -41,7 +42,7 @@ class PhotosFragment : CategoryPageFragment() {
     @ExperimentalCoroutinesApi
     override fun onStart() {
         super.onStart()
-        collectionId = 296
+        collectionId = getCollectionId()
         photosViewModel.apply {
             changeOrder(Order.latest)
             fetchPhotos(collectionId)
@@ -51,8 +52,12 @@ class PhotosFragment : CategoryPageFragment() {
         observeNetworkStatus()
     }
 
-    private fun getCollectionId() : Int? {
-        return 296
+    private fun getCollectionId(): Int? {
+        return try {
+            navArgs<PhotosFragmentArgs>().value.collectionId
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun bindPhotos() {

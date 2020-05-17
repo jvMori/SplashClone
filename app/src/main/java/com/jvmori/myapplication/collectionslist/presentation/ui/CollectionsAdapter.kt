@@ -12,6 +12,10 @@ import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolde
 
 class CollectionsAdapter : BaseAdapter<CollectionEntity>(R.layout.collection_item, CollectionsDiffUtilCallback) {
 
+    fun getCollection(position: Int) : CollectionEntity? {
+        return getItem(position)
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.collection_item -> {

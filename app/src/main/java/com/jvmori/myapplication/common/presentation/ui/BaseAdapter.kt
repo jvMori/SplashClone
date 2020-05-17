@@ -13,7 +13,7 @@ open class BaseAdapter<T>(
     private val diffUtil: DiffUtil.ItemCallback<T>
 ) : PagedListAdapter<T, RecyclerView.ViewHolder>(diffUtil) {
 
-    protected var onClickListener : IOnClickListener? = null
+    var onClickListener : IOnClickListener? = null
     protected var networkState: Resource.Status? = null
     protected lateinit var retryAction: () -> Unit
 

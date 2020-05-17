@@ -3,6 +3,7 @@ package com.jvmori.myapplication.search.presentation.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.presentation.ui.CollectionsAdapter
 import com.jvmori.myapplication.common.data.remote.Resource
@@ -26,6 +27,9 @@ class SearchCollectionsFragment : BaseFragment(R.layout.collections_fragment),
         super.onViewCreated(view, savedInstanceState)
         adapter =
             CollectionsAdapter.initAdapter((binding as CollectionsFragmentBinding).collectionsRv, this.requireContext())
+                .apply {
+                    onClickListener = this@SearchCollectionsFragment
+                }
     }
 
     override fun onStart() {
@@ -60,6 +64,8 @@ class SearchCollectionsFragment : BaseFragment(R.layout.collections_fragment),
     }
 
     override fun click(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val id = adapter.getCollection(position)?.id ?: -1
+        val action = SearchFragmentDirections.actionSearchFragmentToCollectionsPhotos(id)
+        this.requireView().findNavController().navigate(action)
     }
 }
