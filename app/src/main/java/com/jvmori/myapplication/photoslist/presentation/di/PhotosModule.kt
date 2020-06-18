@@ -1,5 +1,6 @@
 package com.jvmori.myapplication.photoslist.presentation.di
 
+
 import com.jvmori.myapplication.common.data.local.PhotosDatabase
 import com.jvmori.myapplication.photoslist.data.local.LocalPhotosDataSourceImpl
 import com.jvmori.myapplication.photoslist.data.remote.Api
@@ -15,6 +16,8 @@ import com.jvmori.myapplication.photoslist.domain.repositories.PhotosRepository
 import com.jvmori.myapplication.photoslist.domain.repositories.RemotePhotosDataSource
 import com.jvmori.myapplication.photoslist.domain.usecases.GetPhotosListUseCase
 import com.jvmori.myapplication.photoslist.domain.usecases.RefreshPhotosUseCase
+import com.jvmori.myapplication.photoslist.presentation.viewmodels.BasePhotosViewModel
+import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosForCollectionViewModel
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.viewmodel.dsl.viewModel
@@ -35,6 +38,12 @@ val photosModule = module {
     single<PhotosRepository> { PhotosRepositoryImpl(get(), get()) }
     single<PhotosDataSource> { (scope: CoroutineScope) -> PhotosDataSource(scope, get()) }
     single { (photoDataSource: PhotosDataSource) -> PhotosDataSourceFactory((photoDataSource)) }
+    viewModel<BasePhotosViewModel> { (collectionId: Int?) ->
+        if (collectionId == null)
+            PhotosViewModel()
+        else
+            PhotosForCollectionViewModel()
+    }
     viewModel { PhotosViewModel() }
 
     scope(named(photosForCollections)) {

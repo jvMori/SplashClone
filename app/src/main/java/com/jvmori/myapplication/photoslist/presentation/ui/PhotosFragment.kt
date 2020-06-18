@@ -14,17 +14,26 @@ import com.jvmori.myapplication.common.presentation.ui.category.CategoryPageFrag
 import com.jvmori.myapplication.databinding.SearchPhotosBinding
 import com.jvmori.myapplication.photoslist.data.remote.Order
 import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
+import com.jvmori.myapplication.photoslist.presentation.viewmodels.BasePhotosViewModel
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.core.parameter.parametersOf
 
 class PhotosFragment : CategoryPageFragment() {
 
-    private val photosViewModel: PhotosViewModel by sharedViewModel()
+    private val photosViewModel: BasePhotosViewModel by sharedViewModel {
+        parametersOf(collectionId)
+    }
+
     private lateinit var binding: SearchPhotosBinding
     private lateinit var photosAdapter: PhotosAdapter
 
-    private var collectionId: Int? = null
+    private val collectionId = try {
+        navArgs<PhotosFragmentArgs>().value.collectionId
+    } catch (e: Exception) {
+        null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +51,8 @@ class PhotosFragment : CategoryPageFragment() {
     @ExperimentalCoroutinesApi
     override fun onStart() {
         super.onStart()
-        collectionId = getCollectionId()
         photosViewModel.apply {
-            changeOrder(Order.latest)
+            if (this is PhotosViewModel) changeOrder(Order.latest)
             fetchPhotos(collectionId)
         }
         initPhotosAdapter()
@@ -69,7 +77,7 @@ class PhotosFragment : CategoryPageFragment() {
     }
 
     private fun observeNetworkStatus() {
-        photosViewModel.networkStatus.observe(this, Observer {
+        photosViewModel.networkStatus?.observe(this, Observer {
             when (it) {
                 Resource.Status.LOADING -> showLoading()
                 Resource.Status.ERROR, Resource.Status.NETWORK_ERROR -> showError()
@@ -86,7 +94,7 @@ class PhotosFragment : CategoryPageFragment() {
         hideLoading()
         binding.errorLayout.visibility = View.VISIBLE
         binding.retryBtn.setOnClickListener {
-            photosViewModel.retryAction(null)
+            photosViewModel.retryAction()
             it.visibility = View.GONE
         }
     }
