@@ -27,7 +27,7 @@ class PhotosForCollectionViewModel : BasePhotosViewModel(), KoinComponent {
             photosForCollections
         ))
     private val dataSource: PhotosDataSource = scope.get { parametersOf(viewModelScope) }
-    private var factory: PhotosDataSourceFactory = get { parametersOf(dataSource) }
+    private var factory: PhotosDataSourceFactory = scope.get { parametersOf(dataSource) }
 
     override fun fetchPhotos(id: Int?) {
         dataSource.apply {

@@ -49,6 +49,7 @@ val photosModule = module {
     scope(named(photosForCollections)) {
         scoped<GetPhotosListUseCase> { GetPhotosForCollectionImpl(repository = get()) }
         scoped { (scope: CoroutineScope) -> PhotosDataSource(scope, getPhotosListUseCase = (get())) }
+        scoped { (photoDataSource: PhotosDataSource) -> PhotosDataSourceFactory((photoDataSource)) }
     }
 }
 

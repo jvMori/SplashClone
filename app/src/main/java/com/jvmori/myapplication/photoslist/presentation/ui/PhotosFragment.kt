@@ -17,23 +17,20 @@ import com.jvmori.myapplication.photoslist.domain.entities.PhotoEntity
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.BasePhotosViewModel
 import com.jvmori.myapplication.photoslist.presentation.viewmodels.PhotosViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.getKoin
+import org.koin.android.viewmodel.ViewModelParameters
+import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.getViewModel
 import org.koin.core.parameter.parametersOf
 
 class PhotosFragment : CategoryPageFragment() {
 
-    private val photosViewModel: BasePhotosViewModel by sharedViewModel {
-        parametersOf(collectionId)
-    }
+    private lateinit var photosViewModel: BasePhotosViewModel
 
     private lateinit var binding: SearchPhotosBinding
     private lateinit var photosAdapter: PhotosAdapter
-
-    private val collectionId = try {
-        navArgs<PhotosFragmentArgs>().value.collectionId
-    } catch (e: Exception) {
-        null
-    }
+    private var collectionId : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +48,14 @@ class PhotosFragment : CategoryPageFragment() {
     @ExperimentalCoroutinesApi
     override fun onStart() {
         super.onStart()
+        collectionId = try {
+            navArgs<PhotosFragmentArgs>().value.collectionId
+        } catch (e: Exception) {
+            null
+        }
+        photosViewModel = getViewModel {
+            parametersOf(collectionId)
+        }
         photosViewModel.apply {
             if (this is PhotosViewModel) changeOrder(Order.latest)
             fetchPhotos(collectionId)
