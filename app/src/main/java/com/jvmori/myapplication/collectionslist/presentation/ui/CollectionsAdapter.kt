@@ -2,39 +2,30 @@ package com.jvmori.myapplication.collectionslist.presentation.ui
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jvmori.myapplication.R
 import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
-import com.jvmori.myapplication.common.presentation.ui.BaseAdapter
-import com.jvmori.myapplication.photoslist.presentation.ui.NetworkStateViewHolder
+import com.jvmori.myapplication.common.domain.IOnClickListener
 
-class CollectionsAdapter : BaseAdapter<CollectionEntity>(R.layout.collection_item, CollectionsDiffUtilCallback) {
+class CollectionsAdapter : PagingDataAdapter<CollectionEntity, CollectionsViewHolder>(CollectionsDiffUtilCallback) {
 
-    fun getCollection(position: Int) : CollectionEntity? {
+    var onClickListener: IOnClickListener? = null
+
+    fun getCollection(position: Int): CollectionEntity? {
         return getItem(position)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (getItemViewType(position)) {
-            R.layout.collection_item -> {
-                (holder as CollectionsViewHolder).bind(getItem(position) ?: CollectionEntity(0))
-                holder.itemView.setOnClickListener {
-                    onClickListener?.click(position)
-                }
-            }
-            R.layout.network_state_item -> (holder as NetworkStateViewHolder).bind(networkState, retryAction)
+    override fun onBindViewHolder(holder: CollectionsViewHolder, position: Int) {
+        holder.bind(getItem(position) ?: CollectionEntity(0))
+        holder.itemView.setOnClickListener {
+            onClickListener?.click(position)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            R.layout.collection_item -> CollectionsViewHolder.create(parent)
-            R.layout.network_state_item -> NetworkStateViewHolder.create(parent)
-            else -> throw IllegalArgumentException("unknown view type $viewType")
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionsViewHolder =
+        CollectionsViewHolder.create(parent)
 
     companion object {
         val CollectionsDiffUtilCallback = object : DiffUtil.ItemCallback<CollectionEntity>() {

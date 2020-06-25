@@ -1,20 +1,19 @@
 package com.jvmori.myapplication.collectionslist.data.local
 
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.*
-import com.jvmori.myapplication.collectionslist.data.CollectionType
 
 @Dao
 interface CollectionsDao {
 
     @Query("Select * from collections_table")
-    fun getCollections(): DataSource.Factory<Int, CollectionsData>
+    fun getCollections(): PagingSource<Int, CollectionsData>
 
     @Query("Select * from collections_table where collection_type like :type")
-    fun getFeaturedCollections(type : String): DataSource.Factory<Int, CollectionsData>
+    fun getFeaturedCollections(type: String): PagingSource<Int, CollectionsData>
 
     @Transaction
-    fun updateCollection(data: List<CollectionsData>) {
+    suspend fun updateCollection(data: List<CollectionsData>) {
         if (data.isNotEmpty()) {
             delete(data[0].page)
             insert(data)
@@ -22,11 +21,11 @@ interface CollectionsDao {
     }
 
     @Insert
-    fun insert(collections: List<CollectionsData>)
+    suspend fun insert(collections: List<CollectionsData>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(collection: CollectionsData)
+    suspend fun insert(collection: CollectionsData)
 
     @Query("Delete from collections_table where collection_page like :page")
-    fun delete(page: Int)
+    suspend fun delete(page: Int)
 }

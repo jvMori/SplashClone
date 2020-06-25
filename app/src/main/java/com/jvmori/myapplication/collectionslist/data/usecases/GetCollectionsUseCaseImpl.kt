@@ -1,15 +1,15 @@
 package com.jvmori.myapplication.collectionslist.data.usecases
 
-import androidx.paging.DataSource
+import androidx.paging.PagingData
 import com.jvmori.myapplication.collectionslist.data.CollectionType
-import com.jvmori.myapplication.collectionslist.domain.entities.CollectionEntity
+import com.jvmori.myapplication.collectionslist.data.local.CollectionsData
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRepository
 import com.jvmori.myapplication.collectionslist.domain.usecases.GetCollectionsUseCase
-import com.jvmori.myapplication.common.data.remote.Resource
+import kotlinx.coroutines.flow.Flow
 
 class GetCollectionsUseCaseImpl(private val repository: CollectionsRepository) :
     GetCollectionsUseCase {
-    override fun getCollections(type : CollectionType): DataSource.Factory<Int, CollectionEntity> {
-        return repository.fetchLocalCollections(type)
+    override fun getCollections(type: CollectionType, pageSize: Int): Flow<PagingData<CollectionsData>> {
+        return repository.fetchCollections(type, pageSize)
     }
 }

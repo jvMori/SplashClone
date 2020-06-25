@@ -9,7 +9,6 @@ import com.jvmori.myapplication.common.presentation.ui.fragments.BaseFragment
 import com.jvmori.myapplication.databinding.CollectionsFragmentBinding
 import com.jvmori.myapplication.search.presentation.di.searchModuleNamed
 import com.jvmori.myapplication.search.presentation.viemodel.SearchViewModel
-import com.jvmori.myapplication.users.presentation.UsersAdapter
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 
@@ -17,7 +16,7 @@ class SearchUsersFragment : BaseFragment(R.layout.collections_fragment), SearchF
 
     private val searchScope = getKoin().getOrCreateScope("searchScope", named(searchModuleNamed))
     private val viewModel: SearchViewModel = searchScope.get()
-    private lateinit var adapter: UsersAdapter
+    //private lateinit var adapter: UsersAdapter
 
     override fun search(query: String?) {
         viewModel.setQuery(query)
@@ -25,7 +24,7 @@ class SearchUsersFragment : BaseFragment(R.layout.collections_fragment), SearchF
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = UsersAdapter.initAdapter((binding as CollectionsFragmentBinding).collectionsRv, this.requireContext())
+        //adapter = UsersAdapter.initAdapter((binding as CollectionsFragmentBinding).collectionsRv, this.requireContext())
     }
 
     override fun onStart() {
@@ -33,16 +32,16 @@ class SearchUsersFragment : BaseFragment(R.layout.collections_fragment), SearchF
         viewModel.apply {
             observeUsers(this)
             observeNetworkStatus(this)
-            adapter.setupRetryAction {
-                getUsersRetryAction()
-            }
+//            adapter.setupRetryAction {
+//                getUsersRetryAction()
+//            }
         }
     }
 
     private fun observeNetworkStatus(viewModel: SearchViewModel) {
         viewModel.usersNetworkStatus.observe(this, Observer {
             if (it != Resource.Status.SUCCESS) {
-                adapter.setupNetworkState(it)
+                //adapter.setupNetworkState(it)
             }
         })
     }
@@ -50,8 +49,8 @@ class SearchUsersFragment : BaseFragment(R.layout.collections_fragment), SearchF
     private fun observeUsers(viewModel: SearchViewModel) {
         viewModel.getUsers().observe(this, Observer {
             (binding as CollectionsFragmentBinding).collectionsRv.recycledViewPool.clear()
-            adapter.notifyDataSetChanged()
-            adapter.submitList(it)
+            //adapter.notifyDataSetChanged()
+            //adapter.submitList(it)
         })
     }
 }

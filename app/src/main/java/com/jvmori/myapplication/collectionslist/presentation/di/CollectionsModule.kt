@@ -4,7 +4,7 @@ import com.jvmori.myapplication.collectionslist.data.local.CollectionsDao
 import com.jvmori.myapplication.collectionslist.data.local.LocalCollectionsDataSourceImpl
 import com.jvmori.myapplication.collectionslist.data.remote.CollectionsApi
 import com.jvmori.myapplication.collectionslist.data.remote.RemoteCollectionsDataSourceImpl
-import com.jvmori.myapplication.collectionslist.data.repositories.CollectionsRepositoryImpl
+import com.jvmori.myapplication.collectionslist.data.repositories.CollectionRepositoryImpl
 import com.jvmori.myapplication.collectionslist.data.usecases.GetCollectionsUseCaseImpl
 import com.jvmori.myapplication.collectionslist.domain.repositories.CollectionsRepository
 import com.jvmori.myapplication.collectionslist.domain.repositories.LocalCollectionsDataSource
@@ -20,7 +20,12 @@ val collectionsModule = module {
     single<CollectionsDao> { (get() as PhotosDatabase).collectionsDao() }
     single<RemoteCollectionsDataSource> { RemoteCollectionsDataSourceImpl(get()) }
     single<LocalCollectionsDataSource> { LocalCollectionsDataSourceImpl(get()) }
-    single<CollectionsRepository> { CollectionsRepositoryImpl(get(), get()) }
+    single<CollectionsRepository> {
+        CollectionRepositoryImpl(
+            localCollectionsDataSource = get(),
+            remoteCollectionsDataSource = get()
+        )
+    }
     single<GetCollectionsUseCase> { GetCollectionsUseCaseImpl(get()) }
-    single { CollectionsViewModel(get(), get()) }
+    single { CollectionsViewModel(getCollectionsUseCase = get()) }
 }
